@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户中心 - 个人中心</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  <style>
+    /* Custom Styles */
+    .sidebar {
+      width: 260px;
+      min-height: 100vh;
+      border-right: 1px solid #e9ecef;
+    }
+
+    .avatar-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .avatar-status {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      width: 12px;
+      height: 12px;
+      background-color: #28a745;
+      border: 2px solid white;
+      border-radius: 50%;
+    }
+
+    .stat-item {
+      padding: 0.5rem 0;
+    }
+
+    .nav-link {
+      color: #6c757d;
+      padding: 0.75rem 0;
+      border: none;
+      border-radius: 0.375rem;
+      margin-bottom: 0.25rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      background-color: #f8f9fa;
+      color: #495057;
+    }
+
+    .nav-link.active {
+      background-color: #e3f2fd;
+      color: #1976d2;
+      font-weight: 500;
+    }
+
+    .main-content {
+      background-color: #f8f9fa;
+    }
+
+    .notification-bar {
+      border-left: 4px solid #dc3545;
+    }
+
+    .survey-card:hover {
+      transform: translateY(-2px);
+      transition: transform 0.2s ease;
+    }
+
+    .stat-card {
+      transition: transform 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .video-card {
+      transition: transform 0.2s ease;
+    }
+
+    .video-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .play-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.8;
+    }
+
+    .course-card {
+      transition: transform 0.2s ease;
+    }
+
+    .course-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .course-badges {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+    }
+
+    .course-badges .badge {
+      margin-right: 5px;
+    }
+
+    .provider-logo {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 5px;
+      border-radius: 50%;
+    }
+
+    .course-title {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.4;
+      height: 2.8em;
+    }
+
+    .course-meta {
+      font-size: 0.875rem;
+    }
+
+    /* Account Settings Styles */
+    .account-settings {
+      display: none;
+    }
+
+    .account-settings.active {
+      display: block;
+    }
+
+    .settings-nav-tabs {
+      border-bottom: 1px solid #dee2e6;
+      padding: 0 1rem;
+      background: white;
+      border-radius: 0.375rem 0.375rem 0 0;
+    }
+
+    .settings-nav-tabs .nav-link {
+      border: none;
+      color: #6c757d;
+      font-weight: 500;
+      padding: 1rem 0.5rem;
+      margin-right: 2rem;
+      border-bottom: 2px solid transparent;
+      margin-bottom: 0;
+    }
+
+    .settings-nav-tabs .nav-link.active {
+      color: #007bff;
+      border-bottom-color: #007bff;
+      background: none;
+    }
+
+    .settings-form-container {
+      padding: 2rem;
+      background: white;
+      border-radius: 0 0 0.375rem 0.375rem;
+    }
+
+    .settings-form-label {
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .settings-form-control {
+      border: 1px solid #dee2e6;
+      border-radius: 0.375rem;
+      padding: 0.75rem;
+      font-size: 0.95rem;
+    }
+
+    .info-icon {
+      color: #6c757d;
+      margin-left: 0.5rem;
+      cursor: pointer;
+    }
+
+    .alert-custom {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+
+    .btn-save {
+      background-color: #007bff;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.75rem 2rem;
+      font-weight: 500;
+    }
+
+    .btn-save:hover {
+      background-color: #0056b3;
+    }
+
+    /* Page content visibility */
+    .page-content {
+      display: none;
+    }
+
+    .page-content.active {
+      display: block;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      .main-content {
+        padding: 1rem !important;
+      }
+
+      .course-card {
+        margin-bottom: 1rem;
+      }
+    }
+
+    /* Badge customizations */
+    .badge.bg-warning {
+      background-color: #ffc107 !important;
+      color: #000;
+    }
+
+    .badge.bg-danger {
+      background-color: #dc3545 !important;
+    }
+
+    .badge.bg-success {
+      background-color: #198754 !important;
+    }
+
+    .badge.bg-primary {
+      background-color: #0d6efd !important;
+    }
+
+  </style>
+</head>
+<body class="bg-light">
+<div class="container-fluid">
+  <div class="row min-vh-100">
+    <!-- Left Sidebar -->
+    <div class="col-auto sidebar bg-white shadow-sm">
+      <div class="p-3">
+        <!-- User Info Block -->
+        <div class="text-center mb-4">
+          <div class="avatar-container mb-3">
+            <img src="/placeholder.svg?height=60&width=60" alt="Avatar" class="rounded-circle">
+            <div class="avatar-status"></div>
+          </div>
+          <h6 class="fw-bold mb-1">ACG185****1362XQ</h6>
+          <small class="text-muted">您好，今天想学点什么呢？</small>
+        </div>
+
+        <!-- Stats -->
+        <div class="row text-center mb-4">
+          <div class="col-4">
+            <div class="stat-item">
+              <div class="fw-bold text-primary">25</div>
+              <small class="text-muted">我的报名</small>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="stat-item">
+              <div class="fw-bold">0</div>
+              <small class="text-muted">我的完成</small>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="stat-item">
+              <div class="fw-bold">0</div>
+              <small class="text-muted">CG作品集</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Button -->
+        <button class="btn btn-primary w-100 mb-4">
+          <i class="bi bi-lightning-fill me-2"></i>
+          您还不是课程会员，立即开课
+        </button>
+
+        <!-- Navigation -->
+        <nav class="nav flex-column">
+          <a class="nav-link active" data-page="personal-center">
+            <i class="bi bi-person-circle me-2"></i>
+            个人中心
+          </a>
+          <a class="nav-link" data-page="account-settings">
+            <i class="bi bi-gear me-2"></i>
+            账户设置
+          </a>
+          <a class="nav-link" href="#">
+            <i class="bi bi-trophy me-2"></i>
+            奖励记录
+            <span class="badge bg-danger ms-auto">3</span>
+          </a>
+          <a class="nav-link" href="#">
+            <i class="bi bi-book me-2"></i>
+            学习统计
+          </a>
+          <a class="nav-link" href="#">
+            <i class="bi bi-cart me-2"></i>
+            订单中心
+            <span class="badge bg-danger ms-auto">1</span>
+          </a>
+          <a class="nav-link" href="#">
+            <i class="bi bi-plus-circle me-2"></i>
+            申请开课
+          </a>
+          <a class="nav-link" href="#">
+            <i class="bi bi-gift me-2"></i>
+            推广有礼
+          </a>
+          <a class="nav-link text-muted" href="#">
+            <i class="bi bi-box-arrow-right me-2"></i>
+            退出登录
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col main-content">
+      <div class="p-4">
+        <!-- 个人中心内容 -->
+        <div id="personal-center" class="page-content active">
+          <!-- Top Notification Area -->
+          <div class="row mb-4">
+            <div class="col-md-8">
+              <div class="notification-bar bg-white rounded p-3 shadow-sm">
+                <div class="d-flex align-items-center">
+                  <span class="badge bg-danger me-3">52</span>
+                  <div class="flex-grow-1">
+                    <h6 class="mb-1">《虚幻》魔学院 · 新任务题</h6>
+                    <small class="text-muted">来源：《虚幻》学院 · Unreal Engine 4基础建模制作完整实战案例教程</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="survey-card bg-white rounded p-3 shadow-sm text-center">
+                <i class="bi bi-chat-square-text fs-4 text-primary mb-2"></i>
+                <div>
+                  <strong>调查反馈</strong>
+                  <br>
+                  <small class="text-muted">意见建议反馈，我们持续改进</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Statistics Cards -->
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <div class="stat-card bg-white rounded p-4 shadow-sm text-center">
+                <i class="bi bi-send text-info fs-1 mb-3"></i>
+                <h2 class="text-info mb-1">3</h2>
+                <p class="text-muted mb-0">今日任务数</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card bg-white rounded p-4 shadow-sm text-center">
+                <i class="bi bi-pencil text-primary fs-1 mb-3"></i>
+                <h2 class="text-primary mb-1">0</h2>
+                <p class="text-muted mb-0">今日学习提交</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="video-card bg-white rounded shadow-sm overflow-hidden">
+                <div class="position-relative">
+                  <img src="/placeholder.svg?height=120&width=200" alt="Video thumbnail" class="w-100">
+                  <div class="play-overlay">
+                    <i class="bi bi-play-circle-fill text-white fs-1"></i>
+                  </div>
+                </div>
+                <div class="p-3">
+                  <small class="text-muted">最近学习</small>
+                  <h6 class="mb-0">【基础走向高级】UE4模型</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recommended Courses -->
+          <div class="courses-section">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">课程推荐</h5>
+              <a href="#" class="text-decoration-none">换一换</a>
+            </div>
+
+            <div class="row">
+              <!-- Course Card 1 -->
+              <div class="col-md-6 mb-4">
+                <div class="course-card bg-white rounded shadow-sm overflow-hidden">
+                  <div class="position-relative">
+                    <img src="/placeholder.svg?height=200&width=350" alt="Course thumbnail" class="w-100">
+                    <div class="course-badges">
+                      <span class="badge bg-warning">新功能</span>
+                      <span class="badge bg-primary">官方教学</span>
+                    </div>
+                    <div class="provider-logo">
+                      <img src="/placeholder.svg?height=30&width=30" alt="Provider" class="rounded">
+                    </div>
+                  </div>
+                  <div class="p-3">
+                    <h6 class="course-title">RizomUV 2024 新功能官方教学（2025-05-29 更新）</h6>
+                    <div class="d-flex align-items-center mb-2">
+                      <img src="/placeholder.svg?height=20&width=20" alt="Instructor" class="rounded-circle me-2">
+                      <small class="text-muted">ABOUTCG</small>
+                      <span class="badge bg-warning ms-auto">初级难度</span>
+                    </div>
+                    <div class="course-meta d-flex justify-content-between align-items-center">
+                      <div>
+                        <span class="text-warning fw-bold">免费</span>
+                      </div>
+                      <div class="text-muted small">
+                        <i class="bi bi-clock me-1"></i>2h
+                        <i class="bi bi-eye ms-2 me-1"></i>1727
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Course Card 2 -->
+              <div class="col-md-6 mb-4">
+                <div class="course-card bg-white rounded shadow-sm overflow-hidden">
+                  <div class="position-relative">
+                    <img src="/placeholder.svg?height=200&width=350" alt="Course thumbnail" class="w-100">
+                    <div class="course-badges">
+                      <span class="badge bg-danger">限时限购</span>
+                    </div>
+                    <div class="provider-logo">
+                      <img src="/placeholder.svg?height=30&width=30" alt="Provider" class="rounded">
+                    </div>
+                  </div>
+                  <div class="p-3">
+                    <h6 class="course-title">高精度写实枪械SCR建模与贴图制作实战（Plasticity）</h6>
+                    <div class="d-flex align-items-center mb-2">
+                      <img src="/placeholder.svg?height=20&width=20" alt="Instructor" class="rounded-circle me-2">
+                      <small class="text-muted">HX</small>
+                      <span class="badge bg-danger ms-auto">中级难度</span>
+                    </div>
+                    <div class="course-meta d-flex justify-content-between align-items-center">
+                      <div>
+                        <span class="text-danger fw-bold">¥223.50</span>
+                        <small class="text-muted text-decoration-line-through ms-1">¥298.00</small>
+                      </div>
+                      <div class="text-muted small">
+                        <i class="bi bi-clock me-1"></i>22h
+                        <i class="bi bi-eye ms-2 me-1"></i>10565
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Course Card 3 -->
+              <div class="col-md-6 mb-4">
+                <div class="course-card bg-white rounded shadow-sm overflow-hidden">
+                  <div class="position-relative">
+                    <img src="/placeholder.svg?height=200&width=350" alt="Course thumbnail" class="w-100">
+                    <div class="provider-logo">
+                      <img src="/placeholder.svg?height=30&width=30" alt="Provider" class="rounded">
+                    </div>
+                  </div>
+                  <div class="p-3">
+                    <h6 class="course-title">流体水特效实义—Unreal Engine +Houdini特效实战案例教学</h6>
+                    <div class="d-flex align-items-center mb-2">
+                      <img src="/placeholder.svg?height=20&width=20" alt="Instructor" class="rounded-circle me-2">
+                      <small class="text-muted">Collen</small>
+                      <span class="badge bg-success ms-auto">中级难度</span>
+                    </div>
+                    <div class="course-meta d-flex justify-content-between align-items-center">
+                      <div>
+                        <span class="text-warning fw-bold">¥175.44</span>
+                        <small class="text-muted text-decoration-line-through ms-1">¥258.00</small>
+                      </div>
+                      <div class="text-muted small">
+                        <i class="bi bi-clock me-1"></i>7h
+                        <i class="bi bi-eye ms-2 me-1"></i>3737
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Course Card 4 -->
+              <div class="col-md-6 mb-4">
+                <div class="course-card bg-white rounded shadow-sm overflow-hidden">
+                  <div class="position-relative">
+                    <img src="/placeholder.svg?height=200&width=350" alt="Course thumbnail" class="w-100">
+                    <div class="course-badges">
+                      <span class="badge bg-success">Blender+Unity</span>
+                    </div>
+                    <div class="provider-logo">
+                      <img src="/placeholder.svg?height=30&width=30" alt="Provider" class="rounded">
+                    </div>
+                  </div>
+                  <div class="p-3">
+                    <h6 class="course-title">【Blender+Unity】二次元原创角色完整金属质感美型教学</h6>
+                    <div class="d-flex align-items-center mb-2">
+                      <img src="/placeholder.svg?height=20&width=20" alt="Instructor" class="rounded-circle me-2">
+                      <small class="text-muted">阿Bolero</small>
+                      <span class="badge bg-success ms-auto">中级难度</span>
+                    </div>
+                    <div class="course-meta d-flex justify-content-between align-items-center">
+                      <div>
+                        <span class="text-warning fw-bold">¥189.04</span>
+                        <small class="text-muted text-decoration-line-through ms-1">¥278.00</small>
+                      </div>
+                      <div class="text-muted small">
+                        <i class="bi bi-clock me-1"></i>21h
+                        <i class="bi bi-eye ms-2 me-1"></i>4904
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 账户设置内容 -->
+        <div id="account-settings" class="page-content">
+          <div class="bg-white rounded shadow-sm">
+            <!-- 标签导航 -->
+            <ul class="nav settings-nav-tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-settings-tab="basic-info">基本资料</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-settings-tab="wechat-bind">微信绑定</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-settings-tab="real-name">实名认证</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-settings-tab="account-security">账户安全</a>
+              </li>
+            </ul>
+
+            <!-- 基本资料表单 -->
+            <div id="basic-info" class="settings-tab-content active">
+              <div class="settings-form-container">
+                <form>
+                  <div class="row g-4">
+                    <!-- 左列 -->
+                    <div class="col-md-6">
+                      <div>
+                        <label class="settings-form-label d-flex align-items-center">
+                          昵称 <i class="bi bi-info-circle info-icon"></i>
+                        </label>
+                        <input type="text" class="form-control settings-form-control" value="ACG185122913G2XQ">
+                      </div>
+                      <div>
+                        <label class="settings-form-label mt-4">邮箱</label>
+                        <input type="email" class="form-control settings-form-control" placeholder="请输入邮箱">
+                      </div>
+                      <div>
+                        <label class="settings-form-label mt-4">手机</label>
+                        <input type="tel" class="form-control settings-form-control" value="18512291362">
+                      </div>
+                    </div>
+
+                    <!-- 右列 -->
+                    <div class="col-md-6">
+                      <div>
+                        <label class="settings-form-label">真名</label>
+                        <input type="text" class="form-control settings-form-control" placeholder="请输入真实姓名">
+                      </div>
+                      <div>
+                        <label class="settings-form-label mt-4">网址</label>
+                        <input type="url" class="form-control settings-form-control" placeholder="请输入个人网址">
+                      </div>
+                      <div class="mt-4">
+                        <div class="alert alert-custom d-flex align-items-center">
+                          <i class="bi bi-info-circle me-2"></i>
+                          <span>要修改手机和邮箱，请点击这里</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 保存按钮 -->
+                  <div class="mt-4">
+                    <button type="submit" class="btn btn-primary btn-save">保存</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- 微信绑定 -->
+            <div id="wechat-bind" class="settings-tab-content" style="display: none;">
+              <div class="settings-form-container">
+                <div class="text-center py-5">
+                  <i class="bi bi-wechat text-success" style="font-size: 4rem;"></i>
+                  <h5 class="mt-3">微信绑定</h5>
+                  <p class="text-muted">绑定微信后，可以使用微信快速登录</p>
+                  <button class="btn btn-success">
+                    <i class="bi bi-wechat me-2"></i>
+                    绑定微信
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 实名认证 -->
+            <div id="real-name" class="settings-tab-content" style="display: none;">
+              <div class="settings-form-container">
+                <div class="text-center py-5">
+                  <i class="bi bi-person-check text-primary" style="font-size: 4rem;"></i>
+                  <h5 class="mt-3">实名认证</h5>
+                  <p class="text-muted">完成实名认证后，可享受更多平台权益</p>
+                  <button class="btn btn-primary btn-save">开始认证</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 账户安全 -->
+            <div id="account-security" class="settings-tab-content" style="display: none;">
+              <div class="settings-form-container">
+                <div class="row g-4">
+                  <div class="col-12">
+                    <h6 class="mb-3">账户安全设置</h6>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="d-flex align-items-center justify-content-between p-3 border rounded">
+                      <div>
+                        <div class="fw-medium">登录密码</div>
+                        <small class="text-muted">用于登录验证的密码</small>
+                      </div>
+                      <button class="btn btn-outline-primary btn-sm">修改</button>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="d-flex align-items-center justify-content-between p-3 border rounded">
+                      <div>
+                        <div class="fw-medium">手机验证</div>
+                        <small class="text-success">已绑定：185****1362</small>
+                      </div>
+                      <button class="btn btn-outline-primary btn-sm">修改</button>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="d-flex align-items-center justify-content-between p-3 border rounded">
+                      <div>
+                        <div class="fw-medium">邮箱验证</div>
+                        <small class="text-muted">未绑定</small>
+                      </div>
+                      <button class="btn btn-outline-primary btn-sm">绑定</button>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="d-flex align-items-center justify-content-between p-3 border rounded">
+                      <div>
+                        <div class="fw-medium">二步验证</div>
+                        <small class="text-muted">未启用</small>
+                      </div>
+                      <button class="btn btn-outline-primary btn-sm">启用</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// 页面切换功能
+document.addEventListener('DOMContentLoaded', function() {
+  // 侧边栏导航切换
+  const sidebarLinks = document.querySelectorAll('.sidebar .nav-link[data-page]');
+  const pageContents = document.querySelectorAll('.page-content');
+
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // 移除所有活动状态
+      sidebarLinks.forEach(l => l.classList.remove('active'));
+      pageContents.forEach(content => content.classList.remove('active'));
+      
+      // 添加当前活动状态
+      this.classList.add('active');
+      const targetPage = this.getAttribute('data-page');
+      document.getElementById(targetPage).classList.add('active');
+    });
+  });
+
+  // 账户设置标签切换
+  const settingsTabs = document.querySelectorAll('.settings-nav-tabs .nav-link[data-settings-tab]');
+  const settingsContents = document.querySelectorAll('.settings-tab-content');
+
+  settingsTabs.forEach(tab => {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // 移除所有活动状态
+      settingsTabs.forEach(t => t.classList.remove('active'));
+      settingsContents.forEach(content => {
+        content.style.display = 'none';
+        content.classList.remove('active');
+      });
+      
+      // 添加当前活动状态
+      this.classList.add('active');
+      const targetTab = this.getAttribute('data-settings-tab');
+      const targetContent = document.getElementById(targetTab);
+      targetContent.style.display = 'block';
+      targetContent.classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>

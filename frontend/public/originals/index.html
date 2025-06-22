@@ -1,0 +1,2100 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+    <title>UAI学院 - 学AI智能辅助设计，让工作更高效</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="UAI学院是一家为就业者提供最新职场技术的在线交流平台"/>
+    <!-- Bootstrap 5.3.6 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <!--    图标-->
+
+    <!-- 在 <head> 中引入 Font Awesome 5 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!--    阿里图标-->
+    <link rel="stylesheet" href="font/iconfont.css">
+
+
+
+    <style>
+        /* =========================
+    1) 通用导航文字
+    ======================== */
+        .nav-link {
+            font-size: 18px;
+            color: #000000 !important;
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        /* =========================
+           2) 下拉菜单箭头
+        ======================== */
+        .dropdown-toggle::after {
+            border: none;
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-bottom: 2px solid black; /* 箭头下边 */
+            border-right: 2px solid black; /* 箭头右边 */
+            transform: rotate(45deg); /* 默认向下 */
+            margin-left: 6px;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-toggle[aria-expanded="true"]::after {
+            transform: rotate(-135deg); /* 向上 */
+        }
+
+        /* =========================
+           3) 下划线动画（仅作用于文字）
+           需用 <span class="nav-underline"> 包裹文本
+        ======================== */
+        .nav-underline {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-underline::before {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: 0;
+            width: 100%;
+            height: 1.5px;
+            background-color: #000;
+            transform: scaleX(0);
+            transform-origin: bottom center;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover .nav-underline::before,
+        .nav-link[aria-expanded="true"] .nav-underline::before {
+            transform: scaleX(1);
+        }
+
+        /* =========================
+           4) 导航项及 Logo 布局
+        ======================== */
+        .nav-item {
+            margin-left: 20px; /* 导航项间隔 */
+        }
+
+        .navbar-brand {
+            margin-right: 0;
+            margin-left: 16px; /* 向右移动 Logo */
+        }
+
+        /* =========================
+           5) 按钮及其它样式
+        ======================== */
+        .btn-outline-dark {
+            border: 1px solid #000000 !important;
+            color: #000000 !important;
+            background-color: transparent;
+            transition: all 0.3s ease-in-out;
+            border-radius: 10px;  /* 统一圆角大小 */
+            /* 添加Firefox特定样式 */
+            -moz-appearance: none;
+            -moz-user-select: none;
+            padding: 6px 12px;
+            line-height: 1.5;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .btn-outline-dark:hover {
+            background-color: #E0E0E0 !important;  /* 悬停时的灰色 */
+            color: #000000 !important;
+        }
+
+        .btn-outline-dark:focus {
+            box-shadow: none !important;  /* 去掉点击时的黑色辉光 */
+            outline: none !important;  /* 去掉Firefox的虚线框 */
+        }
+
+        .btn-dark.btn-register {
+            width: 89px;
+            font-size: 17px;
+            background-color: #000000 !important;  /* 纯黑色 */
+            border-color: #000000 !important;
+            /* 添加Firefox特定样式 */
+            -moz-appearance: none;
+            -moz-user-select: none;
+            padding: 6px 12px;
+            line-height: 1.5;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .btn-dark.btn-register:hover {
+            background-color: #505050 !important;  /* 浅灰黑（近似 #5c5c5c） */
+            border-color: #505050 !important;
+        }
+
+        /* 新增：Firefox特定样式修复 */
+        @-moz-document url-prefix() {
+            .btn {
+                padding: 6px 12px !important;
+                line-height: 1.5 !important;
+            }
+
+            .btn-outline-dark,
+            .btn-dark.btn-register {
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+                min-height: 38px;
+            }
+        }
+
+        /*购物车图标*/
+        .nav-cart-icon {
+            font-size: 22px;
+            color: #000;
+            margin-right: -2px;
+        }
+
+
+
+        /* 新增：去除注册按钮的点击辉光效果 */
+        .btn-dark.btn-register:focus {
+            box-shadow: none !important;
+        }
+
+        .logo-img {
+            height: 26px;
+            width: auto;
+            display: block;
+            margin-top: -6px; /* 微调整体位置 */
+            filter: brightness(1.11); /* 1.0 是原始亮度，1.3 表示亮一些 */
+        }
+
+        /* =========================
+           6) 右侧区域整体布局
+        ======================== */
+        .right-group {
+            margin-right: 120px !important;
+        }
+
+        /* =========================
+           7) 卡片及卡片悬停效果
+        ======================== */
+        .card {
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* 移除卡片上浮效果 */
+        .card:hover {
+            box-shadow: -2px 0 4px rgba(0, 0, 0, 0.08),
+            2px 0 4px rgba(0, 0, 0, 0.08),
+            0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-top {
+            border-radius: 10px 10px 0 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card-footer {
+            background: rgba(255, 255, 255, 0.75) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0 0 18px 18px !important;
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            padding: 0.75rem 1.25rem;
+            overflow: hidden;
+        }
+
+        /* 信息卡骨架，默认隐藏 */
+        .course-pop{
+            position: absolute;
+            top: 12px;
+            left: 100%;
+            margin-left: 16px;
+            width: 380px;
+            background: rgba(255,255,255,0.98);  /* 提高不透明度 */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(30,127,152,0.08);  /* 更淡的边框 */
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(30,127,152,0.06),  /* 多层次阴影 */
+            0 2px 8px rgba(30,127,152,0.04),
+            inset 0 0 0 1px rgba(255,255,255,0.6);  /* 内发光 */
+            padding: 24px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(12px) scale(.96);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            z-index: 1050;
+        }
+
+        /* 小尖角优化 */
+        .course-pop::before{
+            content: "";
+            position: absolute;
+            left: -9px;
+            top: 30px;
+            width: 18px;
+            height: 18px;
+            background: rgba(255,255,255,0.98);  /* 与主体背景一致 */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(30,127,152,0.08);  /* 与主体边框一致 */
+            border-right: none;
+            border-bottom: none;
+            transform: rotate(-45deg);
+            box-shadow: inset 1px 1px 0 rgba(255,255,255,0.6);  /* 内发光效果 */
+        }
+
+        /* 内容样式优化 */
+        .course-pop h6 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;  /* 加深标题颜色 */
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .course-pop .badge {
+            background: rgba(30,127,152,0.08);  /* 降低背景透明度 */
+            color: #1E7F98;  /* 保持原色 */
+            font-weight: 500;  /* 稍微加粗 */
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .course-pop .text-muted {
+            color: #444 !important;  /* 加深文字颜色 */
+            font-size: 15px;
+        }
+
+        .course-pop ul {
+            margin: 16px 0;
+            padding-left: 20px;
+        }
+
+        .course-pop ul li {
+            color: #333;  /* 加深列表文字颜色 */
+            margin-bottom: 12px;
+            font-size: 15px;
+            position: relative;
+            list-style: none;
+        }
+
+        .course-pop ul li::before {
+            content: "•";
+            color: #1E7F98;  /* 保持原色 */
+            font-weight: bold;
+            position: absolute;
+            left: -15px;
+        }
+
+        /* 按钮样式优化 */
+        .course-pop .btn-tech-blue {
+            background: #1E7F98;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-transform: none;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(30,127,152,0.2);
+        }
+
+        .course-pop .btn-tech-blue:hover {
+            background: #166d84;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30,127,152,0.3);
+        }
+
+        /* 关闭按钮优化 */
+        .course-pop .close-dialog {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            display: block;
+            margin-top: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .course-pop .close-dialog:hover {
+            color: #1E7F98;
+            text-decoration: none;
+        }
+
+        /* 仅 ≥lg 屏幕启用 hover 弹窗 */
+        @media (min-width: 992px){
+            .card:hover .course-pop{
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(0) scale(1);
+                pointer-events: auto;
+            }
+
+            /* 右侧卡片特殊处理 */
+            .col-md-3:nth-child(4n) .course-pop {
+                left: auto;
+                right: 100%;
+                margin-left: 0;
+                margin-right: 16px;
+                transform: translateX(-12px) scale(.96);
+            }
+
+            .col-md-3:nth-child(4n) .course-pop::before {
+                left: auto;
+                right: -9px;
+                transform: rotate(135deg);
+            }
+
+            .col-md-3:nth-child(4n) .card:hover .course-pop {
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        /* 保持桥接功能 */
+        @media (min-width: 992px) {
+            .card:hover::after{
+                content:'';
+                position:absolute;
+                top:0;
+                left:100%;
+                width:24px;
+                height:100%;
+            }
+
+            .col-md-3:nth-child(4n) .card:hover::before{
+                content:'';
+                position:absolute;
+                top:0;
+                right:100%;
+                width:24px;
+                height:100%;
+            }
+
+            .card:hover .course-pop,
+            .course-pop:hover{
+                opacity:1;
+                visibility: visible;
+                transform:translateX(0) scale(1);
+                pointer-events:auto;
+            }
+        }
+
+        /* 保证教师卡片悬停时也始终保持圆角 */
+        .teacher-card,
+        .teacher-card:hover {
+            border-radius: 10px !important;
+        }
+
+
+        /* 卡片链接去除下划线 & 保持文字颜色 */
+        .card-link-no-underline {
+            text-decoration: none;
+            color: inherit; /* 跟随父元素颜色 */
+        }
+
+        .card-link-no-underline:hover,
+        .card-link-no-underline:focus,
+        .card-link-no-underline:active {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================
+           8) 搜索框默认改为科技蓝边框
+           放在最后，保证优先级最高
+        ======================== */
+        .form-control[type="search"] {
+            border: 1.5px solid #1E7F98 !important; /* 科技蓝边框 */
+            width: 450px !important; /* 搜索框宽度增加到原来的2倍 */
+            border-radius: 20px !important; /* 增加圆角效果 */
+            transform: translateX(-50px); /* 向右偏移 30px */
+
+        }
+        /* 搜索框放大镜样式 */
+        /*.search-btn {*/
+        /*    border: none;*/
+        /*    background: none;*/
+        /*    padding: 8px;*/
+        /*    margin-left: -87px; !* 将图标推进到输入框内部 *!*/
+        /*    z-index: 10;*/
+        /*    position: relative;*/
+        /*    color: #f0690e; !* 橙色图标 *!*/
+        /*}*/
+        /*购物车*/
+
+
+        /*.search-btn:hover,*/
+        /*.search-btn:focus {*/
+        /*    outline: none;*/
+        /*    background-color: transparent;*/
+        /*}*/
+        .search-input {
+            border: 1.5px solid #1E7F98 !important;
+            border-radius: 25px !important;
+            height: 40px;
+            padding-right: 48px !important; /* 预留出按钮空间 */
+            font-size: 1.1em;
+            background: #fff;
+        }
+
+        .search-btn-inside {
+            position: absolute;
+            top: 50%;
+            right: 14px;     /* 距右侧 14px，随实际微调 */
+            transform: translateX(-55px) translateY(-50%);
+            border: none;
+            background: none;
+            padding: 0;
+            color: #f0690e;
+            font-size: 1.2em;
+            z-index: 2;
+            outline: none;
+            cursor: pointer;
+            box-shadow: none;
+        }
+
+        .search-btn-inside:hover,
+        .search-btn-inside:focus {
+            background: none !important;
+            color: #f37000;
+        }
+
+
+
+        /* 按钮统一样式：边框 #1E7F98，文字黑色，hover 时淡灰 */
+        .btn-category {
+            border: 1px solid #1E7F98;
+            color: #000; /* 字体颜色纯黑 */
+            background-color: transparent; /* 默认背景透明 */
+            white-space: nowrap;
+            /*height: 32px;!* 防止按钮随文字长度换行 *!*/
+            min-width: 20px; /* 设定最小宽度，保持外观一致 */
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-category:hover,
+        .btn-category:focus {
+            background-color: #E0E0E0; /* 鼠标放上去出现淡灰 */
+            color: #000; /* 字体颜色不变，依旧黑色 */
+            text-decoration: none;
+            outline: none;
+            border-color: #1E7F98; /* 保持蓝色边框不变 */
+        }
+
+        /*让按钮组内相邻的 btn-category 去掉左侧边框，从而合并为一条 */
+        .btn-group > .btn-category + .btn-category {
+            margin-left: -1px; /* 两按钮边框重叠 */
+            border-left: none; /* 或者 border-left-width: 0; */
+        }
+
+        /* 确保下拉按钮hover时左侧边框也不显示 */
+        .btn-group > .btn-category:hover + .btn-category.dropdown-toggle-split,
+        .btn-group > .btn-category + .btn-category.dropdown-toggle-split:hover {
+            border-left: none;
+        }
+
+        /*学院标题文字调整*/
+        .uai-title {
+            font-size: 2rem; /* 32px */
+            font-weight: 700; /* 加粗 */
+            color: #000000; /* 商业黑 */
+            margin-bottom: 0.5rem;
+            margin-left: 50px;
+        }
+
+        .uai-subtitle {
+            font-size: 1.125rem; /* 18px */
+            color: #666666; /* 商业灰 */
+            line-height: 1.7;
+            font-weight: 400;
+            margin-left: 50px;
+        }
+
+        /*按钮组间隔设置*/
+        .btn-wrap {
+            /* 固定宽度或最小宽度都可以 */
+            width: 180px; /* 例：180px */
+            margin-right: 16px; /* 横向间隔 */
+            margin-bottom: 16px; /* 纵向间隔 */
+        }
+
+        /*网页分割线*/
+        .section-divider {
+            border: none;
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.18); /* 8% 黑，接近淡灰 */
+            margin: 2rem 0;
+        }
+
+        .section-divider2 {
+            border: none;
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.09); /* 8% 黑，接近淡灰 */
+            margin: 2rem 0;
+        }
+
+        /* 9) "全部课程"按钮高亮样式 */
+        .btn-wrap:nth-of-type(1) .btn-category {
+            /* 默认浅色略显青色的科技蓝填充 */
+            background-color: rgba(35, 192, 247, 0.3);
+        }
+
+        .btn-wrap:nth-of-type(1) .btn-category:hover,
+        .btn-wrap:nth-of-type(1) .btn-category:focus {
+            /* 悬停时切换为深色科技蓝 */
+            background-color: #138496 !important;
+            color: #ffffff !important;
+        }
+
+
+        /* ========= 增强 Apple + 科技蓝 + Glassmorphism 风格 ========== */
+        body {
+            font-family: "Alibaba PuHuiTi", "思源黑体", sans-serif;
+            background-color: #F2F7F7;
+            color: #111111;
+        }
+
+        .card.card-glass {
+            position: relative;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            overflow: visible;
+        }
+
+        /* 放在现有样式之后，保证优先级 */
+        .card:hover,
+        .card:focus-within{        /* 键盘导航时也能生效 */
+            z-index: 2000;         /* 比 .course-pop(1050) 更高即可 */
+            position: relative;    /* 已经有的话不用重复写 */
+        }
+
+
+        /* 移除卡片上浮效果，但保留阴影变化 */
+        .card.card-glass:hover {
+            transform: none;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-outline-dark {
+            color: #000000 !important; /* 登录文字变为纯黑 */
+            border: 1px solid #000000 !important;  /* 黑色边框 */
+            border-radius: 8px;
+        }
+
+        .btn-outline-dark:hover {
+            background-color: #000000 !important;
+            color: white !important;
+        }
+
+        footer {
+            background-color: #1E7F98 !important;
+            color: #fff !important;
+        }
+
+        .card-footer {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 18px 18px;
+            overflow: hidden;
+        }
+
+        .card-img-top {
+            border-radius: 18px 18px 0 0;
+        }
+
+        /*按钮组竖线对齐*/
+        /* 让按钮组成为 flex 容器 */
+        .btn-group.w-100{display:flex;}
+
+        .btn-group.w-100>.btn-category:not(.dropdown-toggle-split){
+            flex:1 1 auto;           /* 左侧文字区自动撑满 */
+            overflow:hidden;         /* 溢出处理，保证长文本不把竖线挤跑 */
+            text-overflow:ellipsis;  /* 可选：太长时省略号 */
+        }
+
+        .btn-group.w-100>.btn-category.dropdown-toggle-split{
+            flex:0 0 46px;           /* 右侧固定 46 px，可按需调大/小 */
+            display:flex;            /* 垂直水平居中 ▼ */
+            align-items:center;
+            justify-content:center;
+            padding:0;               /* 去掉多余内边距，让 ▼ 居中 */
+        }
+
+        /* 添加缺失的 btn-tech-blue 样式 */
+        .btn-tech-blue {
+            background-color: #1E7F98;
+            color: #ffffff;
+            border-color: #1E7F98;
+            transition: all 0.3s ease;
+        }
+
+        .btn-tech-blue:hover,
+        .btn-tech-blue:focus {
+            background-color: #0086b3;
+            color: #ffffff;
+            border-color: #166d84;
+        }
+
+        /* 弹出卡片的信息样式 */
+        .course-pop h6 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .course-pop .badge {
+            font-weight: normal;
+            padding: 4px 8px;
+            margin-right: 4px;
+        }
+
+        .course-pop ul {
+            margin-bottom: 15px;
+        }
+
+        .course-pop ul li {
+            margin-bottom: 8px;
+        }
+
+        /* 默认隐藏 & 动画准备 */
+        /* 建议放到自定义 CSS 最后，保证优先级 */
+        :root{
+            --uai-blue:#166d84;          /* 统一描边颜色变量，方便以后调整 */
+        }
+        .course-pop{
+            position:absolute;
+            top:12px;               /* 与卡片顶部微距 */
+            left:100%;              /* 紧贴卡片右侧 */
+            margin-left:16px;       /* 与卡片间距 */
+            margin-top: -15px;
+            width:340px;
+            background:#fff;
+            border:1px solid var(--uai-blue);  /* 边框描边 */
+            border-radius:12px;
+            box-shadow:0 8px 24px rgba(0,0,0,.14);
+            padding:18px 20px;
+            opacity:0;
+            visibility: hidden;      /* 完全隐藏，防止遮挡 */
+            transform:translateX(12px) scale(.96);
+            transition:opacity .25s ease,transform .25s ease;
+            pointer-events:none;    /* 防止意外 hover */
+            z-index:1050;
+        }
+
+        /* 小尖角（::before 纯 CSS） */
+
+
+        .course-pop::before{
+            content:"";
+            position:absolute;
+            left:-7px;                  /* "-7px = 边框 1 + 正方形一半 6" */
+            top:120px;                   /* 可以按需上下微调 */
+            width:14px;
+            height:14px;
+            background:#fff;
+            border:1px solid var(--uai-blue);
+            border-right:none;          /* 避免与弹窗本体重叠出现双线 */
+            border-bottom:none;
+            transform:rotate(-45deg);    /* 45° 的菱形尖向左 */
+        }
+
+        /* 仅 ≥lg 屏幕启用 hover 弹窗 */
+        @media (min-width:992px){
+            .card:hover .course-pop{
+                opacity:1;
+                visibility: visible;    /* 确保可见性 */
+                transform:translateX(0) scale(1);
+                pointer-events:auto;
+            }
+
+            /* 右侧卡片特殊处理 */
+            .col-md-3:nth-child(4n) .course-pop {
+                left: auto;
+                right: 100%;
+                margin-left: 0;
+                margin-right: 16px;
+                transform: translateX(-12px) scale(.96);
+            }
+
+            .col-md-3:nth-child(4n) .course-pop::before {
+                left: auto;
+                right: -8px;
+                transform: rotate(135deg);
+            }
+
+            .col-md-3:nth-child(4n) .card:hover .course-pop {
+                transform: translateX(0) scale(1);
+            }
+            /*课程详情卡间隙修改*/
+            /* ================== 解决弹窗过早消失 ================== */
+            /* 1）弹窗紧贴卡片：去掉空白带，让光标不掉进"缝隙" */
+            @media (min-width: 992px) {
+                .course-pop{
+                    left: calc(100% + 14px); /* 同样的 16px 距离，但不再用 margin */
+                    margin-left: 0;
+                }
+                .course-pop::before{
+                    left: -8px;              /* 尖角保持原位置 */
+                }
+            }
+
+            /* 2）把 16px 缝隙也算在 hover 区域（可选，双保险） */
+            @media (min-width: 992px){
+                .card:hover::after{
+                    content:'';
+                    position:absolute;
+                    top:0;
+                    left:100%;               /* 紧挨卡片右侧 */
+                    width:24px;              /* ≥ margin(16) + 尖角宽度(8) */
+                    height:100%;
+                }
+            }
+
+            /* 3）确保鼠标已移到弹窗本身时也不会消失 */
+            @media (min-width: 992px){
+                .card:hover .course-pop,
+                .course-pop:hover{         /* 关键：让弹窗自己也能保持可见 */
+                    opacity:1;
+                    visibility: visible;
+                    transform:translateX(0) scale(1);
+                    pointer-events:auto;
+                }
+            }
+            /*最右侧课程卡*/
+            /* ====================================================
+      针对第 4、8、12 … 张卡片（.col-md-3:nth-child(4n)）
+      —— 弹窗在左边时，也补一条"hover 桥"
+      ==================================================== */
+            @media (min-width: 992px){
+
+                /* 1）让弹窗与卡片距离改用 calc(100% + 16px) —— 去掉 margin-right */
+                .col-md-3:nth-child(4n) .course-pop{
+                    right: calc(100% + 14px);   /* 等价于原来 right:100% + 16px */
+                    margin-right: 0;            /* 清除旧 margin */
+                }
+
+                /* 2）透明桥：铺在卡片 **左** 侧 24 px，覆盖那条缝隙 */
+                .col-md-3:nth-child(4n) .card:hover::before{
+                    content:'';
+                    position:absolute;
+                    top:0;
+                    right:100%;                 /* 紧贴卡片左边缘 */
+                    width:24px;                 /* 16px 缝隙 + 8px 尖角 */
+                    height:100%;
+                }
+
+                /* 3）补充：进入弹窗自己时也保持可见（与右侧逻辑一致） */
+                .col-md-3:nth-child(4n) .course-pop:hover{
+                    opacity:1;
+                    visibility:visible;
+                    transform:translateX(0) scale(1);
+                    pointer-events:auto;
+                }
+            }
+
+
+        }
+        /* 放在自定义 CSS 最后 */
+        :root{
+            /* 深科技蓝保留，备用：hover 时可渐显 */
+            --uai-blue: #166d84;
+            --uai-blue-fade: rgba(22,109,132,0.1);   /* 5% 不透明度 */
+        }
+
+        /* 信息弹窗本体 */
+        .course-pop{
+            border: 1px solid var(--uai-blue-fade);           /* 几乎隐形的描边 */
+            box-shadow:
+                    0 6px 24px rgba(0,0,0,.06),                  /* 轻柔外阴影 */
+                    inset 0 0 0 1px rgba(255,255,255,.55);       /* 玻璃内高光 */
+        }
+
+        /* 尖角保持完全一致的色调 */
+        .course-pop::before{
+            background: rgba(255,255,255,.98);
+            border: 1px solid var(--uai-blue-fade);
+            border-right: none;
+            border-bottom: none;
+        }
+        @media (min-width:992px){
+            .card:hover .course-pop{
+                border-color: rgba(22,109,132,.10);   /* hover10% 不透明度 */
+                box-shadow:
+                        0 8px 28px rgba(0,0,0,.08),
+                        inset 0 0 0 1px rgba(255,255,255,.55);
+            }
+        }
+
+        /* 导航栏固定样式 */
+        .navbar {
+            min-height: 60px !important;   /* 可根据需求改为 64/80/96px */
+            padding-top: 11px;
+            padding-bottom: 12px;
+            /* 可选：让内容垂直居中 */
+            display: flex;
+            align-items: center;
+
+            transition: box-shadow 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 为固定导航栏添加内容偏移，防止内容被遮挡 */
+        body {
+            padding-top: 56px; /* 根据导航栏高度调整 */
+        }
+
+        /* 隐藏轮播图指示器中的数字 */
+        .carousel-indicators [data-bs-target] {
+            text-indent: -999px;
+            overflow: hidden;
+        }
+
+        /* 返回顶部按钮样式 */
+        #backToTop {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            border: 1px solid rgba(22, 109, 132, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        #backToTop:hover {
+            background-color: #166d84;
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(22, 109, 132, 0.3);
+        }
+
+        #backToTop:hover i {
+            color: #fff;
+        }
+
+        #backToTop i {
+            font-size: 24px;
+            color: #166d84;
+            transition: color 0.3s ease;
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* 移动设备上的样式调整 */
+        @media (max-width: 768px) {
+            #backToTop {
+                right: 20px;
+                bottom: 20px;
+                width: 45px;
+                height: 45px;
+            }
+
+            #backToTop i {
+                font-size: 20px;
+            }
+        }
+
+        /* 导航栏过渡动画 */
+        .navbar {
+            transition: transform 0.4s ease, box-shadow 0.3s ease;
+        }
+
+        .navbar.hide {
+            transform: translateY(-100%);
+        }
+
+        .navbar.show {
+            transform: translateY(0);
+        }
+    </style>
+    <!--    卡片大小-->
+    <style>
+        .card-scale{
+            transform:scale(0.92)
+        }
+
+        /* 教师头像等比例缩小样式 */
+        .card-glass img[src^="img/tou"] {
+            width: 78%; /* 缩小到原来的85% */
+            height: auto; /* 保持宽高比 */
+            object-fit: contain; /* 确保图片完整显示 */
+            margin: 0 auto; /* 水平居中 */
+            display: block; /* 使margin: 0 auto生效 */
+            padding: 10px 0; /* 增加上下内边距 */
+        }
+    </style>
+    <!--    按钮组位置-->
+    <style>
+        .btn-transform{
+            /*transform: translateX(52px);*/
+            margin-left: 52px;
+        }
+
+        /* 下拉菜单层级提高 */
+        .dropdown-menu {
+            z-index: 10000 !important; /* 确保比所有元素层级都高 */
+            position: absolute !important; /* 强制绝对定位 */
+            overflow: visible !important; /* 确保内容不被裁剪 */
+        }
+
+        /* 确保下拉菜单的父元素也有较高的z-index */
+        .btn-group {
+            position: relative;
+            z-index: 9999 !important;
+        }
+        /*按钮按下没变化*/
+        /* 按住鼠标时，按钮边框不变色 */
+        .btn-category:active,
+        .btn-category:focus {
+            border-color: #1E7F98 !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+        /*字体位置*/
+        .uai-title1{
+            font-size: 2rem; /* 32px */
+            font-weight: 700; /* 加粗 */
+            color: #000000; /* 商业黑 */
+            margin-bottom: 0.5rem;
+            margin-left: 160px;
+        }
+        .uai-title3{
+            font-size: 2rem; /* 32px */
+            font-weight: 700; /* 加粗 */
+            color: #000000; /* 商业黑 */
+            margin-bottom: 0.5rem;
+            margin-left: 50px;
+
+        }
+
+        .uai-subtitle3 {
+            font-size: 1.125rem; /* 18px */
+            color: #666666; /* 商业灰 */
+            line-height: 1.7;
+            font-weight: 400;
+            margin-left: 50px;
+        }
+
+
+
+    </style>
+    <!--    无边框按钮-->
+    <style>
+        .more-link {
+            color: #111;
+            font-size: 1.09rem;
+            font-weight: 500;
+            /*text-decoration: none;*/
+            background: none;
+            border: none;
+            outline: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+            transition: color 0.2s;
+            text-decoration: underline;
+            text-underline-offset: 4px;  /* 下划线距离文字4px，可根据需要调整 */
+
+
+        }
+        .more-link:hover {
+            color: #1E7F98;  /* 悬停变科技蓝 */
+            text-decoration: underline;
+            text-underline-offset: 4px;  /* 下划线距离文字4px，可根据需要调整 */
+        }
+        .arrow {
+            margin-left: 6px;
+            font-size: 1.3em;
+            font-family: inherit;
+        }
+
+    </style>
+    <!--    photoshop分支菜单-->
+    <style>
+        .dropdown-submenu {
+            position: relative;
+        }
+        .dropdown-submenu > .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: -45px;  /* 显著向上调整位置 */
+            left: 108px;
+            margin-top: 0;
+            /*margin-left: -10000px;  !* 大幅负值使子菜单明显贴近主菜单 *!*/
+            border-radius: 8px;
+            min-width: 120px;
+            z-index: 10001;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);  /* 增强阴影效果 */
+        }
+        /* 只在鼠标悬停时显示子菜单，离开时自动隐藏 */
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+        .dropdown-submenu > .dropdown-toggle::after {
+            content: "";
+            display: inline-block;
+            width: 0.5em;
+            height: 0.5em;
+            border-top: 2px solid #000;
+            border-right: 2px solid #000;
+            border-bottom: 0;
+            border-left: 0;
+            transform: rotate(45deg);
+            margin-left: 20px;
+            vertical-align: 0.1em;
+        }
+
+        /* 调整主下拉菜单位置 */
+        .btn-group .dropdown-menu {
+            margin-top: 38px;  /* 增加顶部间距 */
+            margin-left: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        /* photoshop分支菜单hover加强 */
+        .dropdown-submenu > .dropdown-toggle:hover,
+        .dropdown-submenu:hover > .dropdown-toggle {
+            background-color: #e3e9ef;
+            color: #166d84;
+            border-radius: 6px;
+        }
+
+    </style>
+
+
+
+</head>
+<body class="pl-1 pr-1">
+<!-- 返回顶部按钮 -->
+<div id="backToTop">
+    <i class="fas fa-chevron-up"></i>
+</div>
+<!-- 顶部导航开始 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top" id="mainNav">
+    <div class="container-fluid ps-0 ms-5">
+        <a class="navbar-brand" href="javascript:void(0);">
+            <img alt="" class="logo-img" src="img/logo4.png"/>
+        </a>
+
+        <!-- 小屏幕时显示在右侧的登录注册按钮 -->
+        <div class="d-flex d-lg-none ms-auto">
+            <a href="javascript:void(0);" class="btn btn-outline-dark btn-sm me-2">登录</a>
+            <a href="javascript:void(0);" class="btn btn-dark btn-sm">注册</a>
+        </div>
+
+        <!-- 折叠菜单按钮 -->
+        <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="javascript:void(0);">
+                        <span class="nav-underline">UAI学院</span>
+                        <span class="visually-hidden">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdown1"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="nav-underline">AIGC创意师</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="javascript:void(0);">AI+logo设计师</a>
+                        <a class="dropdown-item" href="javascript:void(0);">AI+包装师</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="javascript:void(0);">Something else here</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdown2"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="nav-underline">AI编程</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="javascript:void(0);">AI+logo设计师</a>
+                        <a class="dropdown-item" href="javascript:void(0);">AI+包装师</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="javascript:void(0);">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+            <!-- 右侧整体区域 -->
+            <div class="d-flex align-items-center right-group">
+                <form class="d-flex my-2 my-lg-0 me-2">
+                    <div class="position-relative" style="width: 450px; max-width:100%;">
+                        <input type="search" class="form-control search-input" placeholder="AI+logo设计师" aria-label="Search">
+                        <button type="submit" class="search-btn-inside">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+
+                    <!--                    <div class="input-group">-->
+                    <!--                        <input type="search" class="form-control" placeholder="AI+logo设计师" aria-label="Search" />-->
+                    <!--                        <button class="btn search-btn" type="submit">-->
+                    <!--                            <i class="fas fa-search"></i>-->
+                    <!--                        </button>-->
+                    <!--                    </div>-->
+                </form>
+                <!--购物车图标-->
+                <a href="javascript:void(0);" class="text-dark me-3">
+                    <i class="iconfont icon-gouwuche nav-cart-icon"></i>
+                </a>
+
+                <!-- 大屏幕显示的登录注册按钮 -->
+                <div class="ms-2 d-none d-lg-flex align-items-center">
+                    <button class="btn btn-outline-dark btn-login-fix me-2" type="button">登录</button>
+                    <button class="btn btn-dark btn-register" type="button">注册</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- 顶部导航结束 -->
+<!-- 轮播图开始 -->
+<section class="mt-0">
+    <div class="row g-0">
+        <div class="row">
+            <div class="col">
+                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></li>
+                        <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></li>
+                        <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img alt="..." class="d-block w-100" src="img/l01.jpg"/>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h4>黑悟空</h4>
+                                <p>来自虚幻引擎的创造</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img alt="..." class="d-block w-100" src="img/l02.jpg"/>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h4>AI创意设计师</h4>
+                                <p>智能设计触手可及</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img alt="..." class="d-block w-100" src="img/l03.jpg"/>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h4>PythonAI工程师</h4>
+                                <p>掌握AI未来核心技能</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 轮播图结束 -->
+
+<!--学院标题-->
+<section class="mt-3 py-0">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <!-- 标题区，可根据需要自行调整 -->
+                <h4 class="uai-title ">UAI学院</h4>
+                <p class="uai-subtitle ">学AI智能辅助设计，让工作更高效</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!--课程分类设置-->
+<section class="py-0">
+    <div class="container">
+        <!-- 父容器用 flex+wrap 布局 -->
+        <div class="d-flex flex-wrap justify-content-start btn-transform">
+            <!-- 单个"按钮组单元"用一个包裹容器固定宽度 -->
+            <!--            -->
+            <div class="btn-wrap">
+                <div class="btn-group w-100">
+                    <button class="btn btn-category">免费专区</button>
+                    <button class="btn btn-category dropdown-toggle dropdown-toggle-split"
+                            data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">photoshop</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">入门</a></li>
+                                <li><a class="dropdown-item" href="#">实战</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">illustrator</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">入门</a></li>
+                                <li><a class="dropdown-item" href="#">实战</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">midjourney</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">入门</a></li>
+                                <li><a class="dropdown-item" href="#">实战</a></li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--课程分类设置结束-->
+<!-- 卡片课程展示 -->
+<section class="mt-0">
+    <div class="container mt-0 ">
+        <div class="row justify-content-center card-scale">
+            <!-- 第一张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/u01.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">photoshop场景创意</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">入门</small>
+                            <small class="text-muted ms-2">390学员</small>
+                            <span class="float-end text-success">免费</span>
+                        </div>
+
+                        <!-- =========  信息卡开始  ========= -->
+                        <div class="course-pop">
+                            <h6 class="fw-bold mb-2">photoshop场景创意</h6>
+                            <span class="badge bg-info mb-2">热门课程</span>
+                            <p class="small text-muted">总共 45 小时 · 所有级别</p>
+                            <ul class="ps-3 small mb-3">
+                                <li>40 小时实战课程，涵盖必备语法</li>
+                                <li>掌握爬虫、Excel CSV、SQL 整合</li>
+                                <li>一步步晋升为 Python 达人！</li>
+                            </ul>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-tech-blue d-block">添加入购物车</a>
+                            <a href="javascript:void(0);" class="close-dialog" >关闭对话框</a>
+                        </div>
+                        <!-- =========  信息卡结束  ========= -->
+                    </div>
+                </a>
+            </div>
+            <!-- 第二张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/u02.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">从0-1 精通 illustrator</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">基础</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+
+                        <!-- =========  信息卡开始  ========= -->
+                        <div class="course-pop">
+                            <h6 class="font-weight-bold mb-2">从0-1 精通 illustrator</h6>
+                            <span class="badge badge-info mb-2">热门课程</span>
+                            <p class="small text-muted">总共 60 小时 · 基础级别</p>
+                            <ul class="pl-3 small mb-3">
+                                <li>完整的游戏开发流程讲解</li>
+                                <li>从策划到程序，从美术到音效</li>
+                                <li>实战项目带你入门游戏开发</li>
+                            </ul>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-tech-blue btn-block">添加入购物车</a>
+                            <a href="javascript:void(0);" class="close-dialog" >关闭对话框</a>
+                        </div>
+                        <!-- =========  信息卡结束  ========= -->
+                    </div>
+                </a>
+            </div>
+            <!-- 第三张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/u03.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">midjourney设计大师</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">入门</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+
+                        <!-- =========  信息卡开始  ========= -->
+                        <div class="course-pop">
+                            <h6 class="font-weight-bold mb-2">midjourney设计大师</h6>
+                            <span class="badge badge-info mb-2">进阶课程</span>
+                            <p class="small text-muted">总共 75 小时 · 进阶级别</p>
+                            <ul class="pl-3 small mb-3">
+                                <li>深入学习虚幻引擎核心功能</li>
+                                <li>掌握高级材质系统与蓝图脚本</li>
+                                <li>实现复杂游戏功能与机制</li>
+                            </ul>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-tech-blue btn-block">添加入购物车</a>
+                            <a href="javascript:void(0);" class="close-dialog" >关闭对话框</a>
+                        </div>
+                        <!-- =========  信息卡结束  ========= -->
+                    </div>
+                </a>
+            </div>
+            <!-- 第四张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/u04.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">logo创意与设计</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">基础</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+
+                        <!-- =========  信息卡开始  ========= -->
+                        <div class="course-pop">
+                            <h6 class="font-weight-bold mb-2">logo创意与设计</h6>
+                            <span class="badge badge-info mb-2">实战项目</span>
+                            <p class="small text-muted">总共 50 小时 · 实战级别</p>
+                            <ul class="pl-3 small mb-3">
+                                <li>从零开始构建坦克大战游戏</li>
+                                <li>实现物理系统、AI敌人、关卡设计</li>
+                                <li>学习游戏发布与优化技巧</li>
+                            </ul>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-tech-blue btn-block">添加入购物车</a>
+                            <a href="javascript:void(0);" class="close-dialog" >关闭对话框</a>
+                        </div>
+                        <!-- =========  信息卡结束  ========= -->
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- 修改"查看更多"链接的容器结构和样式 -->
+        <div class="row">
+            <div class="col-12">
+                <div style="position: relative; margin-top: -20px; margin-bottom: 30px;">
+                    <a href="#" class="more-link" style="margin-left: 55px; display: inline-block;">
+                        查看更多免费课程<span class="arrow">›</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 卡片课程展示结束 -->
+<!--块级别按钮-->
+
+
+<!-- 分割线 -->
+<hr class="section-divider"/>
+
+
+<!--vip专区-->
+
+<section class="py-0 mt-0">
+    <div class="container">
+        <!-- 父容器用 flex+wrap 布局 -->
+        <div class="d-flex flex-wrap justify-content-start btn-transform">
+            <!-- 单个"按钮组单元"用一个包裹容器固定宽度 -->
+            <!--            -->
+            <div class="btn-wrap">
+                <div class="btn-group w-100">
+                    <button class="btn btn-category">VIP专区</button>
+                    <button class="btn btn-category dropdown-toggle dropdown-toggle-split"
+                            data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">photoshop</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">进阶实战1</a></li>
+                                <li><a class="dropdown-item" href="#">进阶实战2</a></li>
+                                <li><a class="dropdown-item" href="#">进阶实战3</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">illustrator</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">进阶实战1</a></li>
+                                <li><a class="dropdown-item" href="#">进阶实战2</a></li>
+                                <li><a class="dropdown-item" href="#">进阶实战3</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">modjourney</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">进阶实战1</a></li>
+                                <li><a class="dropdown-item" href="#">进阶实战2</a></li>
+                                <li><a class="dropdown-item" href="#">进阶实战3</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--课程分类设置结束-->
+
+
+<!-- 卡片课程展示 -->
+<section class="mt-2 py-0">
+    <div class="container mt-0">
+        <div class="row card-scale justify-content-center">
+            <!-- 第一张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/py01.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">photoshop原画构思设计</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">进阶实战</small>
+                            <small class="text-muted ml-2">390学员</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第二张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/py02.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">illustrator插画设计</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">进阶实战</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第三张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/py03.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">midjourney风景制作</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">进阶实战</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第四张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/py04.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">LOGO大师设计</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">进阶实战</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div style="position: relative; margin-top: -20px; margin-bottom: 30px;">
+                    <a href="#" class="more-link" style="margin-left: 55px; display: inline-block;">
+                        查看更多VIP课程<span class="arrow">›</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 卡片课程展示结束 -->
+<!-- 分割线 -->
+<hr class="section-divider"/>
+<!--课程分类设置-->
+<!--项目实战按钮-->
+<section class="py-0">
+    <div class="container">
+        <!-- 父容器用 flex+wrap 布局 -->
+        <div class="d-flex flex-wrap justify-content-start btn-transform">
+            <!-- 单个"按钮组单元"用一个包裹容器固定宽度 -->
+            <!--            -->
+            <div class="btn-wrap">
+                <div class="btn-group w-100">
+                    <button class="btn btn-category">项目实战专区</button>
+                    <button class="btn btn-category dropdown-toggle dropdown-toggle-split"
+                            data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">photoshop</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">游戏道具设计</a></li>
+                                <li><a class="dropdown-item" href="#">UI原型设计</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">illustrator</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">插画创意</a></li>
+                                <li><a class="dropdown-item" href="#">极简设计</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">modjourney</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">AI摄影设计</a></li>
+                                <li><a class="dropdown-item" href="#">AI动画人物</a></li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mt-0 py-2">
+    <div class="container mt-0">
+        <div class="row card-scale justify-content-center">
+            <!-- 第一张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/ai01.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">PS游戏道具设计</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">入门</small>
+                            <small class="text-muted ml-2">390学员</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第二张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/ai02.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">保罗兰德的LOGO设计领悟</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">基础</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第三张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/ai03.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">AI动画片创意制作</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">进阶</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第四张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/ai04.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">精通游戏场景设计</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">实战</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- 修改"查看更多"链接的容器结构和样式 -->
+        <div class="row">
+            <div class="col-12">
+                <div style="position: relative; margin-top: -20px; margin-bottom: 30px;">
+                    <a href="#" class="more-link" style="margin-left: 55px; display: inline-block;">
+                        查看更多项目实战课程<span class="arrow">›</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 卡片课程展示结束 -->
+
+<!-- 分割线 -->
+<hr class="section-divider"/>
+<!--体系课标题-->
+<section class="mt-0 py-0">
+    <div class="container pt-3"> <!-- 在 container 上添加 pt-3 -->
+        <div class="row">
+            <div class="col">
+                <!-- 标题区，可根据需要自行调整 -->
+                <h4 class="uai-title3 ">深课训练体系专区</h4>
+                <p class="uai-subtitle3 ">全方位的训练课程服务</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!--体系课标题结束-->
+<!-- 卡片课程展示 -->
+<section class="mt-3 py-2">
+    <div class="container mt-0">
+        <div class="row card-scale justify-content-center">
+            <!-- 第一张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/u01.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">1V1高端课程</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">入门</small>
+                            <small class="text-muted ml-2">390学员</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第二张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/u02.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">1V1高端课程</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">基础</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第三张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/u03.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">1V1高端课程</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">进阶</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第四张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/u04.jpg"/>
+                        <div class="card-body">
+                            <p class="card-text">1V1高端课程</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">实战</small>
+                            <span class="float-right text-success">免费</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 卡片课程展示结束 -->
+<!--块级别按钮-->
+<section class="mt-2 py-2">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="col text-center">
+                    <button class="btn btn-outline-dark" type="button">查看更多深课体系课程<span
+                            style="margin-left: 6px; font-size: 1.3em;">›</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--块级别按钮结束-->
+<!-- 分割线 -->
+<hr class="section-divider2"/>
+<!--老师推荐-->
+<section class="mt-0 py-0">
+    <div class="container pt-3"> <!-- 在 container 上添加 pt-3 -->
+        <div class="row">
+            <div class="col">
+                <!-- 标题区，可根据需要自行调整 -->
+                <h4 class="uai-title text-center text-black-50">教师推荐</h4>
+                <!--                <p class="uai-subtitle text-center">个性化，全方位的训练课程服务</p>-->
+            </div>
+        </div>
+    </div>
+</section>
+<!--老师推荐结束-->
+<!--老师介绍-->
+<section class="mt-3 py-2">
+    <div class="container mt-0">
+        <div class="row card-scale justify-content-center">
+            <!-- 第一张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top " src="img/tou01.png"/>
+                        <div class="card-body ">
+                            <p class="card-text">小宅</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">设计达人</small>
+                            <!--                            <small class="text-muted ml-2">390学员</small>-->
+                            <span class="float-right text-success">经验丰富</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第二张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/tou02.png"/>
+                        <div class="card-body">
+                            <p class="card-text">小夏</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">绘画达人</small>
+                            <span class="float-right text-success">经验丰富</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第三张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/tou03.png"/>
+                        <div class="card-body">
+                            <p class="card-text">小柯</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">二次元</small>
+                            <span class="float-right text-success">推断精准</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 第四张卡片 -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <a class="card-link-no-underline" href="javascript:void(0);">
+                    <div class="card h-100 card-glass">
+                        <img alt="Card image cap" class="card-img-top" src="img/tou04.png"/>
+                        <div class="card-body">
+                            <p class="card-text">小朋</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">脑洞大开</small>
+                            <span class="float-right text-success">意识流</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!--老师介绍结束-->
+<!-- 页脚 -->
+<footer class="bg-dark text-light small">
+    <div class="container">
+        <div class="row pt-2 pb-3">
+            <div class="col-sm-12 col-md-10">
+                <div>
+                    <p class="mb-2 text-muted"> UAI学院是一家为就业者提供最新职场技术的在线交流平台。</p>
+                    <div class="text-muted">
+                        网站呈现内容之版权均归 小木偶（天津）文化科技有限公司所有 <a class="text-light ml-3 mr-3"
+                                                                                   href="https://beian.miit.gov.cn"
+                                                                                   id="unique-link"
+                                                                                   rel="noopener noreferrer"
+                                                                                   target="_blank">津ICP备2024023837号-1</a>
+                        <a class="text-light" href="https://beian.mps.gov.cn/#/query/webSearch?code=12011002024104"
+                           rel="noreferrer" target="_blank">
+                            <img alt="备案图标" class="mr-2 mb-1" height="16" src="img/beian.png" width="16"/>津公网安备12011002024104</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- JS 脚本 -->
+<!-- 移除 jQuery，使用 Bootstrap 5.3.6 的原生 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    /* 关闭按钮样式 */
+    .close-dialog {
+        display: inline-block;
+        padding: 8px 16px;
+        color: #666;
+        text-decoration: none;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .close-dialog:hover {
+        color: #333;
+        text-decoration: none;
+    }
+
+    /* 添加一个用于手动控制显示状态的类 */
+    .course-pop.force-hide {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transform: translateX(12px) scale(.96) !important;
+        pointer-events: none !important;
+    }
+
+    /* 小屏幕下的登录注册按钮样式 */
+    @media (max-width: 991.98px) {
+        .navbar-toggler {
+            border: none;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 14px;
+        }
+    }
+</style>
+
+<script>
+    // 当文档加载完成后执行
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取所有关闭对话框按钮
+        const closeButtons = document.querySelectorAll('.close-dialog');
+
+        // 为每个关闭按钮添加点击事件
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault(); // 阻止默认的链接行为
+                e.stopPropagation(); // 阻止事件冒泡
+
+                // 找到最近的 course-pop 元素并添加强制隐藏类
+                const coursePop = this.closest('.course-pop');
+                if (coursePop) {
+                    coursePop.classList.add('force-hide');
+
+                    // 300ms后移除强制隐藏类，这样下次hover时可以再次显示
+                    setTimeout(() => {
+                        coursePop.classList.remove('force-hide');
+                    }, 300);
+                }
+            });
+        });
+
+        // 获取所需的DOM元素
+        const navbar = document.getElementById('mainNav');
+        const carousel = document.querySelector('.carousel'); // 获取轮播图元素
+        const backToTop = document.getElementById('backToTop'); // 获取返回顶部按钮
+        const pageHeight = Math.max(
+            document.body.scrollHeight,
+            document.body.offsetHeight,
+            document.documentElement.clientHeight,
+            document.documentElement.scrollHeight,
+            document.documentElement.offsetHeight
+        ); // 获取页面总高度
+
+        let lastScrollY = 0; // 记录上次滚动位置
+
+        // 统一的滚动事件处理
+        window.addEventListener('scroll', function() {
+            const currentScrollY = window.scrollY;
+
+            // 任务1: 导航栏消失效果 - 当刚好看不到轮播图时
+            if (carousel) {
+                const carouselHeight = carousel.offsetHeight;
+
+                // 如果滚动位置恰好超过轮播图高度一点点（+10px缓冲区），且正在向下滚动
+                if (currentScrollY > carouselHeight + 10 && currentScrollY > lastScrollY) {
+                    navbar.classList.add('hide');
+                    navbar.classList.remove('show', 'scrolled');
+                } else {
+                    navbar.classList.remove('hide');
+                    navbar.classList.add('show');
+
+                    // 保持原有的阴影效果逻辑
+                    if (currentScrollY > 0) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                }
+            }
+
+            // 任务2: 返回顶部按钮 - 当滚动超过页面高度的2/3时显示
+            const twoThirdsHeight = pageHeight * 2/3;
+            if (currentScrollY > twoThirdsHeight) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+
+            lastScrollY = currentScrollY; // 更新上次滚动位置
+        });
+
+        // 为返回顶部按钮添加点击事件
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // 平滑滚动到顶部
+            });
+        });
+
+        // 为所有子菜单添加鼠标离开事件
+        const submenus = document.querySelectorAll('.dropdown-submenu');
+
+        submenus.forEach(submenu => {
+            // 当鼠标离开子菜单时
+            submenu.addEventListener('mouseleave', function() {
+                // 找到子菜单下的dropdown-menu并隐藏
+                const dropdownMenu = this.querySelector('.dropdown-menu');
+                if (dropdownMenu) {
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+
+            // 当鼠标进入子菜单时
+            submenu.addEventListener('mouseenter', function() {
+                // 找到子菜单下的dropdown-menu并显示
+                const dropdownMenu = this.querySelector('.dropdown-menu');
+                if (dropdownMenu) {
+                    dropdownMenu.style.display = 'block';
+                }
+            });
+        });
+
+        // 为主下拉菜单添加鼠标离开事件
+        const btnGroups = document.querySelectorAll('.btn-group');
+
+        btnGroups.forEach(btnGroup => {
+            // 获取该按钮组内的下拉菜单
+            const dropdownMenu = btnGroup.querySelector('.dropdown-menu');
+
+            if (dropdownMenu) {
+                // 当鼠标离开按钮组时
+                btnGroup.addEventListener('mouseleave', function(e) {
+                    // 隐藏主下拉菜单
+                    dropdownMenu.style.display = 'none';
+
+                    // 同时隐藏所有子菜单
+                    const submenus = dropdownMenu.querySelectorAll('.dropdown-submenu .dropdown-menu');
+                    submenus.forEach(submenu => {
+                        submenu.style.display = 'none';
+                    });
+
+                    // 重置展开状态
+                    const toggleButton = this.querySelector('.dropdown-toggle-split');
+                    if (toggleButton) {
+                        toggleButton.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                // 当鼠标进入按钮组时
+                btnGroup.addEventListener('mouseenter', function() {
+                    // 显示主下拉菜单
+                    dropdownMenu.style.display = 'block';
+
+                    // 设置展开状态
+                    const toggleButton = this.querySelector('.dropdown-toggle-split');
+                    if (toggleButton) {
+                        toggleButton.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

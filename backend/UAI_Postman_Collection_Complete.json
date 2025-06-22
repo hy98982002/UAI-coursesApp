@@ -1,0 +1,524 @@
+{
+  "info": {
+    "name": "UAI Education Platform - Complete API Tests",
+    "description": "完整的UAI教育平台API测试集合，包含认证、用户管理等所有接口",
+    "version": "1.0.0"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// 自动设置Authorization头",
+          "if (pm.collectionVariables.get('access_token')) {",
+          "    pm.request.headers.add({",
+          "        key: 'Authorization',",
+          "        value: 'Bearer ' + pm.collectionVariables.get('access_token')",
+          "    });",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "test_phone",
+      "value": "18512292333",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. 用户认证流程",
+      "item": [
+        {
+          "name": "发送注册验证码",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone\": \"{{test_phone}}\",\n    \"code_type\": \"register\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/auth/send-sms/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "auth", "send-sms", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('发送验证码成功', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.status).to.eql(200);",
+                  "    pm.expect(response.msg).to.include('验证码发送成功');",
+                  "});",
+                  "",
+                  "// 提示用户输入验证码",
+                  "console.log('请查看控制台输出或日志文件获取验证码，然后在下一个请求中使用');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "短信验证码注册",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone\": \"{{test_phone}}\",\n    \"sms_code\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/auth/sms-register/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "auth", "sms-register", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('注册成功', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.status).to.eql(201);",
+                  "    pm.expect(response.data.tokens).to.be.an('object');",
+                  "    ",
+                  "    // 保存Token到环境变量",
+                  "    pm.collectionVariables.set('access_token', response.data.tokens.access);",
+                  "    pm.collectionVariables.set('refresh_token', response.data.tokens.refresh);",
+                  "    ",
+                  "    console.log('Access Token:', response.data.tokens.access);",
+                  "    console.log('Refresh Token:', response.data.tokens.refresh);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "发送登录验证码",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone\": \"{{test_phone}}\",\n    \"code_type\": \"login\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/auth/send-sms/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "auth", "send-sms", ""]
+            }
+          }
+        },
+        {
+          "name": "短信验证码登录",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone\": \"{{test_phone}}\",\n    \"sms_code\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/auth/sms-login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "auth", "sms-login", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('登录成功', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.status).to.eql(200);",
+                  "    pm.expect(response.data.tokens).to.be.an('object');",
+                  "    ",
+                  "    // 保存Token到环境变量",
+                  "    pm.collectionVariables.set('access_token', response.data.tokens.access);",
+                  "    pm.collectionVariables.set('refresh_token', response.data.tokens.refresh);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. 用户信息管理",
+      "item": [
+        {
+          "name": "获取用户信息",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/user/profile/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "user", "profile", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('获取用户信息成功', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.status).to.eql(200);",
+                  "    pm.expect(response.data).to.be.an('object');",
+                  "    pm.expect(response.data.phone).to.eql(pm.collectionVariables.get('test_phone'));",
+                  "    ",
+                  "    console.log('用户信息:', JSON.stringify(response.data, null, 2));",
+                  "    console.log('是否已设置密码:', response.data.has_password);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "首次设置密码",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"new_password\": \"Test123456\",\n    \"confirm_password\": \"Test123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/user/change_password/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "user", "change_password", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('首次设置密码成功', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.status).to.eql(200);",
+                  "    pm.expect(response.msg).to.include('密码设置成功');",
+                  "    pm.expect(response.data.tokens).to.be.an('object');",
+                  "    ",
+                  "    // 更新Token",
+                  "    pm.collectionVariables.set('access_token', response.data.tokens.access);",
+                  "    pm.collectionVariables.set('refresh_token', response.data.tokens.refresh);",
+                  "    ",
+                  "    console.log('密码设置成功，新Token已保存');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "修改密码",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"old_password\": \"Test123456\",\n    \"new_password\": \"NewTest123456\",\n    \"confirm_password\": \"NewTest123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/user/change_password/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "user", "change_password", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('修改密码成功', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.status).to.eql(200);",
+                  "    pm.expect(response.msg).to.include('密码修改成功');",
+                  "    pm.expect(response.data.tokens).to.be.an('object');",
+                  "    ",
+                  "    // 更新Token",
+                  "    pm.collectionVariables.set('access_token', response.data.tokens.access);",
+                  "    pm.collectionVariables.set('refresh_token', response.data.tokens.refresh);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "更新用户基本信息",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nickname\": \"测试用户\",\n    \"email\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/user/update_profile/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "user", "update_profile", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Token管理",
+      "item": [
+        {
+          "name": "刷新Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/auth/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "auth", "refresh", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('刷新Token成功', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.access).to.be.a('string');",
+                  "    ",
+                  "    // 更新access token",
+                  "    pm.collectionVariables.set('access_token', response.access);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "用户登出",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/auth/logout/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "auth", "logout", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('登出成功', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.status).to.eql(200);",
+                  "    ",
+                  "    // 清除Token",
+                  "    pm.collectionVariables.set('access_token', '');",
+                  "    pm.collectionVariables.set('refresh_token', '');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. 错误场景测试",
+      "item": [
+        {
+          "name": "无效验证码测试",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone\": \"{{test_phone}}\",\n    \"sms_code\": \"000000\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/auth/sms-login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "auth", "sms-login", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('无效验证码应该被拒绝', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.status).to.eql(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "未认证访问保护接口",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/user/profile/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "user", "profile", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('未认证访问应该被拒绝', function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+} 

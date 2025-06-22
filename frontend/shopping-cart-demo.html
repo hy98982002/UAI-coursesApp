@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>购物车页面 - Vue组件转换演示</title>
+    <style>
+        body {
+            font-family: "Alibaba PuHuiTi", "Microsoft YaHei", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        .demo-title {
+            color: #1E7F98;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .component-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: #fafafa;
+        }
+        .component-title {
+            color: #166d84;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #1E7F98;
+            padding-bottom: 5px;
+        }
+        .file-path {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-list li:before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .tech-stack {
+            background: linear-gradient(135deg, #1E7F98 0%, #166d84 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .tech-stack h3 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+        .tech-item {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            margin: 4px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .route-info {
+            background: #e8f5e8;
+            border: 1px solid #28a745;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .route-info strong {
+            color: #155724;
+        }
+        .component-tree {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .folder { color: #007bff; font-weight: bold; }
+        .file { color: #28a745; }
+        .comment { color: #6c757d; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="demo-title">🛒 购物车页面 Vue 组件转换完成</h1>
+        
+        <div class="tech-stack">
+            <h3>🚀 技术栈</h3>
+            <span class="tech-item">Vue 3 Composition API</span>
+            <span class="tech-item">TypeScript</span>
+            <span class="tech-item">Bootstrap 5.3.6</span>
+            <span class="tech-item">Vite</span>
+            <span class="tech-item">响应式设计</span>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">📁 组件结构</h2>
+            <div class="component-tree">
+<span class="folder">src/</span>
+├── <span class="folder">views/</span>
+│   └── <span class="file">ShoppingCart.vue</span>     <span class="comment"># 购物车主页面</span>
+├── <span class="folder">components/</span>
+│   ├── <span class="file">AuthNavbar.vue</span>      <span class="comment"># 复用登录后导航栏</span>
+│   └── <span class="folder">cart/</span>
+│       ├── <span class="file">CartItem.vue</span>       <span class="comment"># 单个商品项</span>
+│       ├── <span class="file">CartSummary.vue</span>    <span class="comment"># 结算汇总</span>
+│       ├── <span class="file">EmptyCart.vue</span>      <span class="comment"># 空购物车提示</span>
+│       └── <span class="file">RecommendSection.vue</span> <span class="comment"># 推荐课程</span>
+└── <span class="folder">types/</span>
+    └── <span class="file">cart.ts</span>             <span class="comment"># 购物车类型定义</span>
+            </div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">🏠 主页面组件</h2>
+            <div class="file-path">frontend/src/views/ShoppingCart.vue</div>
+            <ul class="feature-list">
+                <li>复用 AuthNavbar.vue 登录后导航栏（如您要求）</li>
+                <li>整合所有子组件，实现完整购物车功能</li>
+                <li>响应式数据管理（商品选择、数量、价格计算）</li>
+                <li>全选/反选功能</li>
+                <li>购物车为空时显示 EmptyCart 组件</li>
+                <li>推荐课程部分，支持鼠标悬停弹出详情</li>
+            </ul>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">🛍️ 购物车商品项</h2>
+            <div class="file-path">frontend/src/components/cart/CartItem.vue</div>
+            <ul class="feature-list">
+                <li>课程信息展示（图片、标题、讲师、评分）</li>
+                <li>价格显示（当前价格 + 原价对比）</li>
+                <li>选择框绑定 v-model</li>
+                <li>收藏和删除操作按钮</li>
+                <li>星级评分动态渲染</li>
+                <li>课程标签（热门课程等）</li>
+            </ul>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">💰 结算汇总组件</h2>
+            <div class="file-path">frontend/src/components/cart/CartSummary.vue</div>
+            <ul class="feature-list">
+                <li>小计金额自动计算</li>
+                <li>优惠券选择按钮</li>
+                <li>最终合计金额展示</li>
+                <li>结算按钮（选中商品为空时禁用）</li>
+                <li>价格变化动画效果</li>
+            </ul>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">📝 TypeScript 类型定义</h2>
+            <div class="file-path">frontend/src/types/cart.ts</div>
+            <ul class="feature-list">
+                <li>CartItem 接口：商品数据结构</li>
+                <li>CartSummary 接口：结算汇总数据</li>
+                <li>RecommendCourse 接口：推荐课程数据</li>
+                <li>完整的类型安全保证</li>
+            </ul>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">🎨 核心功能实现</h2>
+            <ul class="feature-list">
+                <li><strong>数量控制：</strong>通过 Vue 响应式数据实现增减</li>
+                <li><strong>价格计算：</strong>使用 computed 属性自动计算总价</li>
+                <li><strong>全选功能：</strong>v-model 双向绑定实现全选/反选</li>
+                <li><strong>删除商品：</strong>splice() 方法从数组中移除</li>
+                <li><strong>空购物车：</strong>v-if 条件渲染空状态提示</li>
+                <li><strong>事件处理：</strong>@click 绑定各种交互操作</li>
+                <li><strong>数据验证：</strong>结算前检查是否选中商品</li>
+            </ul>
+        </div>
+
+        <div class="route-info">
+            <strong>🌐 路由配置：</strong> 已添加到 <code>frontend/src/router/index.ts</code><br>
+            <strong>访问路径：</strong> <code>/cart</code><br>
+            <strong>组件名称：</strong> <code>ShoppingCart</code>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">✅ 转换完成状态</h2>
+            <ul class="feature-list">
+                <li>所有 HTML 结构已转换为 Vue 模板语法</li>
+                <li>原始 Bootstrap 样式完全保留</li>
+                <li>交互逻辑使用 Composition API 重写</li>
+                <li>事件绑定从 onclick 改为 @click</li>
+                <li>数据使用 ref() 和 computed() 响应式管理</li>
+                <li>组件化拆分提高可维护性</li>
+                <li>TypeScript 支持完整类型检查</li>
+                <li>项目构建测试通过 ✓</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #e8f5e8; border-radius: 8px;">
+            <h3 style="margin: 0; color: #155724;">🎉 购物车页面转换完成！</h3>
+            <p style="margin: 10px 0 0 0; color: #155724;">
+                已成功复用 <strong>AuthNavbar.vue</strong> 组件作为导航栏，符合您的要求！
+            </p>
+        </div>
+    </div>
+</body>
+</html> 

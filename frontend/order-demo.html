@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单支付页面 - Vue组件转换演示</title>
+    <style>
+        body {
+            font-family: "Alibaba PuHuiTi", "Microsoft YaHei", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        .demo-title {
+            color: #166d84;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .component-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: #fafafa;
+        }
+        .component-title {
+            color: #166d84;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #166d84;
+            padding-bottom: 5px;
+        }
+        .file-path {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-list li:before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .tech-stack {
+            background: linear-gradient(135deg, #166d84 0%, #1e7f98 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .tech-stack h3 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+        .tech-item {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            margin: 4px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .route-info {
+            background: #e8f5e8;
+            border: 1px solid #28a745;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .route-info strong {
+            color: #155724;
+        }
+        .component-tree {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .folder { color: #007bff; font-weight: bold; }
+        .file { color: #28a745; }
+        .comment { color: #6c757d; font-style: italic; }
+        .highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .api-example {
+            background: #e7f3ff;
+            border: 1px solid #bee5eb;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="demo-title">💳 订单支付页面 Vue 组件转换完成</h1>
+        
+        <div class="tech-stack">
+            <h3>🚀 技术栈</h3>
+            <span class="tech-item">Vue 3 Composition API</span>
+            <span class="tech-item">TypeScript</span>
+            <span class="tech-item">Bootstrap 5.3.6</span>
+            <span class="tech-item">响应式数据</span>
+            <span class="tech-item">Glassmorphism 设计</span>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">📁 组件架构</h2>
+            <div class="component-tree">
+<span class="folder">src/</span>
+├── <span class="folder">views/</span>
+│   └── <span class="file">Order.vue</span>              <span class="comment"># 订单支付主页面</span>
+├── <span class="folder">components/order/</span>
+│   ├── <span class="file">OrderInfo.vue</span>          <span class="comment"># 订单信息 + 折叠功能</span>
+│   ├── <span class="file">OrderItem.vue</span>          <span class="comment"># 单个商品展示</span>
+│   ├── <span class="file">PaymentMethod.vue</span>      <span class="comment"># 支付方式选择</span>
+│   ├── <span class="file">CountdownTimer.vue</span>     <span class="comment"># 支付倒计时</span>
+│   └── <span class="file">OrderFooter.vue</span>        <span class="comment"># 页脚信息</span>
+└── <span class="folder">types/</span>
+    └── <span class="file">order.ts</span>              <span class="comment"># 订单类型定义</span>
+            </div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">🏠 主页面组件</h2>
+            <div class="file-path">frontend/src/views/Order.vue</div>
+            <ul class="feature-list">
+                <li>整合所有子组件，实现完整订单支付流程</li>
+                <li>Glassmorphism 设计风格，保持视觉一致性</li>
+                <li>响应式数据管理，支持实时状态更新</li>
+                <li>支付方式切换和订单详情折叠功能</li>
+                <li>倒计时功能自动处理支付过期状态</li>
+            </ul>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">📋 订单信息组件</h2>
+            <div class="file-path">frontend/src/components/order/OrderInfo.vue</div>
+            <ul class="feature-list">
+                <li>订单号显示（使用等宽字体）</li>
+                <li>收起/展开按钮控制详情显示</li>
+                <li>平滑动画过渡效果</li>
+                <li>响应式事件通信（@toggle-details）</li>
+                <li>集成 OrderItem 商品展示组件</li>
+            </ul>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">🛍️ 商品展示组件</h2>
+            <div class="file-path">frontend/src/components/order/OrderItem.vue</div>
+            <ul class="feature-list">
+                <li>商品图片 + Glassmorphism 遮罩效果</li>
+                <li>商品名称和价格信息展示</li>
+                <li>响应式布局适配（移动端/桌面端）</li>
+                <li>实付金额格式化显示</li>
+            </ul>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">💰 支付方式组件</h2>
+            <div class="file-path">frontend/src/components/order/PaymentMethod.vue</div>
+            <ul class="feature-list">
+                <li>支付宝 + 微信支付选项</li>
+                <li>动态图标渲染（PNG 图片 + SVG）</li>
+                <li>交互式选择状态（active 样式）</li>
+                <li>鼠标悬停效果</li>
+                <li>事件通信（@select-payment）</li>
+            </ul>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">⏰ 倒计时组件</h2>
+            <div class="file-path">frontend/src/components/order/CountdownTimer.vue</div>
+            <div class="highlight">
+                <strong>核心功能：</strong>实时倒计时 + 支付按钮状态管理
+            </div>
+            <ul class="feature-list">
+                <li>自动倒计时（分:秒 格式）</li>
+                <li>过期自动禁用支付按钮</li>
+                <li>setInterval 生命周期管理</li>
+                <li>支付金额实时显示</li>
+                <li>支付事件处理（@payment）</li>
+                <li>过期状态通知（@expired）</li>
+            </ul>
+            
+            <div class="api-example">
+<strong>倒计时实现逻辑：</strong>
+const startCountdown = () => {
+  timer = setInterval(() => {
+    if (seconds.value > 0) {
+      seconds.value--
+    } else {
+      isExpired.value = true
+      clearInterval(timer)
+    }
+  }, 1000)
+}
+            </div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">📝 TypeScript 类型系统</h2>
+            <div class="file-path">frontend/src/types/order.ts</div>
+            <ul class="feature-list">
+                <li>OrderInfo 接口：订单基础信息</li>
+                <li>PaymentMethod 接口：支付方式数据</li>
+                <li>CountdownTimer 接口：倒计时状态</li>
+                <li>OrderData 接口：完整订单数据结构</li>
+                <li>完整的类型安全保证</li>
+            </ul>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">🎯 核心功能实现</h2>
+            <ul class="feature-list">
+                <li><strong>订单折叠：</strong>v-show 条件渲染 + CSS 动画过渡</li>
+                <li><strong>支付选择：</strong>响应式数据更新 + 视觉反馈</li>
+                <li><strong>倒计时逻辑：</strong>setInterval + onMounted/onUnmounted 生命周期</li>
+                <li><strong>支付处理：</strong>表单验证 + API 调用准备</li>
+                <li><strong>状态管理：</strong>ref() 响应式数据 + computed 计算属性</li>
+                <li><strong>事件通信：</strong>父子组件 props/emit 通信</li>
+                <li><strong>样式保留：</strong>100% 保留原始 Glassmorphism 设计</li>
+            </ul>
+        </div>
+
+        <div class="route-info">
+            <strong>🌐 路由配置：</strong> 已添加到 <code>frontend/src/router/index.ts</code><br>
+            <strong>访问路径：</strong> <code>/order</code> 或 <code>/order/:id</code><br>
+            <strong>组件名称：</strong> <code>Order</code>
+        </div>
+
+        <div class="component-section">
+            <h2 class="component-title">✅ 转换完成状态</h2>
+            <ul class="feature-list">
+                <li>所有 HTML 结构转换为 Vue 模板语法</li>
+                <li>原始 Glassmorphism + Bootstrap 样式完全保留</li>
+                <li>JavaScript 逻辑使用 Composition API 重写</li>
+                <li>所有交互用 @click 和响应式数据实现</li>
+                <li>倒计时用 Vue 生命周期钩子管理</li>
+                <li>组件化拆分提高可维护性</li>
+                <li>TypeScript 类型系统完整覆盖</li>
+                <li>项目构建测试通过 ✓</li>
+            </ul>
+        </div>
+
+        <div class="highlight">
+            <h3>📋 按转换文档要求完成的功能：</h3>
+            <ul class="feature-list">
+                <li>✅ 折叠功能：showDetails ref + toggleDetails 方法</li>
+                <li>✅ 倒计时逻辑：onMounted + setInterval + computed 格式化</li>
+                <li>✅ 支付方式选择：v-for 循环 + 动态 :class 绑定</li>
+                <li>✅ 响应式数据：orderId、price、selectedMethod、countdown</li>
+                <li>✅ 事件绑定：所有 onclick 改为 @click</li>
+                <li>✅ Vue 项目结构：.vue 文件 + TypeScript + Bootstrap</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #e8f5e8; border-radius: 8px;">
+            <h3 style="margin: 0; color: #155724;">🎉 订单支付页面转换完成！</h3>
+            <p style="margin: 10px 0 0 0; color: #155724;">
+                所有功能按照 <strong>转换文档要求</strong> 完整实现，支持完整的订单支付流程！
+            </p>
+        </div>
+    </div>
+</body>
+</html> 

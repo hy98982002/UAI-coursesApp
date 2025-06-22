@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:margin-top="http://www.w3.org/1999/xhtml">
+<head>
+    <title>页面标题</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <!-- Bootstrap 5.3.6 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- 图标 -->
+    <!-- 在 <head> 中引入 Font Awesome 5 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- 阿里图标 -->
+    <link rel="stylesheet" href="font/iconfont.css">
+
+
+    <!-- 导航栏样式 -->
+    <style>
+        /* 通用导航文字 */
+        .nav-link {
+            font-size: 18px;
+            color: #000000 !important;
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+
+
+        /* 下拉菜单箭头 */
+        .dropdown-toggle::after {
+            border: none;
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-bottom: 2px solid black; /* 箭头下边 */
+            border-right: 2px solid black; /* 箭头右边 */
+            transform: rotate(45deg); /* 默认向下 */
+            margin-left: 6px;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-toggle[aria-expanded="true"]::after {
+            transform: rotate(-135deg); /* 向上 */
+        }
+
+        /* 下划线动画（仅作用于文字） */
+        .nav-underline {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-underline::before {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: 0;
+            width: 100%;
+            height: 1.5px;
+            background-color: #000;
+            transform: scaleX(0);
+            transform-origin: bottom center;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover .nav-underline::before,
+        .nav-link[aria-expanded="true"] .nav-underline::before {
+            transform: scaleX(1);
+        }
+
+        /* 导航项及 Logo 布局 */
+        .nav-item {
+            margin-left: 20px; /* 导航项间隔 */
+        }
+
+        .navbar-brand {
+            margin-right: 0;
+            margin-left: 16px; /* 向右移动 Logo */
+        }
+
+        /* 右侧区域整体布局 */
+        .right-group {
+            margin-right: 120px !important;
+        }
+
+        /* 移动端导航样式 */
+        @media (max-width: 991.98px) {
+            .right-group {
+                margin-right: 0 !important;
+                flex-wrap: wrap;
+            }
+
+            /* 搜索框移动端样式 */
+            .form-control[type="search"] {
+                width: 100% !important;
+                transform: none;
+                margin-bottom: 10px;
+            }
+
+            /* 移动端图标组样式 */
+            .nav-icons-mobile {
+                border-top: 1px solid rgba(0,0,0,0.1);
+                margin-top: 10px;
+                padding: 10px 0;
+            }
+
+            .nav-icons-mobile a {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-decoration: none;
+            }
+
+            .nav-icons-mobile i {
+                font-size: 20px;
+                margin-bottom: 4px;
+            }
+
+            .nav-icons-mobile .small {
+                font-size: 12px;
+                color: #666;
+            }
+
+            .avatar-sm-mobile {
+                width: 24px;
+                height: 24px;
+                margin-bottom: 4px;
+            }
+
+            /* 红点样式调整 */
+            .nav-icons-mobile .badge-dot {
+                right: -2px;
+                top: -2px;
+            }
+        }
+
+        /* 搜索框 */
+        .form-control[type="search"] {
+            border: 1.5px solid #1E7F98 !important; /* 科技蓝边框 */
+            width: 450px !important; /* 搜索框宽度 */
+            border-radius: 20px !important; /* 圆角 */
+            transform: translateX(-50px); /* 向右偏移 */
+        }
+
+        /* 搜索框放大镜 */
+        .search-btn {
+            border: none;
+            background: none;
+            padding: 8px;
+            margin-left: -87px; /* 推进到输入框内部 */
+            z-index: 10;
+            position: relative;
+            color: #f0690e; /* 橙色图标 */
+        }
+
+        .search-btn:hover,
+        .search-btn:focus {
+            outline: none;
+            background-color: transparent;
+        }
+
+        /* 购物车图标 */
+        .nav-cart-icon {
+            font-size: 22px;
+            color: #000;
+            margin-right: -2px;
+        }
+
+        /*新增导航栏元素*/
+        /* 小头像 */
+        .avatar-sm{width:34px;height:34px;object-fit:cover;border:2px solid #fff;box-shadow:0 0 0 1px #e5e5e5;border-radius:50%;}
+
+        /* 红点提醒 */
+        .badge-dot{
+            position:absolute;top:-2px;right:-2px;
+            width:8px;height:8px;
+            background:#f0490e;border-radius:50%;
+        }
+
+        /* 下拉菜单定制 */
+        .user-dropdown{
+            border-radius:10px;
+            padding:.5rem 0;
+        }
+        .user-dropdown .dropdown-item{
+            font-size:14px;color:#5f6368;
+        }
+        .user-dropdown .dropdown-item:hover{
+            background:rgba(30,127,152,.07);color:#000;
+        }
+        .user-dropdown .badge{font-size:11px;padding:.2em .45em;}
+
+        /*新增导航栏元素结束*/
+
+        /*购买时出现的导航栏*/
+        /* Sticky Bar 默认隐藏，上滑后加 .show 显示 */
+        .sticky-bar{
+            position:fixed;top:0;left:0;right:0;z-index:1030;
+            transform:translateY(-100%);transition:.3s;
+        }
+        .sticky-bar.show{transform:translateY(0);}
+        .sticky-tabs .nav-link{
+            font-size:16px;color:#000;padding:.25rem .8rem;
+        }
+        .sticky-tabs .nav-link.active,
+        .sticky-tabs .nav-link:hover{
+            color:#1E7F98;
+        }
+        .btn-cta-buy{
+            background:#FF6900;color:#fff;border-radius:20px;padding:.4rem 1.6rem;
+        }
+        .btn-cta-buy:hover{background:#e65d00;color:#fff;}
+        .btn-cta-cart{
+            background:transparent;border:1.5px solid #1E7F98;
+            color:#000;border-radius:20px;padding:.38rem 1.4rem;
+        }
+        .btn-cta-cart:hover{background:rgba(30,127,152,.08);}
+        body{scroll-padding-top:56px;} /* 避免锚点被遮挡 */
+
+        /*购买时出现的导航栏结束*/
+
+        /* 按钮样式 */
+        .btn-outline-dark {
+            color: #000000 !important; /* 登录文字变为纯黑 */
+            /*border-color: #1E7F98 !important;*/
+            border: 1px solid #000000 !important;  /* 黑色边框 */
+            border-radius: 8px;
+        }
+
+        .btn-outline-dark:hover {
+            background-color: #000000 !important;
+            color: white !important;
+
+        }
+
+        .btn-outline-dark:focus {
+            box-shadow: none !important;
+        }
+
+        .btn-dark.btn-register {
+            width: 89px;
+            font-size: 17px;
+            background-color: #000000 !important;
+            border-color: #000000 !important;
+        }
+
+        .btn-dark.btn-register:hover {
+            background-color: #505050 !important;
+            border-color: #505050 !important;
+        }
+
+        .btn-dark.btn-register:focus {
+            box-shadow: none !important;
+        }
+
+        /* Logo 图片 */
+        .logo-img {
+            height: 26px;
+            width: auto;
+            display: block;
+            margin-top: -6px;
+            filter: brightness(1.11);
+        }
+    </style>
+
+    <!-- 面包屑导航样式 -->
+    <style>
+        /* 面包屑导航样式 */
+        .breadcrumb {
+            margin-top: 0.5rem;
+            margin-left: -1rem;
+            font-size: 16px;
+            color: #888 !important;
+        }
+
+        .breadcrumb a {
+            color: #888 !important;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+    </style>
+
+    <!-- 课程详情页样式 -->
+    <style>
+        /* ===== 1. 颜色变量定义 ===== */
+        :root {
+            --uai-tech-blue: #1E7F98;    /* 科技蓝 */
+            --uai-light-blue: #BDECFD;   /* 浅蓝色 */
+            --uai-hover-blue: rgba(35, 192, 247, 0.3);  /* 悬停蓝 */
+            --uai-bg-gray: #F2F7F7;      /* 背景灰 */
+            --uai-border-gray: rgba(222, 222, 222, 0.9); /* 边框灰 */
+        }
+        .btn-tech-blue {
+            background: none;
+            border: 1px solid #1E7F98;
+            color: #1E7F98; /* 设置科技蓝文字颜色 */
+            transition: all 0.3s ease;
+        }
+        .btn-tech-blue:hover {
+            background-color: #0069d9;
+            color: white;
+            border: 1px solid #0069d9;
+            box-shadow: none !important; /* 去掉那圈光晕 */
+        }
+        .btn-tech-blue:focus {
+            box-shadow: none !important; /* 去掉那圈光晕 */
+            border: 1px solid #0069d9;
+        }
+
+
+        /* ===== 2. 页面基础样式 ===== */
+        body {
+            font-family: "Alibaba PuHuiTi", "思源黑体", sans-serif;
+            background-color: var(--uai-bg-gray);
+            color: #111111;
+        }
+
+        /* ===== 3. 课程信息卡片样式 ===== */
+        /* 课程封面卡片 */
+        .course-hero {
+            border: 1px solid var(--uai-border-gray);
+            border-radius: 10px;
+        }
+
+        .course-hero-img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* 课程状态标签 */
+        .course-hero .badge-free {
+            background: var(--uai-light-blue);
+        }
+
+        /* ===== 4. 选项卡导航样式 ===== */
+        /* Tab 容器样式 */
+        .nav-tabs {
+            border: 1.5px solid var(--uai-tech-blue);
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #ffffff;
+            display: inline-flex;
+            margin-bottom: 20px;
+            padding: 0 !important;
+            font-size: 0; /* 消除按钮间隙 */
+        }
+
+        /* Tab 项样式 */
+        .nav-tabs .nav-item {
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: 18px;
+        }
+
+        /* Tab 链接样式 */
+        .nav-tabs .nav-item .nav-link {
+            border: none !important;
+            border-radius: 0;
+            color: var(--uai-tech-blue) !important;
+            padding: 8px 20px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-width: 0;
+            background-color: transparent !important;
+            margin: 0 !important;
+            display: block;
+        }
+
+        /* Tab 悬停效果 */
+        .nav-tabs .nav-item .nav-link:hover {
+            background-color: var(--uai-hover-blue) !important;
+            color: #000000 !important;
+        }
+
+        /* Tab 激活状态 */
+        .nav-tabs .nav-item .nav-link.active {
+            background-color: rgba(35, 192, 247, 0.3) !important;
+            color: #000000 !important;
+        }
+
+        /* 移除 Tab 焦点效果 */
+        .nav-tabs .nav-item .nav-link:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* ===== 5. 课程目录样式 ===== */
+        /* 目录行样式 */
+        .lesson-row {
+            font-size: 14px;
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .lesson-row i {
+            color: var(--uai-light-blue);
+            margin-right: 0.5rem;
+        }
+
+        .lesson-row:hover {
+            background: #fafafa;
+        }
+
+        /* ===== 6. 教师卡片样式 ===== */
+        .teacher-card {
+            border-radius: 18px !important;
+        }
+
+        /* ===== 7. 操作按钮样式 ===== */
+        .btn-enroll {
+            background: var(--uai-light-blue);
+            border: none;
+            color: #fff;
+            border-radius: 0.25rem;
+            padding: 0.5rem 1.75rem;
+            transition: 0.3s;
+        }
+
+        .btn-enroll:hover {
+            background: #a5d6ef;
+        }
+    </style>
+
+    <!-- 页脚样式 -->
+    <style>
+        /* 页脚样式 */
+        footer {
+            background-color: #1E7F98 !important;
+            color: #fff !important;
+        }
+    </style>
+
+    <!-- 其他通用样式 -->
+    <style>
+        /* 页面整体样式 */
+        body {
+            font-family: "Alibaba PuHuiTi", "思源黑体", sans-serif;
+            background-color: #F2F7F7;
+            color: #111111;
+        }
+    </style>
+
+    <!--  btn按钮组-->
+    <style>
+        /* 按钮组外壳样式 */
+        .btn-group-rounded {
+            border: 1.5px solid #1E7F98;
+            border-radius: 10px;
+            display: inline-flex;
+            overflow: hidden;
+            background-color: #ffffff;
+
+        }
+
+        /* 按钮样式 */
+        .btn-tab {
+            border: none;
+            background-color: transparent;
+            color: #1E7F98;
+            padding: 8px 20px;
+            font-size: 18px;
+            outline: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* 按钮选中状态 */
+        .btn-tab.active {
+            background-color: rgba(35, 192, 247, 0.3);
+            color: #000000;
+            border-radius: 0px;
+        }
+
+        /* 按钮 hover 效果 */
+        .btn-tab:hover {
+            background-color: rgba(35, 192, 247, 0.3);
+            /*background-color: rgba(35, 192, 247, 0.15);*/
+            border-radius: 0px;
+        }
+        /* 彻底去掉按钮点击后的淡蓝色辉光 */
+        .btn-tab:focus {
+            box-shadow: none !important;
+            outline: none !important;
+        }
+        /* 鼠标在按钮组上任何地方 hover 时，
+        对于 .active 且 本身没有被 hover 的按钮，恢复到"未激活"样式 */
+        .btn-group-rounded:hover .btn-tab.active:not(:hover) {
+            background-color: transparent !important;
+            color: #1E7F98 !important;
+        }
+    </style>
+
+    <!-- 修改 Tab 样式 -->
+    <style>
+        .nav-tabs{
+            margin-left: -14px;
+            border-radius: 9px;
+        }
+
+        .nav-tabs .nav-item {
+            margin: 0 !important; /* 移除所有外边距 */
+            padding: 0 !important; /* 移除所有内边距 */
+            font-size: 18px; /* 恢复字体大小 */
+        }
+
+        .nav-tabs .nav-item .nav-link {
+            font-size: 16px;
+            border: none !important;
+            border-radius: 0;
+            color: #1E7F98 !important;
+            padding: 6px 16px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-width: 0;
+            background-color: transparent !important;
+            margin: 0 !important; /* 移除所有外边距 */
+            display: block; /* 确保链接占满整个空间 */
+        }
+
+        /* 鼠标悬停时的样式 */
+        .nav-tabs .nav-item .nav-link:hover {
+            background-color: rgba(35, 192, 247, 0.3) !important;
+            color: #000000 !important;
+        }
+
+        /* 激活状态的样式 */
+        .nav-tabs .nav-item .nav-link.active {
+            background-color: rgba(35, 192, 247, 0.3) !important;
+            color: #000000 !important;
+        }
+
+        /* 去掉点击时的焦点效果 */
+        .nav-tabs .nav-item .nav-link:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* 确保容器左对齐 */
+        .container {
+            padding-left: 15px; /* 保持左侧间距 */
+        }
+    </style>
+
+    <style>
+        /* === 新增通用 === */
+        .card-glass{
+            margin-top: 57px;
+
+            background: rgba(255,255,255,.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius:18px;
+            border:1px solid rgba(255,255,255,.3);
+            transition:.3s;
+        }
+        /*老师卡片*/
+        .teacher-card-box {
+            margin-top: 16px !important;  /* 精确控制上下卡片间距 */
+        }
+
+        .card-glass:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,.1);}
+
+        /* 横向滚动容器 */
+        .uai-scroll{
+            display:flex;
+            overflow-x:auto;
+            padding-bottom:4px;
+            scrollbar-width:none;   /* Firefox */
+            padding-left:2px
+        }
+        .uai-scroll::-webkit-scrollbar{display:none;} /* Chrome */
+
+        /* 顶角小徽章 */
+        .ribbon-top{
+            position:absolute;
+            top:0;left:-40px;
+            width:120px;
+            text-align:center;
+            background:#f0690e;
+            color:#fff;
+            font-size:.75rem;
+            transform:rotate(-45deg);
+            transform-origin:0 0;
+            padding:2px 0;
+        }
+
+        /* 文字省略号 */
+        .text-truncate{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+    </style>
+
+    <!-- 固定侧边栏样式 -->
+    <style>
+        /* 固定侧边栏样式 */
+        @media (min-width: 992px) {  /* lg 尺寸下的样式 */
+            .course-sidebar {
+                position: sticky; /* Bootstrap 的 position-sticky 已加上 */
+                top: 80px;        /* 与页面顶端留 80px */
+                width: 300px; /* 设置固定宽度 */
+                /* 2. 限制最大高度，剩余空间内滚动 */
+                max-height: calc(100vh - 100px); /* 100px ≈ nav + margin */
+                overflow-y: auto;
+            }
+        }
+    </style>
+
+    <style>
+        /* 章节样式 */
+        .chapter-item {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 14px;
+        }
+        .chapter-item h5{
+            font-size: 16px;
+
+        }
+
+        .chapter-header {
+            padding: 15px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chapter-header:hover {
+            background-color: #e9ecef;
+        }
+
+        /* 箭头动画 */
+        .chapter-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .chapter-header[aria-expanded="true"] .chapter-arrow {
+            transform: rotate(90deg);
+        }
+
+        /* 课时样式 */
+        .chapter-lessons {
+            background-color: #fff;
+        }
+
+        .lesson-item {
+            border-top: 1px solid #eee;
+            transition: background-color 0.3s ease;
+        }
+
+        .lesson-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* 徽章样式 */
+        .badge-light {
+            background-color: #e9ecef;
+            color: #6c757d;
+            font-weight: normal;
+            padding: 5px 10px;
+        }
+
+        /* 按钮样式 */
+        .btn-outline-info {
+            border-color: var(--uai-tech-blue);
+            color: var(--uai-tech-blue);
+        }
+
+        .btn-outline-info:hover {
+            background-color: var(--uai-tech-blue);
+            color: #fff;
+        }
+        /*vip按钮样式*/
+        .btn-yellow-black {
+            /*background-color: #ff9000;*/
+            background-color: #ffc107;
+            /*background-color: #f0690e;*/
+            color: #222222;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-yellow-black:hover {
+            /*background-color: #e0a800; !* 深一些 *!*/
+            /*border-color: #e0a800;*/
+            color: #000000;
+        }
+
+    </style>
+    <!--    滚动条-->
+    <style>
+        /* === 只保留细细的滚动条边框，内部透明 === */
+        .course-sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .course-sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .course-sidebar::-webkit-scrollbar-thumb {
+            background-color: transparent; /* 滑块本身透明 */
+            border: 1px solid var(--uai-tech-blue); /* 只显示外边框 */
+            border-radius: 6px;
+        }
+        .course-sidebar::-webkit-scrollbar-thumb:hover {
+            border-color: #35a4be; /* hover 时边框颜色稍微提亮 */
+        }
+
+        /* Firefox兼容处理 */
+        .course-sidebar {
+            scrollbar-width: thin;
+            scrollbar-color: transparent transparent; /* Firefox下也透明 */
+        }
+       /*黄色按钮*/
+        .btn-yellow-black {
+            background-color: #ffc107 !important;    /* 黄色一直不变 */
+            color: #222 !important;                  /* 默认深灰（略微灰） */
+            border: 1px solid #ffc107 !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-yellow-black:hover,
+        .btn-yellow-black:focus {
+            background-color: #ffc107 !important;    /* hover 也黄色 */
+            color: #000 !important;                  /* hover 字体纯黑 */
+            border: 1px solid #ffc107 !important;
+        }
+
+
+
+
+
+
+    </style>
+
+
+</head>
+<body class="pl-1 pr-1">
+<!-- 顶部导航开始 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="img/logo4.png" alt="" class="logo-img">
+        </a>
+
+        <!-- 小屏和中屏时显示在右侧的图标组 -->
+        <div class="d-flex d-lg-none align-items-center ms-auto me-3">
+            <!--                            购物车图标-->
+            <a href="#" class="text-dark me-3">
+                <i class="iconfont icon-gouwuche nav-cart-icon"></i>
+            </a>
+            <!--            <a href="#" class="text-dark position-relative mx-2">-->
+            <!--                <i class="far fa-shopping-cart nav-cart-icon"></i>-->
+            <!--            </a>-->
+            <a href="#" class="text-dark position-relative mx-2">
+                <i class="far fa-bell" style="font-size: 20px;"></i>
+                <span class="badge-dot"></span>
+            </a>
+            <a href="#" class="mx-2">
+                <img src="img/tou03.png" class="avatar-sm">
+            </a>
+        </div>
+
+        <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- 搜索框（小屏时显示） -->
+            <form class="d-flex d-lg-none mb-3 mt-2 w-100">
+                <div class="input-group w-100">
+                    <input type="search" class="form-control" placeholder="搜索课程">
+                    <button class="btn search-btn" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">
+                        <span class="nav-underline">UAI学院</span>
+                        <span class="visually-hidden">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="nav-underline">AIGC创意师</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">AI+logo设计师</a></li>
+                        <li><a class="dropdown-item" href="#">AI+包装师</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="nav-underline">AI编程</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">AI+logo设计师</a></li>
+                        <li><a class="dropdown-item" href="#">AI+包装师</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- 右侧整体区域（大屏时显示） -->
+            <div class="d-none d-lg-flex align-items-center right-group">
+                <!-- 搜索框（大屏时显示） -->
+                <form class="d-flex my-2 my-lg-0 me-3">
+                    <div class="input-group">
+                        <input type="search" class="form-control" placeholder="搜索课程">
+                        <button class="btn search-btn" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!--                                <a href="#" class="text-dark position-relative mx-3">-->
+                <!--                                    <i class="far fa-shopping-cart nav-cart-icon"></i>-->
+                <!--                                </a>-->
+                <!--                                            购物车图标-->
+                <a href="#" class="text-dark me-3">
+                    <i class="iconfont icon-gouwuche nav-cart-icon"></i>
+                </a>
+                <a href="#" class="text-dark position-relative mx-3">
+                    <i class="far fa-bell" style="font-size: 20px;"></i>
+                    <span class="badge-dot"></span>
+                </a>
+                <a href="#" class="mx-3">
+                    <img src="img/tou03.png" class="avatar-sm">
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- 顶部导航结束 -->
+
+<!-- 面包屑导航 -->
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light py-2 mb-1">
+            <li class="breadcrumb-item"><a href="#">首页</a></li>
+            <li class="breadcrumb-item"><a href="#">Unity</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                零基础photoshopAI创意设计第一季
+            </li>
+        </ol>
+    </nav>
+</div>
+<!-- 面包屑导航结束 -->
+
+<!-- 课程详情主体 -->
+<section class="container">
+    <!-- 课程封面和信息 -->
+    <div class="card cardTop p-lg-4 p-3 mb-4 course-hero">
+        <div class="row g-0 align-items-center">
+            <div class="col-md-4 mb-3 mb-md-0">
+                <img src="img/py04.jpg" class="course-hero-img w-100" alt="课程封面" loading="lazy">
+            </div>
+            <div class="col-md-8 ps-md-4">
+                <h3 class="fw-bold mb-2"> 零基础photoshopAI创意设计第一季</h3>
+                <p class="text-muted small mb-1">难度 适合初学者 | 已更新到第 25 节</p>
+                <p class="h5 mb-3">价格 <span class="fw-bold text-info">免费</span></p>
+                <div class="d-flex flex-wrap mb-3">
+                    <a href="#" class="btn btn-primary me-3 mb-2 px-4 btn-tech-blue">立即试看</a>
+                    <a href="#" class="btn btn-yellow-black text-orange mb-2 px-4">开通 VIP 立即学</a>
+                </div>
+                <div class="d-flex align-items-center text-muted small">
+                    <a href="#" class="me-3" data-bs-toggle="tooltip" title="分享">
+                        <i class="fas fa-share-alt"></i> 分享
+                    </a>
+                    <a href="#" class="me-3" data-bs-toggle="tooltip" title="收藏">
+                        <i class="far fa-heart"></i> 收藏
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 选项卡和侧栏 -->
+    <div class="row">
+        <div class="col-lg-8">
+
+            <!-- Bootstrap Tabs -->
+            <div class="container mt-0">
+                <div> <!-- 添加居中容器 -->
+                    <ul class="nav nav-tabs" id="courseTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="intro-tab" data-bs-toggle="tab" data-bs-target="#intro" type="button" role="tab" aria-controls="intro" aria-selected="false">简介</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="catalog-tab" data-bs-toggle="tab" data-bs-target="#catalog" type="button" role="tab" aria-controls="catalog" aria-selected="true">目录</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="comment-tab" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="comment" aria-selected="false">评价</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="materials-tab" data-bs-toggle="tab" data-bs-target="#materials" type="button" role="tab" aria-controls="materials" aria-selected="false">相关课程</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tab-content mt-0" id="courseTabContent">
+                <div class="tab-pane fade" id="intro" role="tabpanel" aria-labelledby="intro-tab">
+                    <div class="bg-white rounded p-3">
+                        <h4 class="mb-3">课程介绍</h4>
+                        <p>这门课程是专为Unity初学者设计的入门教程，致力于帮助学生从零基础开始，掌握Unity游戏引擎的基本操作和数字孪生系统的开发技巧。</p>
+
+                        <p>在课程中，您将学习：</p>
+                        <ul>
+                            <li>Unity界面基础操作与项目配置</li>
+                            <li>3D模型导入与场景构建技巧</li>
+                            <li>基础C#脚本编程知识</li>
+                            <li>智慧城市系统的核心组件开发</li>
+                            <li>数字孪生技术在现代城市规划中的应用</li>
+                        </ul>
+
+                        <p>无论您是想进入游戏开发行业，还是对数字孪生技术感兴趣，这门课程都将为您打下坚实的基础。</p>
+
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>适合人群：</strong> 大学生、转行人士、游戏开发爱好者、智慧城市研究人员
+                        </div>
+
+                        <!-- 课程目录部分 -->
+                        <h4 class="mt-5 mb-3">课程目录</h4>
+                        <div class="catalog-wrapper rounded shadow-sm p-3">
+                            <!-- 课程相关资料 -->
+                            <div class="chapter-item mb-3">
+                                <div class="chapter-header d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#introResources" role="button" aria-expanded="false">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-chevron-right chapter-arrow me-2"></i>
+                                        <h5 class="mb-0">课程相关资料</h5>
+                                    </div>
+                                    <span class="badge bg-light text-dark">2项</span>
+                                </div>
+                                <div class="collapse" id="introResources">
+                                    <div class="chapter-lessons mt-2">
+                                        <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-users text-info me-2"></i>
+                                                <span>加入交流群</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn btn-sm btn-outline-info">立即加入</button>
+                                            </div>
+                                        </div>
+                                        <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-file-download text-info me-2"></i>
+                                                <span>课程相关文件</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn btn-sm btn-outline-info">下载</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 第一章 -->
+                            <div class="chapter-item mb-3">
+                                <div class="chapter-header d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#introChapter1" role="button" aria-expanded="false">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-chevron-right chapter-arrow me-2"></i>
+                                        <h5 class="mb-0">第一章：基本操作(免费试看)</h5>
+                                    </div>
+                                    <span class="badge bg-light text-dark">3课时</span>
+                                </div>
+                                <div class="collapse" id="introChapter1">
+                                    <div class="chapter-lessons mt-2">
+                                        <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-play-circle text-info me-2"></i>
+                                                <span>第一节：WorldMachine基础操作</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span class="text-muted small me-3">0.2小时</span>
+                                                <button class="btn btn-sm btn-outline-info">免费试看</button>
+                                            </div>
+                                        </div>
+                                        <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-play-circle text-info me-2"></i>
+                                                <span>第二节：WorldMachine项目设置</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span class="text-muted small me-3">0.2小时</span>
+                                                <button class="btn btn-sm btn-outline-info">免费试看</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 更多章节... -->
+                        </div>
+
+                        <!-- 课程评价部分 -->
+                        <h4 class="mt-5 mb-3">学员评价</h4>
+                        <div class="review-list bg-white rounded p-3">
+                            <!-- 评价输入区域 -->
+                            <div class="mb-4">
+                                <textarea class="form-control" rows="6" placeholder="写下您对课程的评价..." style="border: 1px solid rgba(30, 127, 152, 0.3); border-radius: 8px; resize: none;"></textarea>
+                            </div>
+
+                            <!-- 星级评分 -->
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="stars">
+                                    <i class="far fa-star" style="color: #FFB800; font-size: 20px; cursor: pointer; margin-right: 8px;"></i>
+                                    <i class="far fa-star" style="color: #FFB800; font-size: 20px; cursor: pointer; margin-right: 8px;"></i>
+                                    <i class="far fa-star" style="color: #FFB800; font-size: 20px; cursor: pointer; margin-right: 8px;"></i>
+                                    <i class="far fa-star" style="color: #FFB800; font-size: 20px; cursor: pointer; margin-right: 8px;"></i>
+                                    <i class="far fa-star" style="color: #FFB800; font-size: 20px; cursor: pointer;"></i>
+                                </div>
+                                <button class="btn" style="width: 153px; border: 1px solid #1E7F98; color: #1E7F98; padding: 8px 32px; border-radius: 20px; background: transparent;">
+                                    <i class="far fa-paper-plane me-2"></i>发布评价
+                                </button>
+                            </div>
+
+                            <hr class="my-4" style="border-color: rgba(30, 127, 152, 0.1);">
+
+                            <!-- 评价列表 -->
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <img src="img/tou01.png" alt="用户头像" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px;">
+                                    <div>
+                                        <h6 class="mb-0">zolo</h6>
+                                        <div class="stars">
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="far fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted ms-auto">2020-03-13</small>
+                                </div>
+                                <p class="mb-0" style="color: #333;">神仙老师，讲的超级棒！若是能把材质创建那部分的原理讲的再细致一些就完美了。</p>
+                            </div>
+
+                            <!-- 评价项2 -->
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <img src="img/tou02.png" alt="用户头像" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px;">
+                                    <div>
+                                        <h6 class="mb-0">胡杰超</h6>
+                                        <div class="stars">
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted ms-auto">2021-08-13</small>
+                                </div>
+                                <p class="mb-0" style="color: #333;">简单快速的案例，很适合初学者</p>
+                            </div>
+                        </div>
+
+                        <!-- 相关课程推荐部分 -->
+                        <h4 class="mt-5 mb-3">相关课程推荐</h4>
+                        <div class="related-courses bg-white rounded p-3">
+                            <div class="course-list">
+                                <!-- 课程项1 -->
+                                <div class="course-item mb-4" style="border: 1px solid rgba(22,109,132,0.1); border-radius: 12px; padding: 20px; transition: all 0.3s ease; background: rgba(255,255,255,0.9);">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-2">
+                                            <img src="img/k02.png" class="img-fluid rounded" alt="课程图片" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                        </div>
+                                        <div class="col-md-7">
+                                            <h6 class="mb-2" style="font-weight: 600; color: #333;">前端Web开发 网站建设 网页开发</h6>
+                                            <div class="d-flex align-items-center text-muted small mb-2">
+                                                <span class="me-3"><i class="far fa-clock me-1"></i>总共148小时</span>
+                                                <span><i class="far fa-calendar-alt me-1"></i>更新日期 2022年12月</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="text-warning me-3" style="font-size: 14px;">
+                                                    4.4 <i class="fas fa-star"></i>
+                                                </div>
+                                                <div class="text-muted small">
+                                                    <i class="fas fa-user-friends me-1"></i>560人已学习
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 text-end">
+                                            <div class="mb-2">
+                                                <span class="text-muted small me-2" style="text-decoration: line-through;">¥699</span>
+                                                <span style="color: #f0690e; font-size: 20px; font-weight: 600;">¥399</span>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-end">
+                                                <i class="fas fa-shopping-cart me-3" style="font-size: 18px; color: #166d84; cursor: pointer;"></i>
+                                                <button class="btn btn-sm" style="width: 32px; height: 32px; padding: 0; border-radius: 50%; border: 1.5px solid #f0690e; color: #f0690e; background: transparent;">
+                                                    <i class="far fa-heart" style="font-size: 16px;"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 课程项2 -->
+                                <div class="course-item mb-4" style="border: 1px solid rgba(22,109,132,0.1); border-radius: 12px; padding: 20px; transition: all 0.3s ease; background: rgba(255,255,255,0.9);">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-2">
+                                            <img src="img/k03.png" class="img-fluid rounded" alt="课程图片" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <h6 class="mb-0" style="font-weight: 600; color: #333;">数据结构与算法（JavaScript）</h6>
+                                                <span class="badge ms-2" style="background: rgba(240,105,14,0.1); color: #f0690e; border-radius: 4px; padding: 4px 8px;">热门课程</span>
+                                            </div>
+                                            <div class="d-flex align-items-center text-muted small mb-2">
+                                                <span class="me-3"><i class="far fa-clock me-1"></i>总共25.5小时</span>
+                                                <span><i class="far fa-calendar-alt me-1"></i>更新日期 2025年1月</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="text-warning me-3" style="font-size: 14px;">
+                                                    4.8 <i class="fas fa-star"></i>
+                                                </div>
+                                                <div class="text-muted small">
+                                                    <i class="fas fa-user-friends me-1"></i>6,489人已学习
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 text-end">
+                                            <div class="mb-2">
+                                                <span class="text-muted small me-2" style="text-decoration: line-through;">¥599</span>
+                                                <span style="color: #f0690e; font-size: 20px; font-weight: 600;">¥299</span>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-end">
+                                                <i class="fas fa-shopping-cart me-3" style="font-size: 18px; color: #166d84; cursor: pointer;"></i>
+                                                <button class="btn btn-sm" style="width: 32px; height: 32px; padding: 0; border-radius: 50%; border: 1.5px solid #f0690e; color: #f0690e; background: transparent;">
+                                                    <i class="far fa-heart" style="font-size: 16px;"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show active" id="catalog" role="tabpanel" aria-labelledby="catalog-tab">
+                    <div class="catalog-wrapper bg-white rounded shadow-sm p-3">
+                        <!-- 课程相关资料 -->
+                        <div class="chapter-item mb-3">
+                            <div class="chapter-header d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#courseResources" role="button" aria-expanded="false">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-chevron-right chapter-arrow me-2"></i>
+                                    <h5 class="mb-0">课程相关资料</h5>
+                                </div>
+                                <span class="badge bg-light text-dark">2项</span>
+                            </div>
+                            <div class="collapse" id="courseResources">
+                                <div class="chapter-lessons mt-2">
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-users text-info me-2"></i>
+                                            <span>加入交流群</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-sm btn-outline-info">立即加入</button>
+                                        </div>
+                                    </div>
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-file-download text-info me-2"></i>
+                                            <span>课程相关文件</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-sm btn-outline-info">下载</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 第一章 -->
+                        <div class="chapter-item mb-3">
+                            <div class="chapter-header d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#chapter1" role="button" aria-expanded="true">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-chevron-right chapter-arrow me-2"></i>
+                                    <h5 class="mb-0">第一章：基本操作(免费试看)</h5>
+                                </div>
+                                <span class="badge bg-light text-dark">3课时</span>
+                            </div>
+                            <div class="collapse show" id="chapter1">
+                                <div class="chapter-lessons mt-2">
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-play-circle text-info me-2"></i>
+                                            <span>第一节：WorldMachine基础操作</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-muted small me-3">0.2小时</span>
+                                            <button class="btn btn-sm btn-outline-info">免费试看</button>
+                                        </div>
+                                    </div>
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-play-circle text-info me-2"></i>
+                                            <span>第二节：WorldMachine项目设置</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-muted small me-3">0.2小时</span>
+                                            <button class="btn btn-sm btn-outline-info">免费试看</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 第二章 -->
+                        <div class="chapter-item mb-3">
+                            <div class="chapter-header d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#chapter2" role="button" aria-expanded="false">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-chevron-right chapter-arrow me-2"></i>
+                                    <h5 class="mb-0">第二章：基础构造</h5>
+                                </div>
+                                <span class="badge bg-light text-dark">4课时</span>
+                            </div>
+                            <div class="collapse" id="chapter2">
+                                <div class="chapter-lessons mt-2">
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-lock text-muted me-2"></i>
+                                            <span>第一节：基础地形制作</span>
+                                        </div>
+                                        <span class="text-muted small">0.1小时</span>
+                                    </div>
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-lock text-muted me-2"></i>
+                                            <span>第二节：地形细节处理</span>
+                                        </div>
+                                        <span class="text-muted small">0.1小时</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 第三章 -->
+                        <div class="chapter-item mb-3">
+                            <div class="chapter-header d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#chapter3" role="button" aria-expanded="false">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-chevron-right chapter-arrow me-2"></i>
+                                    <h5 class="mb-0">第三章：组合节点</h5>
+                                </div>
+                                <span class="badge bg-light text-dark">5课时</span>
+                            </div>
+                            <div class="collapse" id="chapter3">
+                                <div class="chapter-lessons mt-2">
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-lock text-muted me-2"></i>
+                                            <span>第一节：节点组合基础</span>
+                                        </div>
+                                        <span class="text-muted small">0.1小时</span>
+                                    </div>
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-lock text-muted me-2"></i>
+                                            <span>第一节：节点组合基础</span>
+                                        </div>
+                                        <span class="text-muted small">0.99小时</span>
+                                    </div>
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-lock text-muted me-2"></i>
+                                            <span>第一节：节点组合基础</span>
+                                        </div>
+                                        <span class="text-muted small">0.1小时</span>
+                                    </div>
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-lock text-muted me-2"></i>
+                                            <span>第一节：节点组合基础</span>
+                                        </div>
+                                        <span class="text-muted small">0.1小时</span>
+                                    </div>
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-lock text-muted me-2"></i>
+                                            <span>第一节：节点组合基础</span>
+                                        </div>
+                                        <span class="text-muted small">0.1小时</span>
+                                    </div>
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-lock text-muted me-2"></i>
+                                            <span>第一节：节点组合基础</span>
+                                        </div>
+                                        <span class="text-muted small">0.1小时</span>
+                                    </div>
+                                    <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-lock text-muted me-2"></i>
+                                            <span>第一节：节点组合基础</span>
+                                        </div>
+                                        <span class="text-muted small">0.1小时</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="comment-tab">
+                    <div class="bg-white rounded p-4">
+                        <!-- 评价输入区域 -->
+                        <div class="mb-4">
+                            <textarea class="form-control" rows="6" placeholder="写下您对课程的评价..." style="border: 1px solid rgba(30, 127, 152, 0.3); border-radius: 8px; resize: none;"></textarea>
+                        </div>
+
+                        <!-- 星级评分 -->
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="stars">
+                                <i class="far fa-star" style="color: #FFB800; font-size: 20px; cursor: pointer; margin-right: 8px;"></i>
+                                <i class="far fa-star" style="color: #FFB800; font-size: 20px; cursor: pointer; margin-right: 8px;"></i>
+                                <i class="far fa-star" style="color: #FFB800; font-size: 20px; cursor: pointer; margin-right: 8px;"></i>
+                                <i class="far fa-star" style="color: #FFB800; font-size: 20px; cursor: pointer; margin-right: 8px;"></i>
+                                <i class="far fa-star" style="color: #FFB800; font-size: 20px; cursor: pointer;"></i>
+                            </div>
+                            <button class="btn" style="width: 153px; border: 1px solid #1E7F98; color: #1E7F98; padding: 8px 32px; border-radius: 20px; background: transparent;">
+                                <i class="far fa-paper-plane me-2"></i>发布评价
+                            </button>
+                        </div>
+
+                        <hr class="my-4" style="border-color: rgba(30, 127, 152, 0.1);">
+
+                        <!-- 评价列表 -->
+                        <div class="review-list">
+                            <!-- 评价项1 -->
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <img src="img/tou01.png" alt="用户头像" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px;">
+                                    <div>
+                                        <h6 class="mb-0">zolo</h6>
+                                        <div class="stars">
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="far fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted ms-auto">2020-03-13</small>
+                                </div>
+                                <p class="mb-0" style="color: #333;">神仙老师，讲的超级棒！若是能把材质创建那部分的原理讲的再细致一些就完美了。</p>
+                            </div>
+
+                            <!-- 评价项2 -->
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <img src="img/tou02.png" alt="用户头像" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px;">
+                                    <div>
+                                        <h6 class="mb-0">胡杰超</h6>
+                                        <div class="stars">
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted ms-auto">2021-08-13</small>
+                                </div>
+                                <p class="mb-0" style="color: #333;">简单快速的案例，很适合初学者</p>
+                            </div>
+
+                            <!-- 评价项3 -->
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <img src="img/tou02.png" alt="用户头像" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px;">
+                                    <div>
+                                        <h6 class="mb-0">哈希</h6>
+                                        <div class="stars">
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                            <i class="fas fa-star" style="color: #FFB800; font-size: 14px;"></i>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted ms-auto">2021-08-13</small>
+                                </div>
+                                <p class="mb-0" style="color: #333;">简单快速的案例，很适合初学者</p>
+                            </div>
+
+                            <!-- 分页 -->
+                            <div class="d-flex justify-content-center mt-4">
+                                <button class="btn btn-link text-muted mx-2" style="text-decoration: none;">&lt;</button>
+                                <button class="btn btn-link text-primary mx-2" style="text-decoration: none;">1</button>
+                                <button class="btn btn-link text-muted mx-2" style="text-decoration: none;">&gt;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="materials" role="tabpanel" aria-labelledby="materials-tab">
+                    <div class="bg-white rounded p-4" style="border-radius: 18px; background: rgba(255,255,255,0.75); backdrop-filter: blur(12px);">
+                        <!-- 相关课程标题区 -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h5 class="mb-1" style="color: #166d84; font-weight: 600;">相关课程推荐</h5>
+                                <p class="text-muted mb-0" style="font-size: 14px;">根据你的兴趣，为你精选以下好课</p>
+                            </div>
+                            <!--                            <button class="btn" style="color: #166d84; border-radius: 20px; padding: 8px 20px; border: 1px solid #166d84; background: transparent;">-->
+                            <!--                                <i class="fas fa-sync-alt mr-2"></i>-->
+                            <!--                                换一换-->
+                            <!--                            </button>-->
+                        </div>
+
+                        <!-- 课程列表 -->
+                        <div class="course-list">
+                            <!-- 课程项1 -->
+                            <div class="course-item mb-4" style="border: 1px solid rgba(22,109,132,0.1); border-radius: 12px; padding: 20px; transition: all 0.3s ease; background: rgba(255,255,255,0.9);">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <img src="img/k02.png" class="img-fluid rounded" alt="课程图片" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <h6 class="mb-2" style="font-weight: 600; color: #333;">前端Web开发 网站建设 网页开发</h6>
+                                        <div class="d-flex align-items-center text-muted small mb-2">
+                                            <span class="me-3"><i class="far fa-clock me-1"></i>总共148小时</span>
+                                            <span><i class="far fa-calendar-alt me-1"></i>更新日期 2022年12月</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-warning me-3" style="font-size: 14px;">
+                                                4.4 <i class="fas fa-star"></i>
+                                            </div>
+                                            <div class="text-muted small">
+                                                <i class="fas fa-user-friends me-1"></i>560人已学习
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 text-end">
+                                        <div class="mb-2">
+                                            <span class="text-muted small me-2" style="text-decoration: line-through;">¥699</span>
+                                            <span style="color: #f0690e; font-size: 20px; font-weight: 600;">¥399</span>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-end">
+                                            <i class="fas fa-shopping-cart me-3" style="font-size: 18px; color: #166d84; cursor: pointer;"></i>
+                                            <button class="btn btn-sm" style="width: 32px; height: 32px; padding: 0; border-radius: 50%; border: 1.5px solid #f0690e; color: #f0690e; background: transparent;">
+                                                <i class="far fa-heart" style="font-size: 16px;"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 课程项2 -->
+                            <div class="course-item mb-4" style="border: 1px solid rgba(22,109,132,0.1); border-radius: 12px; padding: 20px; transition: all 0.3s ease; background: rgba(255,255,255,0.9);">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <img src="img/k03.png" class="img-fluid rounded" alt="课程图片" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <h6 class="mb-0" style="font-weight: 600; color: #333;">数据结构与算法（JavaScript）</h6>
+                                            <span class="badge ms-2" style="background: rgba(240,105,14,0.1); color: #f0690e; border-radius: 4px; padding: 4px 8px;">热门课程</span>
+                                        </div>
+                                        <div class="d-flex align-items-center text-muted small mb-2">
+                                            <span class="me-3"><i class="far fa-clock me-1"></i>总共25.5小时</span>
+                                            <span><i class="far fa-calendar-alt me-1"></i>更新日期 2025年1月</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-warning me-3" style="font-size: 14px;">
+                                                4.8 <i class="fas fa-star"></i>
+                                            </div>
+                                            <div class="text-muted small">
+                                                <i class="fas fa-user-friends me-1"></i>6,489人已学习
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 text-end">
+                                        <div class="mb-2">
+                                            <span class="text-muted small me-2" style="text-decoration: line-through;">¥599</span>
+                                            <span style="color: #f0690e; font-size: 20px; font-weight: 600;">¥299</span>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-end">
+                                            <i class="fas fa-shopping-cart me-3" style="font-size: 18px; color: #166d84; cursor: pointer;"></i>
+                                            <button class="btn btn-sm" style="width: 32px; height: 32px; padding: 0; border-radius: 50%; border: 1.5px solid #f0690e; color: #f0690e; background: transparent;">
+                                                <i class="far fa-heart" style="font-size: 16px;"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 课程项3（热销课程） -->
+
+                        </div>
+                        <button class="btn" style="color: #166d84; border-radius: 20px; padding: 8px 20px; border: 1px solid #166d84; background: transparent;">
+                            <i class="fas fa-sync-alt mr-2"></i>
+                            换一换
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 修改侧边栏结构 -->
+        <aside class="col-lg-4">
+            <!-- 优惠价格卡片 -->
+            <div class="card card-glass mb-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="far fa-clock text-primary me-2"></i>
+                        <span class="text-muted">五一限时七折特惠</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <span>活动结束时间：2025年05月16日</span>
+                    </div>
+                    <div class="price-section mb-3">
+                        <span class="h3 text-warning">¥896.00</span>
+                        <span class="text-muted text-decoration-line-through ms-2">¥1280.00</span>
+                    </div>
+                    <div class="vip-price mb-3">
+                        <span class="text-muted">超级会员价</span>
+                        <span class="text-warning ms-2">¥806.40</span>
+                        <a href="#" class="text-primary ms-2">立即加入>>></a>
+                    </div>
+                    <button class="btn btn-primary btn-block w-100">
+                        <i class="fas fa-shopping-cart me-2"></i>加入购物车
+                    </button>
+                    <div class="mt-3">
+                        <a href="#" class="btn btn-outline-primary btn-block w-100" style="border-radius: 4px; border: 1px dashed #1E7F98;">
+                            <i class="fas fa-ticket-alt me-2"></i>领取专属优惠券
+                        </a>
+                    </div>
+                    <!-- 服务标签区域 -->
+                    <div class="service-tags mt-4">
+                        <div class="d-flex align-items-center" style="margin-right: 15px;">
+                            <span class="text-muted me-2" style="white-space: nowrap; font-size: 13px;">承诺服务</span>
+                            <div class="d-flex justify-content-between" style="flex: 1;">
+                                <!-- 练习标签 -->
+                                <div class="tag-wrapper position-relative">
+                                    <span class="tag-item px-2 py-1" style="background: rgba(30,127,152,0.1); color: #1E7F98; border-radius: 15px; font-size: 13px; margin: 0 2px; cursor: pointer;">练</span>
+                                    <div class="service-popup shadow-lg">
+                                        <div class="popup-header">
+                                            <h6 class="mb-2">24小时作业批阅</h6>
+                                        </div>
+                                        <div class="popup-content">
+                                            <p class="mb-2">24小时内完成作业批阅，即时反馈并巩固您的学习效果</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 试听标签 -->
+                                <div class="tag-wrapper position-relative">
+                                    <span class="tag-item px-2 py-1" style="background: rgba(30,127,152,0.1); color: #1E7F98; border-radius: 15px; font-size: 13px; margin: 0 2px; cursor: pointer;">试</span>
+                                    <div class="service-popup shadow-lg">
+                                        <div class="popup-header">
+                                            <h6 class="mb-2">免费课程试听</h6>
+                                        </div>
+                                        <div class="popup-content">
+                                            <p class="mb-2">精选课程内容免费体验，提前感受优质教学</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 问答标签 -->
+                                <div class="tag-wrapper position-relative">
+                                    <span class="tag-item px-2 py-1" style="background: rgba(30,127,152,0.1); color: #1E7F98; border-radius: 15px; font-size: 13px; margin: 0 2px; cursor: pointer;">问</span>
+                                    <div class="service-popup shadow-lg">
+                                        <div class="popup-header">
+                                            <h6 class="mb-2">在线答疑解惑</h6>
+                                        </div>
+                                        <div class="popup-content">
+                                            <p class="mb-2">资深讲师实时在线答疑，快速解决学习难题</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 疑难标签 -->
+                                <div class="tag-wrapper position-relative">
+                                    <span class="tag-item px-2 py-1" style="background: rgba(30,127,152,0.1); color: #1E7F98; border-radius: 15px; font-size: 13px; margin: 0 2px; cursor: pointer;">疑</span>
+                                    <div class="service-popup shadow-lg">
+                                        <div class="popup-header">
+                                            <h6 class="mb-2">疑难问题解决</h6>
+                                        </div>
+                                        <div class="popup-content">
+                                            <p class="mb-2">专业技术团队一对一指导，助你突破技术瓶颈</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 活动标签 -->
+                                <div class="tag-wrapper position-relative">
+                                    <span class="tag-item px-2 py-1" style="background: rgba(30,127,152,0.1); color: #1E7F98; border-radius: 15px; font-size: 13px; margin: 0 2px; cursor: pointer;">活</span>
+                                    <div class="service-popup shadow-lg">
+                                        <div class="popup-header">
+                                            <h6 class="mb-2">丰富课程活动</h6>
+                                        </div>
+                                        <div class="popup-content">
+                                            <p class="mb-2">定期技术沙龙、项目实战，提升实践能力</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 就业标签 -->
+                                <div class="tag-wrapper position-relative">
+                                    <span class="tag-item px-2 py-1" style="background: rgba(30,127,152,0.1); color: #1E7F98; border-radius: 15px; font-size: 13px; margin: 0 2px; cursor: pointer;">就</span>
+                                    <div class="service-popup shadow-lg">
+                                        <div class="popup-header">
+                                            <h6 class="mb-2">就业服务保障</h6>
+                                        </div>
+                                        <div class="popup-content">
+                                            <p class="mb-2">一站式就业服务，助你快速实现职业提升</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 讲师介绍卡片 -->
+            <div class="card card-glass teacher-card-box mb-0">
+                <div class="card-body text-center">
+                    <img src="img/tou03.png" alt="老师头像" class="rounded-circle mb-3" width="80" height="80">
+                    <h5 class="card-title mb-2">小雨宿 · 资深讲师</h5>
+                    <p class="text-muted mb-3">交互设计 & Unity</p>
+                    <a href="#" class="btn btn-outline-primary btn-sm">查看该老师全部课程</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <!-- 课程保障区 -->
+    <section class="bg-white rounded p-3 mt-4 d-md-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center mb-3 mb-md-0">
+            <i class="fas fa-users text-info mr-2"></i>
+            <span class="small">已有 <strong class="text-dark">1,256</strong> 位学员加入</span>
+        </div>
+        <div class="d-flex align-items-center mb-3 mb-md-0">
+            <i class="fas fa-star text-warning mr-2"></i>
+            <span class="small">课程好评率 <strong class="text-dark">97%</strong></span>
+        </div>
+        <div class="d-flex align-items-center">
+            <i class="fas fa-shield-alt text-success mr-2"></i>
+            <span class="small">7 天无理由退款保障</span>
+        </div>
+    </section>
+</section>
+
+<!--购买出现的新导航栏-->
+<!-- ===== Sticky Purchase Bar ===== -->
+<nav id="stickyBar" class="sticky-bar shadow-sm bg-white py-2 px-3">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <!-- 左侧 Tabs -->
+        <ul class="nav nav-pills sticky-tabs">
+            <li class="nav-item"><a class="nav-link" href="#intro">简介</a></li>
+            <li class="nav-item"><a class="nav-link" href="#catalog">目录</a></li>
+            <li class="nav-item"><a class="nav-link" href="#comment">评价</a></li>
+            <li class="nav-item"><a class="nav-link" href="#materials">相关课程</a></li>
+        </ul>
+
+        <!-- 右侧价格 + CTA -->
+        <div class="d-flex align-items-center">
+            <div class="text-right mr-3 small">
+                <div class="text-danger font-weight-bold">限时优惠 ¥769</div>
+                <div class="text-muted"><small>还剩 2天03:38:28</small></div>
+            </div>
+
+            <a href="#" class="btn btn-sm btn-cta-buy mr-2">立即购买</a>
+            <a href="#" class="btn btn-sm btn-cta-cart">加购物车</a>
+        </div>
+    </div>
+</nav>
+
+<!--购买出现的新导航栏结束-->
+
+<!-- 页脚 -->
+<footer class="bg-dark text-light small mt-4">
+    <div class="container">
+        <div class="row pt-2 pb-3">
+            <div class="col-sm-12 col-md-10">
+                <div>
+                    <p class="mb-2 text-muted"> UAI学院是一家为就业者提供最新职场技术的在线交流平台。</p>
+                    <div class="text-muted">
+                        网站呈现内容之版权均归 小木偶（天津）文化科技有限公司所有 <a class="text-light ms-3 me-3"
+                                                                                   href="https://beian.miit.gov.cn"
+                                                                                   id="unique-link"
+                                                                                   rel="noopener noreferrer"
+                                                                                   target="_blank">津ICP备2024023837号-1</a>
+                        <a class="text-light" href="https://beian.mps.gov.cn/#/query/webSearch?code=12011002024104"
+                           rel="noreferrer" target="_blank">
+                            <img alt="备案图标" class="me-2 mb-1" height="16" src="img/beian.png" width="16"/>津公网安备12011002024104</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- JS 脚本 -->
+<!-- 移除 jQuery 和 Bootstrap 4，使用 Bootstrap 5.3.6 的原生 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // 获取购物车按钮和新导航栏元素
+    const stickyBar = document.getElementById('stickyBar');
+    const cartButton = document.querySelector('.btn-primary.btn-block'); // 获取购物车按钮
+
+    // 监听滚动事件
+    window.addEventListener('scroll', () => {
+        if (cartButton) {
+            // 获取购物车按钮的位置信息
+            const cartButtonRect = cartButton.getBoundingClientRect();
+            // 当购物车按钮完全滚出视野（按钮底部位置小于0）时显示新导航栏
+            const show = cartButtonRect.bottom < 0;
+            stickyBar.classList.toggle('show', show);
+        }
+    });
+
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', function() {
+        // 初始化所有选项卡
+        const tabList = document.querySelectorAll('#courseTab button')
+        tabList.forEach(function(tabButton) {
+            tabButton.addEventListener('click', function(event) {
+                // 获取当前激活的选项卡内容ID
+                const targetId = tabButton.getAttribute('data-bs-target');
+
+                // 首先移除所有tab上的active类
+                tabList.forEach(tab => tab.classList.remove('active'));
+                // 添加active类到当前点击的tab
+                tabButton.classList.add('active');
+
+                // 正常激活当前选项卡
+                const tabContents = document.querySelectorAll('.tab-pane');
+                tabContents.forEach(function(tabContent) {
+                    if (tabContent.id === targetId.substring(1)) {
+                        tabContent.classList.add('show', 'active');
+                    } else {
+                        tabContent.classList.remove('show', 'active');
+                    }
+                });
+
+                // 如果是简介标签页，初始化其中的折叠组件
+                if (targetId === '#intro') {
+                    // 为简介标签页中的折叠组件添加点击事件
+                    document.querySelectorAll('#intro [data-bs-toggle="collapse"]').forEach(element => {
+                        // 移除旧的事件监听器，避免重复绑定
+                        element.removeEventListener('click', handleIntroCollapse);
+                        // 添加新的事件监听器
+                        element.addEventListener('click', handleIntroCollapse);
+                    });
+                }
+            });
+        });
+
+        // 处理简介标签页中折叠组件的点击事件
+        function handleIntroCollapse() {
+            const targetId = this.getAttribute('data-bs-target');
+            const target = document.querySelector(targetId);
+            const arrow = this.querySelector('.chapter-arrow');
+
+            if (target) {
+                if (target.classList.contains('show')) {
+                    target.classList.remove('show');
+                    if (arrow) {
+                        arrow.style.transform = '';
+                    }
+                    this.setAttribute('aria-expanded', 'false');
+                } else {
+                    target.classList.add('show');
+                    if (arrow) {
+                        arrow.style.transform = 'rotate(90deg)';
+                    }
+                    this.setAttribute('aria-expanded', 'true');
+                }
+            }
+        }
+
+        // 默认激活目录标签页
+        document.querySelector('#catalog-tab').classList.add('active');
+        document.querySelector('#catalog').classList.add('show', 'active');
+
+        // 默认展开第一章
+        document.querySelector('#chapter1').classList.add('show');
+        const firstChapterHeader = document.querySelector('#chapter1').previousElementSibling;
+        if (firstChapterHeader) {
+            firstChapterHeader.setAttribute('aria-expanded', 'true');
+            const arrow = firstChapterHeader.querySelector('.chapter-arrow');
+            if (arrow) {
+                arrow.style.transform = 'rotate(90deg)';
+            }
+        }
+
+        // 初始化所有折叠组件
+        document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(element => {
+            element.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-bs-target');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    if (target.classList.contains('show')) {
+                        target.classList.remove('show');
+                        const arrow = this.querySelector('.chapter-arrow');
+                        if (arrow) {
+                            arrow.style.transform = '';
+                        }
+                    } else {
+                        target.classList.add('show');
+                        const arrow = this.querySelector('.chapter-arrow');
+                        if (arrow) {
+                            arrow.style.transform = 'rotate(90deg)';
+                        }
+                    }
+                }
+            });
+        });
+
+        // Sticky Bar 内的 nav-pills 激活状态与下方同步
+        document.querySelectorAll('.sticky-tabs .nav-link').forEach(link => {
+            link.addEventListener('click', e => {
+                // 找到对应的选项卡按钮
+                const targetTabId = link.getAttribute('href').substring(1);
+                const targetTab = document.querySelector(`button[data-bs-target="#${targetTabId}"]`);
+                if (targetTab) {
+                    targetTab.click();
+                }
+
+                // 手动高亮
+                document.querySelectorAll('.sticky-tabs .nav-link')
+                    .forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // 初始化星级评分功能
+        initStarRating('#comment .stars i');
+        initStarRating('#intro .stars i');
+
+        // 星级评分功能
+        function initStarRating(selector) {
+            const stars = document.querySelectorAll(selector);
+            if (stars.length === 0) return;
+
+            stars.forEach((star, index) => {
+                // 鼠标悬停效果
+                star.addEventListener('mouseover', () => {
+                    // 当前星及之前的星标记为实心
+                    for (let i = 0; i <= index; i++) {
+                        stars[i].classList.remove('far');
+                        stars[i].classList.add('fas');
+                    }
+                    // 之后的星标记为空心
+                    for (let i = index + 1; i < stars.length; i++) {
+                        stars[i].classList.remove('fas');
+                        stars[i].classList.add('far');
+                    }
+                });
+
+                // 点击效果
+                star.addEventListener('click', () => {
+                    // 存储评分值（1-5）
+                    const ratingValue = index + 1;
+                    console.log('Rating: ' + ratingValue);
+
+                    // 当前星及之前的星标记为实心
+                    for (let i = 0; i <= index; i++) {
+                        stars[i].classList.remove('far');
+                        stars[i].classList.add('fas');
+                    }
+                    // 之后的星标记为空心
+                    for (let i = index + 1; i < stars.length; i++) {
+                        stars[i].classList.remove('fas');
+                        stars[i].classList.add('far');
+                    }
+                });
+            });
+
+            // 鼠标离开星级区域时，恢复到未选择状态（仅对评价输入区域的星级）
+            const starsContainer = stars[0].parentElement;
+            starsContainer.addEventListener('mouseleave', () => {
+                // 检查是否为评价输入区域的星级
+                if (stars[0].style.fontSize === '20px') {
+                    stars.forEach(star => {
+                        star.classList.remove('fas');
+                        star.classList.add('far');
+                    });
+                }
+            });
+        }
+    });
+</script>
+
+<style>
+    .tag-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .service-popup {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 280px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(30,127,152,0.2);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 10px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+
+    .service-popup::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 8px;
+        border-style: solid;
+        border-color: rgba(30,127,152,0.2) transparent transparent transparent;
+    }
+
+    .tag-wrapper:hover .service-popup {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(-5px);
+    }
+
+    .popup-header h6 {
+        color: #1E7F98;
+        font-weight: 600;
+        border-bottom: 1px solid rgba(30,127,152,0.1);
+        padding-bottom: 8px;
+    }
+
+    .popup-content p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .tag-item:hover {
+        background: rgba(30,127,152,0.2) !important;
+        transition: all 0.3s ease;
+    }
+</style>
+
+<style>
+    /* 导航栏图标样式优化 */
+    @media (max-width: 991.98px) {
+        .navbar-toggler {
+            border: none;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 14px;
+        }
+
+        /* 小屏幕下的图标样式优化 */
+        .nav-cart-icon {
+            font-size: 20px;
+        }
+
+        .avatar-sm {
+            width: 28px;
+            height: 28px;
+        }
+
+        /* 图标间距优化 */
+        .mx-2 {
+            margin-left: 0.75rem !important;
+            margin-right: 0.75rem !important;
+        }
+
+        /* 红点位置微调 */
+        .badge-dot {
+            right: -3px;
+            top: -3px;
+        }
+    }
+
+    /* 大屏幕下的图标样式 */
+    @media (min-width: 992px) {
+        .mx-3 {
+            margin-left: 1rem !important;
+            margin-right: 1rem !important;
+        }
+    }
+</style>
+
+<style>
+    /* 小屏搜索框样式优化 */
+    @media (max-width: 991.98px) {
+        .form-control[type="search"] {
+            border: 1.5px solid #1E7F98 !important;
+            border-radius: 20px !important;
+            width: 100% !important;
+            transform: none !important;
+        }
+
+        .search-btn {
+            margin-left: -50px !important;
+        }
+    }
+</style>
+
+<style>
+    /* 课程项悬停效果 */
+    .course-item {
+        transition: all 0.3s ease;
+    }
+
+    .course-item:hover {
+        background: rgba(22,109,132,0.05) !important;
+        transform: translateY(-2px);
+    }
+</style>
+
+</body>
+</html>

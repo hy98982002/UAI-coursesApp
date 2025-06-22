@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>购物车 | UAI Academy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- ========= 核心依赖 ========= -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- 阿里 IconFont -->
+  <link rel="stylesheet" href="font/iconfont.css">
+
+  <!-- ========= 通用配色 / 变量 ========= -->
+  <style>
+    :root{
+      --uai-tech-blue:#166d84;
+      --uai-hover-blue:rgba(22,109,132,.08);
+      --uai-orange:#f0690e;
+      --glass-bg:rgba(255,255,255,.75);
+    }
+    body{
+      font-family:"Alibaba PuHuiTi","思源黑体",sans-serif;
+      background:#F2F7F7;
+      color:#111;
+      scroll-padding-top:56px; /* 避免锚点被遮挡 */
+    }
+    /* Glass 卡片 */
+    .card-glass{
+      background:var(--glass-bg);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.3);
+      transition:.3s;
+    }
+    .card-glass:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,.1);}
+    .card{
+      margin-right: 10px ;
+      margin-left: -40px ;
+    }
+    /* 添加右侧卡片样式 */
+    .promotion-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .coupon-btn {
+      border: 1px dashed #ccc;
+      border-radius: 4px;
+      padding: 8px 16px;
+      background: #fff;
+      width: 100%;
+      text-align: left;
+      position: relative;
+    }
+    .coupon-btn i {
+      color: #0d6efd;
+      margin-right: 8px;
+    }
+    .checkout-btn {
+      background: #6f42c1;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 12px;  /* 控制按钮高度（上下）和左右内边距 */
+      width: 100%;/* 控制横向 */
+      font-size: 16px; /* 字体大小 */
+      margin-top: 16px;
+    }
+    .main-content {
+      width: calc(100% - 300px);
+      margin-right: 20px;
+    }
+    .justify-content-between{
+      margin-left: -20px ;
+    }
+    /* 头像样式 */
+    .avatar-sm{width:34px;height:34px;object-fit:cover;border:2px solid #fff;box-shadow:0 0 0 1px #e5e5e5;border-radius:50%;}
+
+    /* 清空购物车按钮位置调整 */
+    .clear-cart-btn {
+      transform: translate(-15px, 8px); /* 向左120px，向下8px */
+    }
+
+    /* 操作列位置调整 */
+    .action-column {
+      transform: translateX(15px); /* 可以调整这个值来控制左右移动距离 */
+    }
+
+    /* 操作图标样式调整 */
+    .action-icon {
+      opacity: 0.5; /* 控制图标透明度，1为不透明，0为完全透明，可以调整 */
+    }
+    .favorite-icon {
+      color: #f0690e; /* UAI橙色，可以调整 */
+      opacity: 0.7; /* 收藏图标的透明度可以单独设置 */
+    }
+
+    /* 右侧结算区样式优化 */
+    .checkout-section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      transform: translateX(-13px) translateY(45px);
+    }
+
+    /* 小计行样式 */
+    .subtotal {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;  /* 可调整与优惠券按钮的距离 */
+      font-size: 16px;
+    }
+
+    /* 优惠券按钮样式 */
+    .coupon-btn {
+      width: 100%;
+      padding: 10px;  /* 可调整按钮内部空间 */
+      background: rgba(22,109,132,.08);
+      border: none;
+      border-radius: 6px;
+      color: var(--uai-tech-blue);
+      text-align: center;
+      margin-top: -8px;
+      margin-bottom: 22px;  /* 可调整与最终合计的距离 */
+      font-size: 14px;
+    }
+    .coupon-btn:hover {
+      background: rgba(22,109,132,.15);
+    }
+
+    /* 最终合计区域 */
+    .final-total {
+      margin-bottom: 16px;  /* 可调整与结算按钮的距离 */
+    }
+    .final-total h5 {
+      font-size: 14px;
+      font-weight: normal;
+    }
+    .final-price {
+      font-size: 27px;
+      font-weight: bold;
+      color: #ee9900;
+    }
+
+    /* 结算按钮 */
+    .checkout-btn {
+      /*background: #e63946; !* 修改背景颜色 *!*/
+      background: #1473e6; /* 修改背景颜色 */
+      transform: translateY(-10px);
+      width: 100%;  /* 控制横向 */
+      padding: 10px;  /* 可调整按钮高度 */
+      /*background: var(--uai-tech-blue);*/
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      /*font-weight: 600;*/
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /*color: #0d53ff;*/
+    }
+    .checkout-btn i {
+      margin-left: 6px;  /* 可调整箭头图标的距离 */
+      /*color: #0d53ff;*/
+    }
+    .checkout-btn:hover {
+      background: #0f64d2;
+      /*transform: translateY(-2px);*/
+    }
+    .mb-0{
+      transform: translatex(19px);
+    }
+    .text-light-gray{
+      font-size: 16px;
+      color: #444;
+    }
+  </style>
+
+  <!-- ========= 首页导航栏（来自 course‑details.html，做了极小幅精简） ========= -->
+  <style>
+    .nav-link{font-size:18px;color:#000!important;font-weight:400;}
+    .dropdown-toggle::after{border:none;content:'';display:inline-block;width:8px;height:8px;border-bottom:2px solid #000;border-right:2px solid #000;transform:rotate(45deg);margin-left:6px;transition:.3s;}
+    .dropdown-toggle[aria-expanded="true"]::after{transform:rotate(-135deg);}
+    .nav-item{margin-left:20px}
+    .navbar-brand{
+      margin-right: 0;
+      margin-left: 16px;
+    }
+    .logo-img {
+      height: 26px;
+      filter: brightness(1.1);
+      margin-top: -10px; /* 根据需要调整值，比如 -2px、-6px 等 */
+    }
+    .form-control[type="search"]{border:1.5px solid var(--uai-tech-blue)!important;width:450px!important;border-radius:20px!important;transform:translateX(-50px);}
+    .search-btn{border:none;background:none;padding:8px;margin-left:-87px;position:relative;color:var(--uai-orange);}
+    .nav-cart-icon{font-size:22px;color:#000}
+  </style>
+
+  <!-- ========= 推荐卡片弹出效果样式 ========= -->
+  <style>
+    /* 推荐课程部分标题样式 */
+    .recommend-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 40px 0 20px 0;
+      position: relative;
+      transform: translateY(-30px) translateX(-3px);
+    }
+
+    /* 推荐课程容器过渡效果 */
+    .recommend-courses {
+      transition: opacity 0.3s ease;
+      transform: translateY(-30px) translateX(-40px);
+    }
+
+    /* 换一换按钮样式 */
+    .refresh-btn {
+      transform: translateY(-10px) translateX(-30px);
+      display: inline-flex;
+      align-items: center;
+      color: var(--uai-tech-blue);
+      font-size: 14px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    .refresh-btn:hover {
+      background: rgba(22,109,132,.08);
+    }
+
+    .refresh-btn i {
+      margin-right: 5px;
+    }
+
+    /* 卡片基础样式 */
+    .recommend-card {
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      transition: all 0.3s ease-in-out;
+      margin: 0 -2px;
+    }
+
+    .recommend-card:hover {
+      box-shadow: -2px 0 4px rgba(0, 0, 0, 0.08),
+      2px 0 4px rgba(0, 0, 0, 0.08),
+      0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .recommend-card-img-top {
+      border-radius: 10px 10px 0 0;
+      transition: all 0.3s ease-in-out;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .recommend-card-footer {
+      background: rgba(255, 255, 255, 0.75) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 0 0 10px 10px !important;
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      padding: 0.75rem 1.25rem;
+      overflow: hidden;
+    }
+
+    /* 卡片链接去除下划线 & 保持文字颜色 */
+    .recommend-link {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .recommend-link:hover,
+    .recommend-link:focus,
+    .recommend-link:active {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Glassmorphism 增强效果 */
+    .recommend-card-glass {
+      position: relative;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      overflow: visible;
+      height: 100%;
+    }
+
+    .recommend-card:hover,
+    .recommend-card:focus-within {
+      z-index: 2000;
+      position: relative;
+    }
+
+    /* 移除卡片上浮效果，但保留阴影变化 */
+    .recommend-card-glass:hover {
+      transform: none;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 信息卡弹出效果 */
+    /* 信息卡骨架，默认隐藏 */
+    .recommend-pop {
+      position: absolute;
+      top: 12px;
+      left: 100%;
+      margin-left: 16px;
+      margin-top: -15px;
+      width: 340px;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(30,127,152,0.08);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(30,127,152,0.06),
+      0 2px 8px rgba(30,127,152,0.04),
+      inset 0 0 0 1px rgba(255,255,255,0.6);
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(12px) scale(.96);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      z-index: 1050;
+    }
+
+    /* 小尖角优化 */
+    .recommend-pop::before {
+      content: "";
+      position: absolute;
+      left: -9px;
+      top: 30px;
+      width: 18px;
+      height: 18px;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(30,127,152,0.08);
+      border-right: none;
+      border-bottom: none;
+      transform: rotate(-45deg);
+      box-shadow: inset 1px 1px 0 rgba(255,255,255,0.6);
+    }
+
+    /* 内容样式优化 */
+    .recommend-pop h6 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .recommend-pop .badge {
+      background: rgba(30,127,152,0.08);
+      color: #1E7F98;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    .recommend-pop .text-muted {
+      color: #444 !important;
+      font-size: 15px;
+    }
+
+    .recommend-pop ul {
+      margin: 16px 0;
+      padding-left: 20px;
+    }
+
+    .recommend-pop ul li {
+      color: #333;
+      margin-bottom: 12px;
+      font-size: 15px;
+      position: relative;
+      list-style: none;
+    }
+
+    .recommend-pop ul li::before {
+      content: "•";
+      color: #1E7F98;
+      font-weight: bold;
+      position: absolute;
+      left: -15px;
+    }
+
+    /* 按钮样式优化 */
+    .recommend-pop .btn-tech-blue {
+      background: #1E7F98;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      padding: 10px 24px;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-transform: none;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(30,127,152,0.2);
+    }
+
+    .recommend-pop .btn-tech-blue:hover {
+      background: #166d84;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30,127,152,0.3);
+    }
+
+    /* 关闭按钮优化 */
+    .recommend-pop .close-dialog {
+      color: #666;
+      font-size: 14px;
+      text-align: center;
+      display: block;
+      margin-top: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .recommend-pop .close-dialog:hover {
+      color: #1E7F98;
+      text-decoration: none;
+    }
+
+    /* 弹出效果 - 仅在大屏幕时启用 */
+    @media (min-width: 992px) {
+      .recommend-card:hover .recommend-pop {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0) scale(1);
+        pointer-events: auto;
+      }
+
+      /* 右侧卡片特殊处理 */
+      .col-md-3:nth-child(4n) .recommend-pop {
+        left: auto;
+        right: 100%;
+        margin-left: 0;
+        margin-right: 16px;
+        transform: translateX(-12px) scale(.96);
+      }
+
+      .col-md-3:nth-child(4n) .recommend-pop::before {
+        left: auto;
+        right: -9px;
+        transform: rotate(135deg);
+      }
+
+      .col-md-3:nth-child(4n) .recommend-card:hover .recommend-pop {
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    /* 解决弹窗过早消失的问题 */
+    @media (min-width: 992px) {
+      /* 桥接区域 - 左侧 */
+      .recommend-card:hover::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 100%;
+        width: 24px;
+        height: 100%;
+      }
+
+      /* 桥接区域 - 右侧 */
+      .col-md-3:nth-child(4n) .recommend-card:hover::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 100%;
+        width: 24px;
+        height: 100%;
+      }
+
+      /* 确保鼠标已移到弹窗本身时也不会消失 */
+      .recommend-card:hover .recommend-pop,
+      .recommend-pop:hover {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0) scale(1);
+        pointer-events: auto;
+      }
+    }
+  </style>
+
+</head>
+<body class="ps-1 pe-1">
+
+<!-- 顶部导航开始 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="img/logo4.png" alt="logo" class="logo-img">
+    </a>
+
+    <!-- 小屏和中屏时显示在右侧的图标组 -->
+    <div class="d-flex d-lg-none align-items-center ms-auto me-3">
+      <a href="#" class="text-dark me-3">
+        <i class="iconfont icon-gouwuche nav-cart-icon"></i>
+      </a>
+      <a href="#" class="text-dark position-relative mx-2">
+        <i class="far fa-bell" style="font-size: 20px;"></i>
+        <span class="badge-dot"></span>
+      </a>
+      <a href="#" class="mx-2">
+        <img src="img/tou03.png" class="avatar-sm">
+      </a>
+    </div>
+
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- 搜索框（小屏时显示） -->
+      <form class="d-lg-none mb-3 mt-2 w-100">
+        <div class="input-group w-100">
+          <input type="search" class="form-control" placeholder="搜索课程">
+          <button class="btn search-btn" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">
+            <span class="nav-underline">UAI学院</span>
+            <span class="visually-hidden">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
+             data-bs-toggle="dropdown" href="#" id="navbarDropdown1" role="button">
+            <span class="nav-underline">AIGC创意师</span>
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">AI+logo设计师</a>
+            <a class="dropdown-item" href="#">AI+包装师</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
+             data-bs-toggle="dropdown" href="#" id="navbarDropdown2" role="button">
+            <span class="nav-underline">AI编程</span>
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">AI+logo设计师</a>
+            <a class="dropdown-item" href="#">AI+包装师</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- 右侧整体区域（大屏时显示） -->
+      <div class="d-none d-lg-flex align-items-center right-group">
+        <!-- 搜索框（大屏时显示） -->
+        <form class="d-flex my-2 my-lg-0 me-3">
+          <div class="input-group">
+            <input type="search" class="form-control" placeholder="搜索课程">
+            <div class="input-group-append">
+              <button class="btn search-btn" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <a href="#" class="text-dark me-3">
+          <i class="iconfont icon-gouwuche nav-cart-icon"></i>
+        </a>
+        <a href="#" class="text-dark position-relative mx-3">
+          <i class="far fa-bell" style="font-size: 20px;"></i>
+          <span class="badge-dot"></span>
+        </a>
+        <a href="#" class="mx-3">
+          <img src="img/tou03.png" class="avatar-sm">
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- 顶部导航结束 -->
+
+<!-- ============ 购物车主体 ============ -->
+<div class="container mt-4">
+  <div class="d-flex">
+    <!-- 左侧主要内容 -->
+    <div class="main-content">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="m-0" style="font-size: 24px; font-weight: bold;">购物车</h5>
+        <a href="#" class="text-primary clear-cart-btn" style="color: #0d6efd !important; font-size: 14px;">清空购物车</a>
+      </div>
+
+      <div class="card border-0 bg-white rounded-lg p-4">
+        <!-- 表头 -->
+        <div class="d-flex border-bottom pb-3" style="color: #666;">
+          <div style="width: 24px;">
+            <input type="checkbox" class="form-check-input" style="margin-left: 0; position: relative;">
+          </div>
+          <div class="flex-grow-1 ms-4">课程</div>
+          <div style="width: 100px; text-align: right;">价格</div>
+          <div class="action-column" style="width: 100px; text-align: center;">操作</div>
+        </div>
+
+        <!-- 课程项1 -->
+        <div class="d-flex align-items-center py-3 border-bottom">
+          <div style="width: 24px;">
+            <input type="checkbox" class="form-check-input" style="margin-left: 0; position: relative;">
+          </div>
+          <div class="d-flex align-items-center flex-grow-1 ms-4">
+            <img src="img/ai04.jpg" alt="课程图片" style="width: 120px; height: 74px; object-fit: cover;" class="rounded">
+            <div class="ms-3">
+              <h6 class="mb-1 text-light-gray" >Houdini 20.5 CHOP模块基础与案例教学</h6>
+              <div class="text-muted" style="font-size: 12px;">
+                讲师：小宅
+              </div>
+              <div class="d-flex align-items-center mt-1">
+                <span class="badge bg-info text-white me-2" style="background-color: rgba(22,109,132,0.1); color: #166d84; font-weight: normal; font-size: 12px;">热门课程</span>
+                <span class="text-warning" style="font-size: 12px;">4.8</span>
+                <div class="text-warning ms-1" style="font-size: 12px;">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <!--                <span class="text-muted ml-1" style="font-size: 12px;">(2,397分)</span>-->
+              </div>
+              <div class="text-muted mt-1" style="font-size: 12px;">
+                总共32.5小时 • 实战
+              </div>
+            </div>
+          </div>
+          <div style="width: 100px; text-align: right;">
+            <div class="text-warning" style="font-size: 14px;">¥202.64</div>
+            <div class="text-decoration-line-through" style="font-size: 12px;">原价：¥298.00</div>
+          </div>
+          <div style="width: 100px;" class="d-flex flex-column align-items-center action-column">
+            <a href="#" class="text-muted mb-2"><i class="far fa-heart favorite-icon action-icon"></i></a>
+            <a href="#" class="text-muted"><i class="far fa-trash-alt action-icon"></i></a>
+          </div>
+        </div>
+        <!-- 课程项2 -->
+        <div class="d-flex align-items-center py-3 border-bottom">
+          <div style="width: 24px;">
+            <input type="checkbox" class="form-check-input" style="margin-left: 0; position: relative;">
+          </div>
+          <div class="d-flex align-items-center flex-grow-1 ms-4">
+            <img src="img/ai03.jpg" alt="课程图片" style="width: 120px; height: 74px; object-fit: cover;" class="rounded">
+            <div class="ms-3">
+              <h6 class="mb-1 text-light-gray" >Houdini 20.5 CHOP模块基础与案例教学</h6>
+              <div class="text-muted" style="font-size: 12px;">
+                讲师：小宅
+              </div>
+              <div class="d-flex align-items-center mt-1">
+                <span class="badge bg-info text-white me-2" style="background-color: rgba(22,109,132,0.1); color: #166d84; font-weight: normal; font-size: 12px;">热门课程</span>
+                <span class="text-warning" style="font-size: 12px;">4.8</span>
+                <div class="text-warning ms-1" style="font-size: 12px;">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <!--                <span class="text-muted ml-1" style="font-size: 12px;">(2,397分)</span>-->
+              </div>
+              <div class="text-muted mt-1" style="font-size: 12px;">
+                总共32.5小时 • 实战
+              </div>
+            </div>
+          </div>
+          <div style="width: 100px; text-align: right;">
+            <div class="text-warning" style="font-size: 14px;">¥202.64</div>
+            <div class="text-decoration-line-through" style="font-size: 12px;">原价：¥298.00</div>
+          </div>
+          <div style="width: 100px;" class="d-flex flex-column align-items-center action-column">
+            <a href="#" class="text-muted mb-2"><i class="far fa-heart favorite-icon action-icon"></i></a>
+            <a href="#" class="text-muted"><i class="far fa-trash-alt action-icon"></i></a>
+          </div>
+        </div>
+        <!-- 课程项3 -->
+        <div class="d-flex align-items-center py-3 border-bottom">
+          <div style="width: 24px;">
+            <input type="checkbox" class="form-check-input" style="margin-left: 0; position: relative;">
+          </div>
+          <div class="d-flex align-items-center flex-grow-1 ms-4">
+            <img src="img/ai01.jpg" alt="课程图片" style="width: 120px; height: 74px; object-fit: cover;" class="rounded">
+            <div class="ms-3">
+              <h6 class="mb-1 text-light-gray" >Houdini 20.5 CHOP模块基础与案例教学</h6>
+              <div class="text-muted" style="font-size: 12px;">
+                讲师：小宅
+              </div>
+              <div class="d-flex align-items-center mt-1">
+                <span class="badge bg-info text-white me-2" style="background-color: rgba(22,109,132,0.1); color: #166d84; font-weight: normal; font-size: 12px;">热门课程</span>
+                <span class="text-warning" style="font-size: 12px;">4.8</span>
+                <div class="text-warning ms-1" style="font-size: 12px;">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <!--                <span class="text-muted ml-1" style="font-size: 12px;">(2,397分)</span>-->
+              </div>
+              <div class="text-muted mt-1" style="font-size: 12px;">
+                总共32.5小时 • 实战
+              </div>
+            </div>
+          </div>
+          <div style="width: 100px; text-align: right;">
+            <div class="text-warning" style="font-size: 14px;">¥202.64</div>
+            <div class="text-decoration-line-through" style="font-size: 12px;">原价：¥298.00</div>
+          </div>
+          <div style="width: 100px;" class="d-flex flex-column align-items-center action-column">
+            <a href="#" class="text-muted mb-2"><i class="far fa-heart favorite-icon action-icon"></i></a>
+            <a href="#" class="text-muted"><i class="far fa-trash-alt action-icon"></i></a>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <!-- 右侧促销结算区 -->
+    <div style="width: 280px;">
+      <div class="checkout-section">
+        <!-- 小计 -->
+        <div class="subtotal">
+          <span>小计</span>
+          <span>¥107.44</span>
+        </div>
+
+        <!-- 优惠券按钮 -->
+        <button class="coupon-btn">
+          <i class="fas fa-ticket-alt me-2" style="color: #0d6efd;"></i>
+          选择优惠券
+        </button>
+
+        <!-- 最终合计 -->
+        <div class="final-total d-flex justify-content-between align-items-center">
+          <h5 class="mb-0" style="font-weight: bold; font-size: 18px;">最终合计</h5>
+          <div class="final-price" >¥107.44</div>
+        </div>
+
+        <!-- 结算按钮 -->
+        <button class="checkout-btn" >
+          进行结算
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 推荐课程部分 -->
+<div class="container mt-3 mb-5">
+  <div class="d-flex justify-content-between align-items-center">
+    <h3 class="recommend-title">您可能还会喜欢</h3>
+    <button class="refresh-btn">
+      <i class="fas fa-sync-alt me-2"></i> 换一换
+    </button>
+  </div>
+
+  <div class="row g-4 recommend-courses">
+    <!-- 第一张卡片 -->
+    <div class="col-sm-6 col-md-3 mb-4">
+      <a class="recommend-link" href="javascript:void(0);">
+        <div class="recommend-card recommend-card-glass">
+          <img alt="Card image cap" class="card-img-top recommend-card-img-top" src="img/u01.jpg"/>
+          <div class="card-body">
+            <p class="card-text">构建虚幻引擎的基础</p>
+          </div>
+          <div class="recommend-card-footer">
+            <small class="text-muted">入门</small>
+            <small class="text-muted ms-2">390学员</small>
+            <span class="float-end text-success">免费</span>
+          </div>
+
+          <!-- 信息卡 -->
+          <div class="recommend-pop">
+            <h6 class="fw-bold mb-2">构建虚幻引擎的基础</h6>
+            <span class="badge bg-info text-white me-2">入门课程</span>
+            <p class="small text-muted">总共 45 小时 · 入门级别</p>
+            <ul class="ps-3 small mb-3">
+              <li>快速入门虚幻引擎界面与功能</li>
+              <li>学习基础材质、光照与场景构建</li>
+              <li>掌握蓝图编程核心概念</li>
+            </ul>
+            <a href="javascript:void(0);" class="btn btn-sm btn-tech-blue w-100">添加入购物车</a>
+            <a href="javascript:void(0);" class="close-dialog">关闭对话框</a>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- 第二张卡片 -->
+    <div class="col-sm-6 col-md-3 mb-4">
+      <a class="recommend-link" href="javascript:void(0);">
+        <div class="recommend-card recommend-card-glass">
+          <img alt="Card image cap" class="card-img-top recommend-card-img-top" src="img/u02.jpg"/>
+          <div class="card-body">
+            <p class="card-text">从0-1 游戏开发全流程</p>
+          </div>
+          <div class="recommend-card-footer">
+            <small class="text-muted">基础</small>
+            <span class="float-end text-success">免费</span>
+          </div>
+
+          <!-- 信息卡 -->
+          <div class="recommend-pop">
+            <h6 class="fw-bold mb-2">从0-1 游戏开发全流程</h6>
+            <span class="badge bg-info text-white me-2">热门课程</span>
+            <p class="small text-muted">总共 60 小时 · 基础级别</p>
+            <ul class="ps-3 small mb-3">
+              <li>完整的游戏开发流程讲解</li>
+              <li>从策划到程序，从美术到音效</li>
+              <li>实战项目带你入门游戏开发</li>
+            </ul>
+            <a href="javascript:void(0);" class="btn btn-sm btn-tech-blue w-100">添加入购物车</a>
+            <a href="javascript:void(0);" class="close-dialog">关闭对话框</a>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- 第三张卡片 -->
+    <div class="col-sm-6 col-md-3 mb-4">
+      <a class="recommend-link" href="javascript:void(0);">
+        <div class="recommend-card recommend-card-glass">
+          <img alt="Card image cap" class="card-img-top recommend-card-img-top" src="img/u03.jpg"/>
+          <div class="card-body">
+            <p class="card-text">掌握虚幻引擎核心技能</p>
+          </div>
+          <div class="recommend-card-footer">
+            <small class="text-muted">进阶</small>
+            <span class="float-end text-success">免费</span>
+          </div>
+
+          <!-- 信息卡 -->
+          <div class="recommend-pop">
+            <h6 class="fw-bold mb-2">掌握虚幻引擎核心技能</h6>
+            <span class="badge bg-info text-white me-2">进阶课程</span>
+            <p class="small text-muted">总共 75 小时 · 进阶级别</p>
+            <ul class="ps-3 small mb-3">
+              <li>深入学习虚幻引擎核心功能</li>
+              <li>掌握高级材质系统与蓝图脚本</li>
+              <li>实现复杂游戏功能与机制</li>
+            </ul>
+            <a href="javascript:void(0);" class="btn btn-sm btn-tech-blue w-100">添加入购物车</a>
+            <a href="javascript:void(0);" class="close-dialog">关闭对话框</a>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- 第四张卡片 -->
+    <div class="col-sm-6 col-md-3 mb-4">
+      <a class="recommend-link" href="javascript:void(0);">
+        <div class="recommend-card recommend-card-glass">
+          <img alt="Card image cap" class="card-img-top recommend-card-img-top" src="img/u04.jpg"/>
+          <div class="card-body">
+            <p class="card-text">用虚幻制作坦克大战</p>
+          </div>
+          <div class="recommend-card-footer">
+            <small class="text-muted">实战</small>
+            <span class="float-end text-success">免费</span>
+          </div>
+
+          <!-- 信息卡 -->
+          <div class="recommend-pop">
+            <h6 class="fw-bold mb-2">用虚幻制作坦克大战</h6>
+            <span class="badge bg-info text-white me-2">实战项目</span>
+            <p class="small text-muted">总共 50 小时 · 实战级别</p>
+            <ul class="ps-3 small mb-3">
+              <li>从零开始构建坦克大战游戏</li>
+              <li>实现物理系统、AI敌人、关卡设计</li>
+              <li>学习游戏发布与优化技巧</li>
+            </ul>
+            <a href="javascript:void(0);" class="btn btn-sm btn-tech-blue w-100">添加入购物车</a>
+            <a href="javascript:void(0);" class="close-dialog">关闭对话框</a>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 页脚 -->
+<footer class="bg-dark text-light small mt-5">
+  <div class="container">
+    <div class="row pt-2 pb-3">
+      <div class="col-sm-12 col-md-10">
+        <div>
+          <p class="mb-2 text-muted"> UAI学院是一家为就业者提供最新职场技术的在线交流平台。</p>
+          <div class="text-muted">
+            网站呈现内容之版权均归 小木偶（天津）文化科技有限公司所有 <a class="text-light ml-3 mr-3"
+                                                                       href="https://beian.miit.gov.cn"
+                                                                       id="unique-link"
+                                                                       rel="noopener noreferrer"
+                                                                       target="_blank">津ICP备2024023837号-1</a>
+            <a class="text-light" href="https://beian.mps.gov.cn/#/query/webSearch?code=12011002024104"
+               rel="noreferrer" target="_blank">
+              <img alt="备案图标" class="mr-2 mb-1" height="16" src="img/beian.png" width="16"/>津公网安备12011002024104</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!---->
+
+<!-- ========= 脚本 ========= -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- 推荐课程换一换功能 -->
+<script>
+  // 课程数据库 - 实际项目中可能从服务器获取
+  const courseDatabase = [
+    {
+      id: 1,
+      title: "构建虚幻引擎的基础",
+      image: "img/u01.jpg",
+      level: "入门",
+      students: "390学员",
+      price: "免费",
+      badge: "入门课程",
+      hours: "45",
+      levelDetail: "入门级别",
+      features: [
+        "快速入门虚幻引擎界面与功能",
+        "学习基础材质、光照与场景构建",
+        "掌握蓝图编程核心概念"
+      ]
+    },
+    {
+      id: 2,
+      title: "从0-1 游戏开发全流程",
+      image: "img/u02.jpg",
+      level: "基础",
+      students: "",
+      price: "免费",
+      badge: "热门课程",
+      hours: "60",
+      levelDetail: "基础级别",
+      features: [
+        "完整的游戏开发流程讲解",
+        "从策划到程序，从美术到音效",
+        "实战项目带你入门游戏开发"
+      ]
+    },
+    {
+      id: 3,
+      title: "掌握虚幻引擎核心技能",
+      image: "img/u03.jpg",
+      level: "进阶",
+      students: "",
+      price: "免费",
+      badge: "进阶课程",
+      hours: "75",
+      levelDetail: "进阶级别",
+      features: [
+        "深入学习虚幻引擎核心功能",
+        "掌握高级材质系统与蓝图脚本",
+        "实现复杂游戏功能与机制"
+      ]
+    },
+    {
+      id: 4,
+      title: "用虚幻制作坦克大战",
+      image: "img/u04.jpg",
+      level: "实战",
+      students: "",
+      price: "免费",
+      badge: "实战项目",
+      hours: "50",
+      levelDetail: "实战级别",
+      features: [
+        "从零开始构建坦克大战游戏",
+        "实现物理系统、AI敌人、关卡设计",
+        "学习游戏发布与优化技巧"
+      ]
+    },
+    {
+      id: 5,
+      title: "Blender 3D建模入门到精通",
+      image: "img/ai01.jpg",
+      level: "入门",
+      students: "210学员",
+      price: "免费",
+      badge: "入门课程",
+      hours: "38",
+      levelDetail: "入门级别",
+      features: [
+        "从零开始学习3D建模基础",
+        "掌握Blender界面与核心功能",
+        "完成多个实用建模案例"
+      ]
+    },
+    {
+      id: 6,
+      title: "Unity游戏开发实战教程",
+      image: "img/ai02.jpg",
+      level: "基础",
+      students: "158学员",
+      price: "免费",
+      badge: "实战课程",
+      hours: "42",
+      levelDetail: "中级",
+      features: [
+        "Unity游戏开发核心技能",
+        "C#编程与游戏逻辑设计",
+        "完整游戏项目从设计到发布"
+      ]
+    },
+    {
+      id: 7,
+      title: "人工智能绘画进阶技法",
+      image: "img/ai03.jpg",
+      level: "进阶",
+      students: "325学员",
+      price: "免费",
+      badge: "热门课程",
+      hours: "56",
+      levelDetail: "高级",
+      features: [
+        "AI绘画高级提示词技巧",
+        "Stable Diffusion自定义训练",
+        "商业级AI绘画作品创作流程"
+      ]
+    },
+    {
+      id: 8,
+      title: "3D角色动画制作专精",
+      image: "img/ai04.jpg",
+      level: "专业",
+      students: "180学员",
+      price: "免费",
+      badge: "专业课程",
+      hours: "68",
+      levelDetail: "专家级",
+      features: [
+        "专业级3D角色动画技术",
+        "面部表情与肢体动作精细控制",
+        "电影级角色动画制作流程"
+      ]
+    }
+  ];
+
+  // 渲染课程卡片
+  function renderCourseCard(course, index) {
+    return `
+      <div class="col-sm-6 col-md-3 mb-4">
+        <a class="recommend-link" href="javascript:void(0);">
+          <div class="recommend-card recommend-card-glass">
+            <img alt="${course.title}" class="card-img-top recommend-card-img-top" src="${course.image}"/>
+            <div class="card-body">
+              <p class="card-text">${course.title}</p>
+            </div>
+            <div class="recommend-card-footer">
+              <small class="text-muted">${course.level}</small>
+              ${course.students ? `<small class="text-muted ms-2">${course.students}</small>` : ''}
+              <span class="float-end text-success">${course.price}</span>
+            </div>
+
+            <!-- 信息卡 -->
+            <div class="recommend-pop">
+              <h6 class="fw-bold mb-2">${course.title}</h6>
+              <span class="badge bg-info text-white me-2">${course.badge}</span>
+              <p class="small text-muted">总共 ${course.hours} 小时 · ${course.levelDetail}</p>
+              <ul class="ps-3 small mb-3">
+                ${course.features.map(feature => `<li>${feature}</li>`).join('')}
+              </ul>
+              <a href="javascript:void(0);" class="btn btn-sm btn-tech-blue w-100">添加入购物车</a>
+              <a href="javascript:void(0);" class="close-dialog">关闭对话框</a>
+            </div>
+          </div>
+        </a>
+      </div>
+    `;
+  }
+
+  // 随机获取4个不重复的课程
+  function getRandomCourses(count = 4) {
+    const shuffled = [...courseDatabase].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  }
+
+  // 刷新推荐课程
+  function refreshRecommendCourses() {
+    const randomCourses = getRandomCourses();
+    const coursesHTML = randomCourses.map(renderCourseCard).join('');
+
+    // 添加淡出效果
+    const courseContainer = document.querySelector('.recommend-courses');
+    courseContainer.style.opacity = 0;
+
+    // 短暂延迟后更新内容并淡入
+    setTimeout(() => {
+      courseContainer.innerHTML = coursesHTML;
+      courseContainer.style.opacity = 1;
+    }, 300);
+  }
+
+  // 页面加载完成后绑定事件
+  document.addEventListener('DOMContentLoaded', function() {
+    // 给换一换按钮添加点击事件
+    const refreshButton = document.querySelector('.refresh-btn');
+    if (refreshButton) {
+      refreshButton.addEventListener('click', function() {
+        // 按钮旋转动画
+        const icon = this.querySelector('i');
+        icon.style.transition = 'transform 0.5s';
+        icon.style.transform = 'rotate(360deg)';
+
+        // 刷新推荐课程
+        refreshRecommendCourses();
+
+        // 重置按钮图标旋转
+        setTimeout(() => {
+          icon.style.transition = 'none';
+          icon.style.transform = 'rotate(0)';
+        }, 500);
+      });
+    }
+
+    // 为课程卡片中的关闭按钮添加点击事件
+    document.querySelectorAll('.close-dialog').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // 找到最近的弹出窗并隐藏
+        const popup = this.closest('.recommend-pop');
+        if (popup) {
+          popup.style.opacity = 0;
+          popup.style.visibility = 'hidden';
+
+          // 500ms后恢复原状态以便hover时可以再次显示
+          setTimeout(() => {
+            popup.style = '';
+          }, 500);
+        }
+      });
+    });
+  });
+</script>
+
+
+</body>
+</html>
