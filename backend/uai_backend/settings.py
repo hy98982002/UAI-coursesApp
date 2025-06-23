@@ -91,11 +91,18 @@ WSGI_APPLICATION = 'uai_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'uaidb',
-        'USER': 'root',
+        'NAME': os.getenv('MYSQL_NAME', 'your-database-name'),
+        'USER': os.getenv('MYSQL_USER', 'root'),
         'PASSWORD': os.getenv('MYSQL_PASSWORD', ''),
-        'HOST': '127.0.0.1',
-        'PORT': '3308',
+        'HOST': os.getenv('MYSQL_HOST', 'your-sealos-host'),
+        'PORT': os.getenv('MYSQL_PORT', '33949'),
+        'OPTIONS': {
+            'charset': os.getenv('MYSQL_CHARSET', 'utf8mb4'),
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'connect_timeout': int(os.getenv('MYSQL_CONNECT_TIMEOUT', '30')),
+            'read_timeout': int(os.getenv('MYSQL_READ_TIMEOUT', '30')),
+            'write_timeout': int(os.getenv('MYSQL_WRITE_TIMEOUT', '30')),
+        },
     }
 }
 

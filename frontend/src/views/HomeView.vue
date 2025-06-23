@@ -211,6 +211,88 @@
       </div>
     </section>
     
+    <!-- 分割线 -->
+    <hr class="section-divider2"/>
+    
+    <!-- 教师推荐 -->
+    <section class="mt-0 py-0">
+      <div class="container pt-3">
+        <div class="row">
+          <div class="col">
+            <h4 class="uai-title text-center text-black-50">教师推荐</h4>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 教师介绍 -->
+    <section class="mt-3 py-2">
+      <div class="container mt-0">
+        <div class="row card-scale justify-content-center">
+          <!-- 第一张卡片 -->
+          <div class="col-sm-6 col-md-3 mb-4">
+            <a class="card-link-no-underline" href="javascript:void(0);">
+              <div class="card h-100 card-glass">
+                <img alt="小宅老师" class="card-img-top teacher-avatar" src="/img/tou01.png"/>
+                <div class="card-body">
+                  <p class="card-text">小宅</p>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">设计达人</small>
+                  <span class="float-right text-success">经验丰富</span>
+                </div>
+              </div>
+            </a>
+          </div>
+          <!-- 第二张卡片 -->
+          <div class="col-sm-6 col-md-3 mb-4">
+            <a class="card-link-no-underline" href="javascript:void(0);">
+              <div class="card h-100 card-glass">
+                <img alt="小夏老师" class="card-img-top teacher-avatar" src="/img/tou02.png"/>
+                <div class="card-body">
+                  <p class="card-text">小夏</p>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">绘画达人</small>
+                  <span class="float-right text-success">经验丰富</span>
+                </div>
+              </div>
+            </a>
+          </div>
+          <!-- 第三张卡片 -->
+          <div class="col-sm-6 col-md-3 mb-4">
+            <a class="card-link-no-underline" href="javascript:void(0);">
+              <div class="card h-100 card-glass">
+                <img alt="小柯老师" class="card-img-top teacher-avatar" src="/img/tou03.png"/>
+                <div class="card-body">
+                  <p class="card-text">小柯</p>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">二次元</small>
+                  <span class="float-right text-success">推断精准</span>
+                </div>
+              </div>
+            </a>
+          </div>
+          <!-- 第四张卡片 -->
+          <div class="col-sm-6 col-md-3 mb-4">
+            <a class="card-link-no-underline" href="javascript:void(0);">
+              <div class="card h-100 card-glass">
+                <img alt="小朋老师" class="card-img-top teacher-avatar" src="/img/tou04.png"/>
+                <div class="card-body">
+                  <p class="card-text">小朋</p>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">脑洞大开</small>
+                  <span class="float-right text-success">意识流</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
     <!-- 页脚 -->
     <footer class="mt-5 py-4 bg-light">
       <div class="container">
@@ -353,7 +435,15 @@ const freeCourses = ref([
     image: '/img/ai02.jpg',
     level: '初级',
     students: '8500人学习',
-    price: '免费'
+    price: '免费',
+    badge: '快速上手',
+    duration: '共16课时',
+    features: [
+      '包装设计基础理论',
+      'AI工具快速入门',
+      '商业包装案例分析',
+      '品牌包装设计实战'
+    ]
   },
   {
     title: 'Python AI基础编程',
@@ -375,7 +465,15 @@ const freeCourses = ref([
     image: '/img/u01.jpg',
     level: '入门',
     students: '1.5万人学习',
-    price: '免费'
+    price: '免费',
+    badge: '基础必修',
+    duration: '共20课时',
+    features: [
+      'UI设计基础原理',
+      '色彩搭配与排版',
+      '界面设计规范',
+      '移动端设计实践'
+    ]
   }
 ])
 
@@ -401,7 +499,15 @@ const vipCourses = ref([
     image: '/img/py02.jpg',
     level: '专业',
     students: '2800人学习',
-    price: '¥899'
+    price: '¥899',
+    badge: '算法专精',
+    duration: '共60课时',
+    features: [
+      '深度神经网络原理',
+      'TensorFlow框架实战',
+      '图像识别项目开发',
+      '自然语言处理应用'
+    ]
   },
   {
     title: '全栈AI工程师',
@@ -423,7 +529,15 @@ const vipCourses = ref([
     image: '/img/ai04.jpg',
     level: '中级',
     students: '2100人学习',
-    price: '¥799'
+    price: '¥799',
+    badge: '管理技能',
+    duration: '共40课时',
+    features: [
+      'AI产品规划与设计',
+      '团队管理与协作',
+      '数据分析与决策',
+      '行业前沿趋势解读'
+    ]
   }
 ])
 
@@ -449,7 +563,15 @@ const projectCourses = ref([
     image: '/img/py04.jpg',
     level: '实战',
     students: '980人参与',
-    price: '¥499'
+    price: '¥499',
+    badge: 'AI应用',
+    duration: '5周完成',
+    features: [
+      '自然语言处理技术',
+      '机器学习对话模型',
+      '企业级聊天机器人部署',
+      '用户体验优化方案'
+    ]
   },
   {
     title: 'AR/VR交互设计项目',
@@ -471,7 +593,15 @@ const projectCourses = ref([
     image: '/img/u04.jpg',
     level: '高级',
     students: '420人参与',
-    price: '¥999'
+    price: '¥999',
+    badge: '前沿技术',
+    duration: '8周完成',
+    features: [
+      '区块链技术原理深度解析',
+      '智能合约开发与部署',
+      'DeFi应用开发实战',
+      '区块链安全与审计'
+    ]
   }
 ])
 
@@ -497,7 +627,15 @@ const systemCourses = ref([
     image: '/img/k02.png',
     level: '体系课',
     students: '4200人学习',
-    price: '¥1999'
+    price: '¥1999',
+    badge: '创意设计',
+    duration: '3个月完成',
+    features: [
+      'AIGC工具全面掌握',
+      '创意设计思维培养',
+      '商业项目实战经验',
+      '设计师职业发展规划'
+    ]
   },
   {
     title: 'AI产品经理认证体系',
@@ -519,7 +657,15 @@ const systemCourses = ref([
     image: '/img/k04.png',
     level: '体系课',
     students: '2800人学习',
-    price: '¥3499'
+    price: '¥3499',
+    badge: '高端认证',
+    duration: '6个月完成',
+    features: [
+      '核心算法深度剖析',
+      '大厂算法工程师必备技能',
+      '项目作品集构建指导',
+      '一线企业内推机会'
+    ]
   }
 ])
 
@@ -586,6 +732,18 @@ onMounted(() => {
   margin: 3rem 0;
 }
 
+.section-divider2 {
+  border: none;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.09);
+  margin: 2rem 0;
+}
+
+/* 卡片缩放样式 */
+.card-scale {
+  transform: scale(0.92);
+}
+
 /* 查看更多链接样式 */
 .more-link {
   color: #1E7F98;
@@ -627,6 +785,64 @@ onMounted(() => {
   bottom: 50px;
 }
 
+/* 教师卡片样式 */
+.card-glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card-glass:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-link-no-underline {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-link-no-underline:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 教师头像样式 */
+.teacher-avatar {
+  width: 78%;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+  padding: 10px 0;
+  border-radius: 8px;
+}
+
+/* 卡片内容样式 */
+.card-body .card-text {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  margin: 0;
+  text-align: center;
+}
+
+.card-footer {
+  background-color: rgba(248, 249, 250, 0.8);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-footer small {
+  font-size: 0.9rem;
+}
+
+.float-right {
+  float: right;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .uai-title {
@@ -644,6 +860,10 @@ onMounted(() => {
   .carousel-caption {
     bottom: 20px;
     padding: 15px;
+  }
+  
+  .teacher-avatar {
+    width: 85%;
   }
 }
 </style> 

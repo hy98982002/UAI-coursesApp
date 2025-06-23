@@ -1,6 +1,6 @@
 <!-- LessonRow.vue - 课程行组件 -->
 <template>
-  <div class="lesson-item d-flex justify-content-between align-items-center p-2">
+  <div class="lesson-item">
     <div class="d-flex align-items-center">
       <i :class="getIconClass()" class="me-2"></i>
       <span>{{ lesson.title }}</span>
@@ -73,22 +73,64 @@ const handleClick = () => {
 
 <style scoped>
 .lesson-item {
-  border-top: 1px solid #eee;
+  padding: 12px 20px;
+  border-top: 1px solid #f0f0f0;
   transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lesson-item:first-child {
+  border-top: none;
 }
 
 .lesson-item:hover {
   background-color: #f8f9fa;
 }
 
+/* 播放图标样式 */
+.fa-play-circle,
+.fa-users,
+.fa-file-download {
+  color: #1E7F98;
+  font-size: 14px;
+}
+
 /* 按钮样式 */
 .btn-outline-info {
-  border-color: var(--uai-tech-blue, #1E7F98);
-  color: var(--uai-tech-blue, #1E7F98);
+  border-color: #1E7F98;
+  color: #1E7F98;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 500;
 }
 
 .btn-outline-info:hover {
-  background-color: var(--uai-tech-blue, #1E7F98);
+  background-color: #1E7F98;
   color: #fff;
+  border-color: #1E7F98;
+}
+
+.btn-outline-secondary {
+  border-color: #6c757d;
+  color: #6c757d;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+  border-color: #6c757d;
+}
+
+/* 时长文字样式 */
+.text-muted.small {
+  color: #999 !important;
+  font-size: 12px;
 }
 </style> 

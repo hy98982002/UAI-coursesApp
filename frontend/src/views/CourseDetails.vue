@@ -13,19 +13,13 @@
       <CourseHeroCard :courseInfo="courseInfo" />
 
       <!-- 选项卡和侧栏 -->
-      <div class="row">
+      <div class="row g-4">
         <div class="col-lg-8">
           <CourseTabs :defaultTab="activeTab" />
         </div>
         
         <div class="col-lg-4">
-          <SidebarPricingCard
-            :courseInfo="sidebarCourseInfo"
-            :vipDiscount="vipDiscount"
-            :features="courseFeatures"
-            :services="courseServices"
-            :courseStats="courseStats"
-          />
+          <SidebarPricingCard />
         </div>
       </div>
     </section>
@@ -68,43 +62,7 @@ const courseInfo = ref<CourseInfo>({
   price: 299
 })
 
-// 侧边栏课程信息
-const sidebarCourseInfo = ref({
-  isFree: true,
-  price: 299,
-  originalPrice: 399,
-  priceNote: '一次购买，永久学习'
-})
 
-// VIP优惠信息
-const vipDiscount = ref({
-  savedAmount: 100,
-  vipPrice: 199
-})
-
-// 课程特色
-const courseFeatures = ref([
-  '高清视频教学',
-  '源码资料下载',
-  '在线答疑服务',
-  '学习进度跟踪',
-  '完课证书认证'
-])
-
-// 学习服务
-const courseServices = ref([
-  { name: '答疑服务', description: '专业讲师在线答疑，解决学习过程中的疑问' },
-  { name: '社群交流', description: '加入学习社群，与同学交流学习心得' },
-  { name: '实战项目', description: '真实项目实战，提升实际工作能力' },
-  { name: '就业指导', description: '提供就业指导和职业规划建议' }
-])
-
-// 课程统计
-const courseStats = ref({
-  studentCount: '1.2K',
-  rating: 4,
-  lessonCount: 25
-})
 
 // 页面挂载后的初始化
 onMounted(() => {
@@ -144,6 +102,23 @@ footer {
   --uai-hover-blue: rgba(35, 192, 247, 0.3);
   --uai-bg-gray: #F2F7F7;
   --uai-border-gray: rgba(222, 222, 222, 0.9);
+}
+
+/* 精确移除课程详情页侧边栏的蓝色边框 */
+.course-details-page .col-lg-4 {
+  border: none !important;
+  outline: none !important;
+}
+
+.course-details-page .course-sidebar {
+  border: none !important;
+  outline: none !important;
+}
+
+/* 只针对侧边栏内的卡片移除边框，保留优惠券按钮 */
+.course-details-page .course-sidebar .card:not(.coupon-btn) {
+  border: none !important;
+  outline: none !important;
 }
 </style>
 

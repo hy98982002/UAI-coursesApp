@@ -146,13 +146,15 @@ onMounted(() => {
   color: #1E7F98;
 }
 
-.dropdown-menu {
+.btn-group .dropdown-menu {
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(30, 127, 152, 0.1);
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-top: 38px !important;  /* 增加顶部间距，向下移动菜单 */
+  margin-left: 50px !important; /* 增加左侧间距 */
 }
 
 .dropdown-item:hover {

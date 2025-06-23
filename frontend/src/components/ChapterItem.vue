@@ -61,23 +61,33 @@ const handleLessonClick = (lesson: Lesson) => {
 </script>
 
 <style scoped>
-/* 章节样式 */
+/* 章节样式 - 独立卡片效果 */
 .chapter-item {
-  border: 1px solid #eee;
+  background: white;
+  border: 1px solid #e9ecef;
   border-radius: 8px;
   overflow: hidden;
   font-size: 14px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.chapter-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 
 .chapter-item h5 {
   font-size: 16px;
+  font-weight: 500;
 }
 
 .chapter-header {
-  padding: 15px;
+  padding: 16px 20px;
   background-color: #f8f9fa;
   cursor: pointer;
   transition: all 0.3s ease;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .chapter-header:hover {
@@ -87,6 +97,8 @@ const handleLessonClick = (lesson: Lesson) => {
 /* 箭头动画 */
 .chapter-arrow {
   transition: transform 0.3s ease;
+  color: #6c757d;
+  font-size: 12px;
 }
 
 .chapter-arrow.rotated {
@@ -96,13 +108,16 @@ const handleLessonClick = (lesson: Lesson) => {
 /* 课时样式 */
 .chapter-lessons {
   background-color: #fff;
+  padding: 0;
 }
 
 /* 徽章样式 */
-.badge-light {
-  background-color: #e9ecef;
-  color: #6c757d;
-  font-weight: normal;
-  padding: 5px 10px;
+.badge {
+  background-color: #e9ecef !important;
+  color: #6c757d !important;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
 }
 </style> 

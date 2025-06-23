@@ -1,304 +1,477 @@
-<!-- SidebarPricingCard.vue - 侧边栏价格卡片组件 -->
+<!-- SidebarPricingCard.vue - 全新设计的侧边栏价格卡片组件 -->
 <template>
-  <div class="course-sidebar position-sticky">
-    <div class="card shadow-sm">
-      <div class="card-body p-4">
-        <!-- 课程价格 -->
-        <div class="mb-4">
-          <div class="d-flex align-items-baseline mb-2">
-            <span class="h3 mb-0 fw-bold text-success">
-              {{ courseInfo.isFree ? '免费' : `¥${courseInfo.price}` }}
+  <div class="sidebar-container">
+    <!-- 价格卡片 -->
+    <div class="price-card">
+      <!-- 特惠标题 -->
+      <div class="promo-header">
+        <div class="promo-icon">⏰</div>
+        <span class="promo-text">五一限时七折特惠</span>
+      </div>
+      
+      <!-- 活动时间 -->
+      <div class="activity-time">
+        活动结束时间：2025年05月16日
+      </div>
+      
+      <!-- 价格区域 -->
+      <div class="price-section">
+        <div class="current-price">¥896.00</div>
+        <div class="original-price">¥1280.00</div>
+      </div>
+      
+      <!-- VIP价格 -->
+      <div class="vip-section">
+        <span class="vip-label">超级会员价</span>
+        <span class="vip-price">¥806.40</span>
+        <span class="vip-link" @click="handleJoinVip">立即加入>>></span>
+      </div>
+      
+      <!-- 购物车按钮 -->
+      <div class="cart-button" @click="handleAddToCart">
+        🛒 加入购物车
+      </div>
+      
+      <!-- 优惠券按钮 -->
+      <div class="coupon-button" @click="handleGetCoupon">
+        🎫 领取专属优惠券
+      </div>
+      
+      <!-- 服务标签 -->
+      <div class="service-section">
+        <div class="service-label">承诺服务</div>
+        <div class="service-tags">
+          <div class="service-tag-wrapper" v-for="tag in serviceTags" :key="tag.name">
+            <span class="service-tag" :title="tag.desc">
+              {{ tag.name }}
             </span>
-            <span v-if="!courseInfo.isFree && courseInfo.originalPrice" class="text-muted text-decoration-line-through ms-2">
-              ¥{{ courseInfo.originalPrice }}
-            </span>
-          </div>
-          <small class="text-muted">{{ courseInfo.priceNote }}</small>
-        </div>
-
-        <!-- VIP 优惠信息 -->
-        <div v-if="vipDiscount" class="alert alert-warning mb-3">
-          <div class="d-flex align-items-center">
-            <i class="fas fa-crown text-warning me-2"></i>
-            <div>
-              <small class="mb-0">
-                <strong>VIP 会员专享：</strong><br>
-                立省 ¥{{ vipDiscount.savedAmount }}，仅需 ¥{{ vipDiscount.vipPrice }}
-              </small>
-            </div>
-          </div>
-        </div>
-
-        <!-- 购买按钮组 -->
-        <div class="d-grid gap-2 mb-4">
-          <button 
-            class="btn btn-success btn-lg"
-            @click="handlePurchase"
-          >
-            <i class="fas fa-shopping-cart me-2"></i>
-            {{ courseInfo.isFree ? '立即学习' : '立即购买' }}
-          </button>
-          
-          <button 
-            v-if="!courseInfo.isFree"
-            class="btn btn-yellow-black"
-            @click="handleVipPurchase"
-          >
-            <i class="fas fa-crown me-2"></i>
-            开通VIP立即学
-          </button>
-          
-          <button 
-            class="btn btn-outline-secondary"
-            @click="handleAddToCart"
-          >
-            <i class="far fa-heart me-2"></i>
-            加入购物车
-          </button>
-        </div>
-
-        <!-- 课程特色 -->
-        <div class="mb-4">
-          <h6 class="mb-3">课程特色</h6>
-          <ul class="list-unstyled">
-            <li v-for="feature in features" :key="feature" class="mb-2">
-              <i class="fas fa-check text-success me-2"></i>
-              <small>{{ feature }}</small>
-            </li>
-          </ul>
-        </div>
-
-        <!-- 服务标签 -->
-        <div class="mb-4">
-          <h6 class="mb-3">学习服务</h6>
-          <div class="d-flex flex-wrap gap-2">
-            <span 
-              v-for="service in services" 
-              :key="service.name"
-              class="badge bg-light text-dark px-3 py-2 tag-item tag-wrapper"
-            >
-              {{ service.name }}
-              <!-- 服务说明弹窗 -->
-              <div class="service-popup">
-                <div class="popup-header">
-                  <h6 class="mb-2">{{ service.name }}</h6>
-                </div>
-                <div class="popup-content">
-                  <p class="mb-0">{{ service.description }}</p>
-                </div>
+            <div class="service-popup">
+              <div class="popup-header">
+                <h6>{{ tag.title }}</h6>
               </div>
-            </span>
-          </div>
-        </div>
-
-        <!-- 课程统计 -->
-        <div class="border-top pt-3">
-          <div class="row text-center">
-            <div class="col-4">
-              <div class="mb-1 fw-bold">{{ courseStats.studentCount }}</div>
-              <small class="text-muted">学员</small>
-            </div>
-            <div class="col-4">
-              <div class="mb-1 fw-bold">{{ courseStats.rating }}.0</div>
-              <small class="text-muted">评分</small>
-            </div>
-            <div class="col-4">
-              <div class="mb-1 fw-bold">{{ courseStats.lessonCount }}</div>
-              <small class="text-muted">课时</small>
+              <div class="popup-content">
+                <p>{{ tag.desc }}</p>
+              </div>
+              <!-- 小箭头 -->
+              <div class="popup-arrow"></div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    
+    <!-- 讲师卡片 -->
+    <div class="teacher-card">
+      <div class="teacher-avatar">
+        <img src="/img/tou03.png" alt="老师头像" />
+      </div>
+      <div class="teacher-name">小雨宿 · 资深讲师</div>
+      <div class="teacher-field">交互设计 & Unity</div>
+      <div class="teacher-courses-btn" @click="handleViewTeacherCourses">
+        查看该老师全部课程
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 
+// 服务标签数据
+const serviceTags = ref([
+  { 
+    name: '练', 
+    title: '24小时作业批阅', 
+    desc: '24小时内完成作业批阅，即时反馈并巩固您的学习效果' 
+  },
+  { 
+    name: '试', 
+    title: '免费课程试听', 
+    desc: '精选课程内容免费体验，提前感受优质教学' 
+  },
+  { 
+    name: '问', 
+    title: '在线答疑解惑', 
+    desc: '资深讲师实时在线答疑，快速解决学习难题' 
+  },
+  { 
+    name: '疑', 
+    title: '疑难问题解决', 
+    desc: '专业技术团队一对一指导，助你突破技术瓶颈' 
+  },
+  { 
+    name: '活', 
+    title: '丰富课程活动', 
+    desc: '定期技术沙龙、项目实战，提升实践能力' 
+  },
+  { 
+    name: '就', 
+    title: '就业服务保障', 
+    desc: '一站式就业服务，助你快速实现职业提升' 
+  }
+])
 
-interface CourseInfo {
-  isFree: boolean
-  price?: number
-  originalPrice?: number
-  priceNote?: string
-}
-
-interface VipDiscount {
-  savedAmount: number
-  vipPrice: number
-}
-
-interface Service {
-  name: string
-  description: string
-}
-
-interface CourseStats {
-  studentCount: string
-  rating: number
-  lessonCount: number
-}
-
-interface Props {
-  courseInfo?: CourseInfo
-  vipDiscount?: VipDiscount
-  features?: string[]
-  services?: Service[]
-  courseStats?: CourseStats
-}
-
-withDefaults(defineProps<Props>(), {
-  courseInfo: () => ({
-    isFree: true,
-    price: 299,
-    originalPrice: 399,
-    priceNote: '一次购买，永久学习'
-  }),
-  vipDiscount: () => ({
-    savedAmount: 100,
-    vipPrice: 199
-  }),
-  features: () => [
-    '高清视频教学',
-    '源码资料下载',
-    '在线答疑服务',
-    '学习进度跟踪',
-    '完课证书认证'
-  ],
-  services: () => [
-    { name: '答疑服务', description: '专业讲师在线答疑，解决学习过程中的疑问' },
-    { name: '社群交流', description: '加入学习社群，与同学交流学习心得' },
-    { name: '实战项目', description: '真实项目实战，提升实际工作能力' },
-    { name: '就业指导', description: '提供就业指导和职业规划建议' }
-  ],
-  courseStats: () => ({
-    studentCount: '1.2K',
-    rating: 4,
-    lessonCount: 25
-  })
-})
-
-const handlePurchase = () => {
-  console.log('立即购买')
-  // TODO: 跳转到购买页面
-}
-
-const handleVipPurchase = () => {
-  console.log('VIP购买')
-  // TODO: 跳转到VIP购买页面
+// 事件处理函数
+const handleJoinVip = () => {
+  console.log('立即加入VIP')
 }
 
 const handleAddToCart = () => {
   console.log('加入购物车')
-  // TODO: 添加到购物车
+}
+
+const handleGetCoupon = () => {
+  console.log('领取专属优惠券')
+}
+
+const handleViewTeacherCourses = () => {
+  console.log('查看该老师全部课程')
 }
 </script>
 
 <style scoped>
-.course-sidebar {
-  top: 80px;
-  width: 300px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
+/* 容器在正常布局流中，但固定不滚动 */
+.sidebar-container {
+  position: sticky;
+  top: 20px;
+  width: 100%;
+  max-width: 320px;
+  z-index: 100;
 }
 
-/* VIP按钮样式 */
-.btn-yellow-black {
-  background-color: #ffc107 !important;
-  color: #222 !important;
-  border: 1px solid #ffc107 !important;
+/* 价格卡片 - 使用黄金比例 1.618 */
+.price-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  /* 黄金比例：宽度320px，高度约320/1.618=198px，但内容需要更多空间，所以适当调整 */
+  min-height: 420px;
+}
+
+/* 特惠标题 */
+.promo-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.promo-icon {
+  color: #1E7F98;
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.promo-text {
+  color: #666;
+  font-size: 14px;
+}
+
+/* 活动时间 */
+.activity-time {
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+/* 价格区域 */
+.price-section {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.current-price {
+  color: #f39c12;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.original-price {
+  color: #999;
+  font-size: 16px;
+  text-decoration: line-through;
+}
+
+/* VIP区域 */
+.vip-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.vip-label {
+  color: #666;
+}
+
+.vip-price {
+  color: #f39c12;
+  font-weight: 600;
+}
+
+.vip-link {
+  color: #1E7F98;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.vip-link:hover {
+  color: #35a4be;
+}
+
+/* 按钮样式 */
+.cart-button {
+  background: #1E7F98;
+  color: white;
+  padding: 12px 0;
+  text-align: center;
   border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
   transition: all 0.3s ease;
 }
 
-.btn-yellow-black:hover,
-.btn-yellow-black:focus {
-  background-color: #ffc107 !important;
-  color: #000 !important;
-  border: 1px solid #ffc107 !important;
+.cart-button:hover {
+  background: #35a4be;
+  transform: translateY(-2px);
 }
 
-/* 服务标签样式 */
-.tag-wrapper {
+.coupon-button {
+  background: transparent;
+  color: #1E7F98;
+  padding: 10px 0;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  border: 2px dashed #1E7F98;
+}
+
+.coupon-button:hover {
+  background: rgba(30, 127, 152, 0.05);
+  border-color: #35a4be;
+  color: #35a4be;
+}
+
+/* 服务区域 */
+.service-section {
+  text-align: center;
+}
+
+.service-label {
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.service-tags {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* 服务标签包装器 */
+.service-tag-wrapper {
   position: relative;
   display: inline-block;
 }
 
+.service-tag {
+  background: rgba(30, 127, 152, 0.1);
+  color: #1E7F98;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.service-tag:hover {
+  background: rgba(30, 127, 152, 0.2);
+  transform: translateY(-2px);
+}
+
+/* 服务弹出卡片 */
 .service-popup {
   position: absolute;
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  width: 280px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(30,127,152,0.2);
+  background: white;
+  border: 1px solid #e9ecef;
   border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
   z-index: 1000;
+  width: 200px;
+  margin-bottom: 8px;
+  pointer-events: none;
 }
 
-.service-popup::after {
-  content: '';
+/* 悬停时显示弹出卡片 */
+.service-tag-wrapper:hover .service-popup {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+/* 弹出卡片箭头 */
+.popup-arrow {
   position: absolute;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border-width: 8px;
-  border-style: solid;
-  border-color: rgba(30,127,152,0.2) transparent transparent transparent;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid white;
 }
 
-.tag-wrapper:hover .service-popup {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(-5px);
+.popup-arrow::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #e9ecef;
 }
 
+/* 弹出卡片标题 */
 .popup-header h6 {
   color: #1E7F98;
   font-weight: 600;
-  border-bottom: 1px solid rgba(30,127,152,0.1);
-  padding-bottom: 8px;
+  font-size: 14px;
+  margin: 0 0 8px 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(30, 127, 152, 0.1);
 }
 
+/* 弹出卡片内容 */
 .popup-content p {
   color: #666;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.5;
+  margin: 0;
 }
 
-.tag-item:hover {
-  background: rgba(30,127,152,0.2) !important;
+/* 讲师卡片 - 使用白银比例 1.414 */
+.teacher-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  /* 白银比例：宽度320px，高度约320/1.414=226px */
+  min-height: 226px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 头像 */
+.teacher-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.teacher-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 讲师信息 */
+.teacher-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.teacher-field {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* 讲师课程按钮 */
+.teacher-courses-btn {
+  background: rgba(30, 127, 152, 0.1);
+  color: #1E7F98;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
   transition: all 0.3s ease;
 }
 
-/* 滚动条样式 */
-.course-sidebar::-webkit-scrollbar {
-  width: 8px;
+.teacher-courses-btn:hover {
+  background: rgba(30, 127, 152, 0.2);
+  transform: translateY(-2px);
 }
 
-.course-sidebar::-webkit-scrollbar-track {
-  background: transparent;
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .sidebar-container {
+    position: static;
+    top: auto;
+    max-width: 100%;
+    margin: 20px 0;
+  }
+  
+  .price-card,
+  .teacher-card {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
-.course-sidebar::-webkit-scrollbar-thumb {
-  background-color: transparent;
-  border: 1px solid var(--uai-tech-blue, #1E7F98);
-  border-radius: 6px;
+/* 强制移除所有可能的边框 */
+.sidebar-container,
+.sidebar-container *,
+.price-card,
+.price-card *,
+.teacher-card,
+.teacher-card * {
+  box-sizing: border-box;
 }
 
-.course-sidebar::-webkit-scrollbar-thumb:hover {
-  border-color: #35a4be;
+/* 确保没有意外的边框 */
+* {
+  border: 0 !important;
+  outline: 0 !important;
 }
 
-/* Firefox兼容处理 */
-.course-sidebar {
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
+/* 但保留虚线边框的优惠券按钮 */
+.coupon-button {
+  border: 2px dashed #1E7F98 !important;
+}
+
+.coupon-button:hover {
+  border: 2px dashed #35a4be !important;
 }
 </style> 

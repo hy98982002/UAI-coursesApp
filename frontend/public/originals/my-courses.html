@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的课程 - UAI教育平台</title>
+    <!-- Bootstrap 5.3.6 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* 页面基础样式 */
+        body {
+            font-family: "Alibaba PuHuiTi", "思源黑体", sans-serif;
+            background-color: #f8f9fa;
+            color: #111111;
+            min-height: 100vh;
+        }
+
+        /* 全局样式变量 */
+        :root {
+            --uai-tech-blue: #1E7F98;
+            --uai-light-blue: #BDECFD;
+            --uai-hover-blue: rgba(35, 192, 247, 0.3);
+            --uai-bg-gray: #F2F7F7;
+            --uai-border-gray: rgba(222, 222, 222, 0.9);
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background-color: var(--uai-tech-blue) !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        /* 页面头部 */
+        .page-header {
+            padding: 2rem 0;
+            margin-bottom: 0;
+            background-color: #e9ecef;
+        }
+
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 1rem;
+        }
+
+        /* 统计卡片样式 */
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+            height: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+
+        /* 课程卡片样式 */
+        .course-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .course-image-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover .course-image {
+            transform: scale(1.05);
+        }
+
+        .course-status-badge {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+        }
+
+        .course-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .course-card:hover .course-overlay {
+            opacity: 1;
+        }
+
+        .course-content {
+            padding: 1.5rem;
+        }
+
+        .course-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .course-title a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .course-title a:hover {
+            color: var(--uai-tech-blue) !important;
+        }
+
+        /* 学习进度样式 */
+        .learning-progress .progress {
+            height: 6px;
+            border-radius: 3px;
+        }
+
+        .purchase-info {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 0.75rem;
+        }
+
+        /* 筛选标签样式 */
+        .filter-tabs .btn {
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .filter-tabs .badge {
+            font-size: 0.7rem;
+        }
+
+        /* 空状态样式 */
+        .empty-state {
+            background: #fff;
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 2rem 0;
+        }
+
+        .empty-icon {
+            opacity: 0.5;
+        }
+
+        /* 按钮样式 */
+        .btn-primary {
+            background-color: var(--uai-tech-blue);
+            border-color: var(--uai-tech-blue);
+        }
+
+        .btn-primary:hover {
+            background-color: #165a6b;
+            border-color: #165a6b;
+        }
+
+        .btn-outline-primary {
+            color: var(--uai-tech-blue);
+            border-color: var(--uai-tech-blue);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--uai-tech-blue);
+            border-color: var(--uai-tech-blue);
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 1rem 0;
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .course-content {
+                padding: 1rem;
+            }
+            
+            .filter-tabs {
+                text-align: center;
+            }
+            
+            .filter-tabs .btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .courses-grid .col-lg-6 {
+                padding: 0 0.5rem;
+            }
+            
+            .course-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-graduation-cap me-2"></i>
+                UAI教育平台
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">课程中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">我的学习</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-cart me-1"></i>
+                            购物车
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i>
+                            张同学
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">个人中心</a></li>
+                            <li><a class="dropdown-item" href="#">我的订单</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">退出登录</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面头部 -->
+    <div class="page-header bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#" class="text-decoration-none">首页</a>
+                            </li>
+                            <li class="breadcrumb-item active">我的课程</li>
+                        </ol>
+                    </nav>
+                    <h1 class="h3 mb-3">
+                        <i class="bi bi-book me-2"></i>我的课程
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <!-- 学习统计概览 -->
+        <div class="learning-stats mb-4">
+            <div class="row">
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-icon bg-primary text-white">
+                            <i class="bi bi-collection"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number">12</h3>
+                            <p class="stat-label">学习课程</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-icon bg-success text-white">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number">5</h3>
+                            <p class="stat-label">已完成</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-icon bg-info text-white">
+                            <i class="bi bi-play-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number">6</h3>
+                            <p class="stat-label">学习中</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-icon bg-warning text-white">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number">128h</h3>
+                            <p class="stat-label">学习时长</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 筛选和排序 -->
+        <div class="course-filters mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="filter-tabs">
+                        <button class="btn btn-primary me-2 mb-2">
+                            <i class="bi bi-collection me-1"></i>
+                            全部课程
+                            <span class="badge bg-light text-primary rounded-pill ms-1">12</span>
+                        </button>
+                        <button class="btn btn-outline-primary me-2 mb-2">
+                            <i class="bi bi-play-circle me-1"></i>
+                            学习中
+                            <span class="badge bg-primary rounded-pill ms-1">6</span>
+                        </button>
+                        <button class="btn btn-outline-primary me-2 mb-2">
+                            <i class="bi bi-check-circle me-1"></i>
+                            已完成
+                            <span class="badge bg-primary rounded-pill ms-1">5</span>
+                        </button>
+                        <button class="btn btn-outline-primary me-2 mb-2">
+                            <i class="bi bi-pause-circle me-1"></i>
+                            已暂停
+                            <span class="badge bg-primary rounded-pill ms-1">1</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-md-end">
+                        <select class="form-select w-auto">
+                            <option value="last_learn_time" selected>最近学习</option>
+                            <option value="enrollment_date">购买时间</option>
+                            <option value="progress_percentage">学习进度</option>
+                            <option value="course_title">课程名称</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 课程列表 -->
+        <div class="courses-grid">
+            <div class="row">
+                <!-- 课程卡片 1 - 学习中 -->
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="course-card h-100">
+                        <!-- 课程封面 -->
+                        <div class="course-image-wrapper">
+                            <img src="originals/course-vue.jpg" alt="Vue.js完全指南" class="course-image">
+                            <div class="course-status-badge">
+                                <span class="badge bg-primary">学习中</span>
+                            </div>
+                            <!-- 继续学习按钮 -->
+                            <div class="course-overlay">
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="bi bi-play-fill me-1"></i>继续学习
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 课程信息 -->
+                        <div class="course-content">
+                            <h5 class="course-title">
+                                <a href="#" class="text-decoration-none text-dark">
+                                    Vue.js完全指南：从入门到项目实战
+                                </a>
+                            </h5>
+                            
+                            <p class="course-instructor text-muted mb-2">
+                                <i class="bi bi-person me-1"></i>
+                                张老师
+                            </p>
+
+                            <!-- 学习进度 -->
+                            <div class="learning-progress mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted">学习进度</small>
+                                    <small class="text-primary fw-bold">75%</small>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" style="width: 75%"></div>
+                                </div>
+                                <small class="text-muted">已完成 18 个课时</small>
+                            </div>
+
+                            <!-- 购买信息 -->
+                            <div class="purchase-info mb-3">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买时间</small>
+                                        <small>2024/01/15</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买价格</small>
+                                        <small class="text-success fw-bold">¥299</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 最后学习时间 -->
+                            <div class="last-learn-time mb-3">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>
+                                    最后学习：2小时前
+                                </small>
+                            </div>
+
+                            <!-- 操作按钮 -->
+                            <div class="course-actions">
+                                <div class="btn-group w-100">
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="bi bi-play-fill me-1"></i>继续学习
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-info-circle me-1"></i>详情
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程卡片 2 - 已完成 -->
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="course-card h-100">
+                        <div class="course-image-wrapper">
+                            <img src="originals/course-react.jpg" alt="React开发实战" class="course-image">
+                            <div class="course-status-badge">
+                                <span class="badge bg-success">已完成</span>
+                            </div>
+                        </div>
+
+                        <div class="course-content">
+                            <h5 class="course-title">
+                                <a href="#" class="text-decoration-none text-dark">
+                                    React开发实战：构建现代化Web应用
+                                </a>
+                            </h5>
+                            
+                            <p class="course-instructor text-muted mb-2">
+                                <i class="bi bi-person me-1"></i>
+                                李老师
+                            </p>
+
+                            <div class="learning-progress mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted">学习进度</small>
+                                    <small class="text-success fw-bold">100%</small>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" style="width: 100%"></div>
+                                </div>
+                                <small class="text-muted">已完成 16 个课时</small>
+                            </div>
+
+                            <div class="purchase-info mb-3">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买时间</small>
+                                        <small>2024/01/10</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买价格</small>
+                                        <small class="text-success fw-bold">¥399</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="last-learn-time mb-3">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>
+                                    完成时间：1天前
+                                </small>
+                            </div>
+
+                            <div class="course-actions">
+                                <div class="btn-group w-100">
+                                    <button class="btn btn-success btn-sm">
+                                        <i class="bi bi-check-circle me-1"></i>已完成
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-info-circle me-1"></i>详情
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程卡片 3 - 学习中 -->
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="course-card h-100">
+                        <div class="course-image-wrapper">
+                            <img src="originals/course-python.jpg" alt="Python数据分析" class="course-image">
+                            <div class="course-status-badge">
+                                <span class="badge bg-primary">学习中</span>
+                            </div>
+                            <div class="course-overlay">
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="bi bi-play-fill me-1"></i>继续学习
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="course-content">
+                            <h5 class="course-title">
+                                <a href="#" class="text-decoration-none text-dark">
+                                    Python数据分析：从基础到机器学习
+                                </a>
+                            </h5>
+                            
+                            <p class="course-instructor text-muted mb-2">
+                                <i class="bi bi-person me-1"></i>
+                                王老师
+                            </p>
+
+                            <div class="learning-progress mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted">学习进度</small>
+                                    <small class="text-primary fw-bold">45%</small>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" style="width: 45%"></div>
+                                </div>
+                                <small class="text-muted">已完成 14 个课时</small>
+                            </div>
+
+                            <div class="purchase-info mb-3">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买时间</small>
+                                        <small>2024/01/20</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买价格</small>
+                                        <small class="text-success fw-bold">
+                                            <span class="badge bg-warning text-dark me-1">VIP</span>
+                                            免费
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="last-learn-time mb-3">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>
+                                    最后学习：1天前
+                                </small>
+                            </div>
+
+                            <div class="course-actions">
+                                <div class="btn-group w-100">
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="bi bi-play-fill me-1"></i>继续学习
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-info-circle me-1"></i>详情
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程卡片 4 - 已暂停 -->
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="course-card h-100">
+                        <div class="course-image-wrapper">
+                            <img src="originals/course-nodejs.jpg" alt="Node.js后端开发" class="course-image">
+                            <div class="course-status-badge">
+                                <span class="badge bg-warning">已暂停</span>
+                            </div>
+                        </div>
+
+                        <div class="course-content">
+                            <h5 class="course-title">
+                                <a href="#" class="text-decoration-none text-dark">
+                                    Node.js后端开发：API设计与数据库
+                                </a>
+                            </h5>
+                            
+                            <p class="course-instructor text-muted mb-2">
+                                <i class="bi bi-person me-1"></i>
+                                陈老师
+                            </p>
+
+                            <div class="learning-progress mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted">学习进度</small>
+                                    <small class="text-primary fw-bold">25%</small>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-danger" style="width: 25%"></div>
+                                </div>
+                                <small class="text-muted">已完成 5 个课时</small>
+                            </div>
+
+                            <div class="purchase-info mb-3">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买时间</small>
+                                        <small>2024/01/08</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买价格</small>
+                                        <small class="text-success fw-bold">¥359</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="last-learn-time mb-3">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>
+                                    最后学习：5天前
+                                </small>
+                            </div>
+
+                            <div class="course-actions">
+                                <div class="btn-group w-100">
+                                    <button class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pause-fill me-1"></i>恢复学习
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-info-circle me-1"></i>详情
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 更多课程卡片 -->
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="course-card h-100">
+                        <div class="course-image-wrapper">
+                            <img src="originals/course-mobile.jpg" alt="移动端开发" class="course-image">
+                            <div class="course-status-badge">
+                                <span class="badge bg-success">已完成</span>
+                            </div>
+                        </div>
+
+                        <div class="course-content">
+                            <h5 class="course-title">
+                                <a href="#" class="text-decoration-none text-dark">
+                                    移动端开发：React Native跨平台应用
+                                </a>
+                            </h5>
+                            
+                            <p class="course-instructor text-muted mb-2">
+                                <i class="bi bi-person me-1"></i>
+                                刘老师
+                            </p>
+
+                            <div class="learning-progress mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted">学习进度</small>
+                                    <small class="text-success fw-bold">100%</small>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" style="width: 100%"></div>
+                                </div>
+                                <small class="text-muted">已完成 22 个课时</small>
+                            </div>
+
+                            <div class="purchase-info mb-3">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买时间</small>
+                                        <small>2024/01/05</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买价格</small>
+                                        <small class="text-success fw-bold">¥429</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="last-learn-time mb-3">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>
+                                    完成时间：3天前
+                                </small>
+                            </div>
+
+                            <div class="course-actions">
+                                <div class="btn-group w-100">
+                                    <button class="btn btn-success btn-sm">
+                                        <i class="bi bi-check-circle me-1"></i>已完成
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-info-circle me-1"></i>详情
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="course-card h-100">
+                        <div class="course-image-wrapper">
+                            <img src="originals/course-ai.jpg" alt="人工智能基础" class="course-image">
+                            <div class="course-status-badge">
+                                <span class="badge bg-primary">学习中</span>
+                            </div>
+                            <div class="course-overlay">
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="bi bi-play-fill me-1"></i>继续学习
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="course-content">
+                            <h5 class="course-title">
+                                <a href="#" class="text-decoration-none text-dark">
+                                    人工智能基础：深度学习入门实战
+                                </a>
+                            </h5>
+                            
+                            <p class="course-instructor text-muted mb-2">
+                                <i class="bi bi-person me-1"></i>
+                                周老师
+                            </p>
+
+                            <div class="learning-progress mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted">学习进度</small>
+                                    <small class="text-primary fw-bold">60%</small>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" style="width: 60%"></div>
+                                </div>
+                                <small class="text-muted">已完成 24 个课时</small>
+                            </div>
+
+                            <div class="purchase-info mb-3">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买时间</small>
+                                        <small>2024/01/25</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block">购买价格</small>
+                                        <small class="text-success fw-bold">免费</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="last-learn-time mb-3">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>
+                                    最后学习：6小时前
+                                </small>
+                            </div>
+
+                            <div class="course-actions">
+                                <div class="btn-group w-100">
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="bi bi-play-fill me-1"></i>继续学习
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-info-circle me-1"></i>详情
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination-wrapper mt-4">
+            <nav aria-label="课程分页">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <button class="page-link">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                    </li>
+                    <li class="page-item active">
+                        <button class="page-link">1</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link">2</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>关于我们</h5>
+                    <p>UAI教育平台致力于为学习者提供优质的在线教育资源</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>快速链接</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50">课程中心</a></li>
+                        <li><a href="#" class="text-white-50">讲师招募</a></li>
+                        <li><a href="#" class="text-white-50">帮助中心</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>联系我们</h5>
+                    <p class="text-white-50">
+                        <i class="bi bi-envelope me-2"></i>support@uai.edu<br>
+                        <i class="bi bi-telephone me-2"></i>400-123-4567
+                    </p>
+                </div>
+            </div>
+            <hr class="my-4">
+            <p class="text-center mb-0">&copy; 2024 UAI教育平台. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3.6 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // 简单的交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 筛选标签切换
+            const filterButtons = document.querySelectorAll('.filter-tabs .btn');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除其他按钮的active状态
+                    filterButtons.forEach(b => {
+                        b.classList.remove('btn-primary');
+                        b.classList.add('btn-outline-primary');
+                        const badge = b.querySelector('.badge');
+                        if (badge) {
+                            badge.classList.remove('bg-light', 'text-primary');
+                            badge.classList.add('bg-primary');
+                        }
+                    });
+                    
+                    // 添加当前按钮的active状态
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('btn-primary');
+                    const badge = this.querySelector('.badge');
+                    if (badge) {
+                        badge.classList.remove('bg-primary');
+                        badge.classList.add('bg-light', 'text-primary');
+                    }
+                });
+            });
+
+            // 课程卡片悬停效果
+            const courseCards = document.querySelectorAll('.course-card');
+            courseCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // 继续学习按钮点击效果
+            const continueButtons = document.querySelectorAll('.course-overlay .btn, .course-actions .btn-primary');
+            continueButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const courseName = this.closest('.course-card').querySelector('.course-title a').textContent;
+                    alert(`开始学习课程：${courseName}`);
+                });
+            });
+
+            // 统计卡片动画效果
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
