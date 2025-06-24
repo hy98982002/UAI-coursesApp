@@ -1,131 +1,182 @@
-# 🚀 Codex环境快速配置指南
+# 🚀 UAI教育平台 - Codex环境设置指南
 
-## 📋 项目已成功上传到GitHub
-- **仓库地址**: https://github.com/hy98982002/UAIEDUcourseApp
-- **克隆命令**: `git clone git@github.com:hy98982002/UAIEDUcourseApp.git`
+## 📋 快速开始
 
-## ⚡ 在Codex中的配置步骤
-
-### 第1步: 克隆项目
+### 1️⃣ 环境准备
 ```bash
-git clone git@github.com:hy98982002/UAIEDUcourseApp.git
-cd UAIEDUcourseApp
+# 克隆项目
+git clone git@github.com:hy98982002/UAI-coursesApp.git
+cd UAI-coursesApp
+
+# 进入后端目录
+cd backend
 ```
 
-### 第2步: 创建环境变量文件
-在 `backend/` 目录下创建 `.env` 文件：
+### 2️⃣ 配置数据库连接
 
-```bash
-cd backend
-cat > .env << 'EOF'
-# Django基础配置
-SECRET_KEY=your-secret-key-here-change-this-in-production
-DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+#### 📝 创建.env文件
+将`backend/.env.example`复制为`backend/.env`并填入您的Sealos数据库信息：
 
-# Sealos MySQL数据库配置（请替换为实际配置）
-MYSQL_HOST=your-sealos-database-host
-MYSQL_PORT=your-database-port
+```env
+# Sealos MySQL 数据库配置
+MYSQL_HOST=your-sealos-mysql-host
+MYSQL_PORT=your-mysql-port
+MYSQL_USER=your-mysql-user
+MYSQL_PASSWORD=your-mysql-password
 MYSQL_NAME=your-database-name
-MYSQL_USER=your-database-user
-MYSQL_PASSWORD=your-database-password
-
-# 数据库连接选项
 MYSQL_CHARSET=utf8mb4
-MYSQL_CONNECT_TIMEOUT=30
-MYSQL_READ_TIMEOUT=30
-MYSQL_WRITE_TIMEOUT=30
+MYSQL_CONNECT_TIMEOUT=120
+MYSQL_READ_TIMEOUT=120
+MYSQL_WRITE_TIMEOUT=120
 
-# 其他配置
+# Django 配置
+SECRET_KEY=your-django-secret-key
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0,*.codex.io,*.gitpod.io,*.github.dev
 TIME_ZONE=Asia/Shanghai
 LANGUAGE_CODE=zh-hans
-EOF
+
+# CORS 配置（开发环境）
+CORS_ALLOW_ALL_ORIGINS=True
+CORS_ALLOW_CREDENTIALS=True
 ```
 
-### 第3步: 安装依赖
+### 3️⃣ 一键启动
 ```bash
-# 后端依赖
+# 返回项目根目录
+cd ..
+
+# 运行快速启动脚本
+chmod +x codex_quick_start.sh
+./codex_quick_start.sh
+```
+
+## 🔒 安全规范
+
+### ✅ 项目已符合Codex安全标准
+- ✅ 所有敏感信息已移至`.env`文件
+- ✅ `.env`文件已加入`.gitignore`
+- ✅ Django settings使用环境变量
+- ✅ 文档中无硬编码凭据
+- ✅ 通过安全检查脚本验证
+
+### 🛡️ 安全最佳实践
+1. **永远不要在代码中硬编码敏感信息**
+2. **使用环境变量管理配置**
+3. **确保`.env`文件不被提交到Git**
+4. **定期运行安全检查**
+
+## 🔧 手动设置步骤
+
+如果快速启动脚本失败，可以手动执行以下步骤：
+
+### 1. 虚拟环境设置
+```bash
 cd backend
+python3 -m venv venv
+source venv/bin/activate  # Linux/Mac
+# 或
+venv\Scripts\activate     # Windows
+```
+
+### 2. 安装依赖
+```bash
 pip install -r requirements.txt
-
-# 前端依赖
-cd ../frontend
-npm install
+pip install mysql-connector-python python-dotenv
 ```
 
-### 第4步: 测试数据库连接
+### 3. 数据库连接测试
 ```bash
-cd backend
-python sealos_db_helper.py
+python -c "
+import mysql.connector
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+conn = mysql.connector.connect(
+    host=os.environ['MYSQL_HOST'],
+    port=int(os.environ['MYSQL_PORT']),
+    user=os.environ['MYSQL_USER'],
+    password=os.environ['MYSQL_PASSWORD'],
+    database=os.environ['MYSQL_NAME']
+)
+print('✅ 数据库连接成功!')
+conn.close()
+"
 ```
 
-### 第5步: 数据库迁移
+### 4. Django设置
 ```bash
+# 数据库迁移
 python manage.py makemigrations
 python manage.py migrate
+
+# 创建超级用户（可选）
 python manage.py createsuperuser
-```
 
-### 第6步: 启动服务
-```bash
-# 后端服务
+# 启动开发服务器
 python manage.py runserver 0.0.0.0:8000
-
-# 前端服务（新终端）
-cd ../frontend
-npm run dev
 ```
 
-## 🔧 代理网络配置说明
+## 📡 访问地址
 
-如果在Codex环境中遇到网络连接问题：
+启动成功后，您可以访问：
 
-1. **确认代理配置**: 确保代理能访问您的Sealos数据库地址
-2. **增加超时时间**: 在 `.env` 文件中设置更长的超时时间
-3. **检查防火墙**: 确保数据库端口未被阻止
+- **主站**: http://localhost:8000
+- **管理后台**: http://localhost:8000/admin
+- **API文档**: http://localhost:8000/api/
 
 ## 🛠️ 故障排除
 
-### 连接超时
+### 数据库连接问题
+1. 检查Sealos数据库是否开启外网访问
+2. 验证`.env`文件中的连接信息
+3. 确认网络连接正常
+
+### 环境变量问题
+1. 检查`.env`文件是否存在
+2. 验证环境变量是否正确加载
+3. 运行安全检查：`python security_check.py`
+
+### 依赖安装问题
+1. 确认Python版本 >= 3.8
+2. 更新pip：`pip install --upgrade pip`
+3. 手动安装缺失的依赖
+
+## 🔄 开发流程
+
+### 日常开发
 ```bash
-# 测试网络连接
-ping your-database-host
-telnet your-database-host your-database-port
+# 激活环境
+cd backend && source venv/bin/activate
+
+# 启动服务
+python manage.py runserver
+
+# 数据库变更
+python manage.py makemigrations
+python manage.py migrate
 ```
 
-### 数据库连接测试
+### 代码提交前
 ```bash
-# 使用内置工具测试
-python backend/sealos_db_helper.py
+# 运行安全检查
+python security_check.py
 
-# Django连接测试
-python backend/manage.py check --database default
+# 确保测试通过
+python manage.py test
+
+# 提交代码
+git add . && git commit -m "Your message"
 ```
 
-## 📁 项目结构
-```
-UAIEDUcourseApp/
-├── backend/                 # Django后端
-│   ├── .env                # 环境变量配置（需要创建）
-│   ├── sealos_db_helper.py # Sealos连接助手
-│   ├── manage.py
-│   └── ...
-├── frontend/               # Vue前端
-├── CODEX_SEALOS_DEPLOYMENT.md  # 详细部署文档
-└── CODEX_SETUP_GUIDE.md   # 本文档
-```
+## 📖 更多文档
 
-## 🔐 安全提醒
-- ✅ 敏感信息已通过环境变量保护
-- ✅ `.env` 文件已在 `.gitignore` 中
-- ✅ 代码已通过安全检查，可安全部署
-
-## 📞 支持
-遇到问题时：
-1. 查看 `CODEX_SEALOS_DEPLOYMENT.md` 详细文档
-2. 运行 `python backend/sealos_db_helper.py` 诊断连接
-3. 检查 `backend/logs/uai.log` 日志文件
+- [完整部署指南](CODEX_DEPLOYMENT_GUIDE.md)
+- [Sealos连接指南](SEALOS_CODEX_CONNECTION_GUIDE.md)
+- [项目架构说明](README.md)
 
 ---
-**更新时间**: 2025年6月23日  
-**适用环境**: Codex + Sealos云数据库 
+
+🎯 **目标**: 让您在2分钟内启动完整的开发环境
+🔒 **承诺**: 符合最高安全标准，保护您的敏感信息 
