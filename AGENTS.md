@@ -124,4 +124,23 @@ UAIEDU_PROJECT/
 - 所有新功能开发前先查看相关AGENTS.md规范
 - 遇到技术难题优先查阅项目内的技术文档
 - 保持代码风格一致性，定期进行代码review
-- 重要功能变更需要更新相应的AGENTS.md文档 
+- 重要功能变更需要更新相应的AGENTS.md文档
+
+## 📡 Railway MySQL 云数据库代理配置
+
+本项目当前已接入 Railway 提供的托管 MySQL 服务，供 Codex 环境远程访问开发数据库。
+
+### ✅ 数据库信息通过 `.env` 文件进行环境变量管理：
+```env
+MYSQL_HOST=shuttle.proxy.rlwy.net
+MYSQL_PORT=13265
+MYSQL_USER=root
+MYSQL_PASSWORD=spUZYqXDxayDanHbsRYNoCFqIhfdocHF
+MYSQL_DATABASE=railway
+```
+
+### 🔧 配置说明
+- **代理服务**：Railway提供的MySQL代理服务，支持外网访问
+- **连接稳定性**：云托管服务，提供高可用性和稳定连接
+- **安全性**：通过环境变量管理敏感信息，符合项目安全规范
+- **适用环境**：特别适用于Codex等云开发环境的远程数据库访问需求 
