@@ -23,12 +23,12 @@ SECRET_KEY=your-secret-key-here-change-this-in-production
 DEBUG=True
 ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
 
-# Sealos MySQL数据库配置
-MYSQL_HOST=dbconn.sealos.bja.site
-MYSQL_PORT=33949
-MYSQL_NAME=test-db-mysql-0
-MYSQL_USER=root
-MYSQL_PASSWORD=786qpf2t
+# Sealos MySQL数据库配置（请替换为实际配置）
+MYSQL_HOST=your-sealos-database-host
+MYSQL_PORT=your-database-port
+MYSQL_NAME=your-database-name
+MYSQL_USER=your-database-user
+MYSQL_PASSWORD=your-database-password
 
 # 数据库连接选项
 MYSQL_CHARSET=utf8mb4
@@ -80,17 +80,17 @@ npm run dev
 
 如果在Codex环境中遇到网络连接问题：
 
-1. **确认代理配置**: 确保代理能访问 `dbconn.sealos.bja.site:33949`
+1. **确认代理配置**: 确保代理能访问您的Sealos数据库地址
 2. **增加超时时间**: 在 `.env` 文件中设置更长的超时时间
-3. **检查防火墙**: 确保端口 33949 未被阻止
+3. **检查防火墙**: 确保数据库端口未被阻止
 
 ## 🛠️ 故障排除
 
 ### 连接超时
 ```bash
 # 测试网络连接
-ping dbconn.sealos.bja.site
-telnet dbconn.sealos.bja.site 33949
+ping your-database-host
+telnet your-database-host your-database-port
 ```
 
 ### 数据库连接测试
