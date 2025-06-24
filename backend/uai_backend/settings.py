@@ -91,17 +91,17 @@ WSGI_APPLICATION = 'uai_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQL_NAME', 'your-database-name'),
+        'NAME': os.getenv('MYSQL_NAME', 'mydb'),
         'USER': os.getenv('MYSQL_USER', 'root'),
-        'PASSWORD': os.getenv('MYSQL_PASSWORD', ''),
-        'HOST': os.getenv('MYSQL_HOST', 'your-sealos-host'),
-        'PORT': os.getenv('MYSQL_PORT', '33949'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD', '4mhpzmwn'),
+        'HOST': os.getenv('MYSQL_HOST', 'dbconn.sealosbja.site'),
+        'PORT': os.getenv('MYSQL_PORT', '48214'),
         'OPTIONS': {
             'charset': os.getenv('MYSQL_CHARSET', 'utf8mb4'),
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            'connect_timeout': int(os.getenv('MYSQL_CONNECT_TIMEOUT', '30')),
-            'read_timeout': int(os.getenv('MYSQL_READ_TIMEOUT', '30')),
-            'write_timeout': int(os.getenv('MYSQL_WRITE_TIMEOUT', '30')),
+            'connect_timeout': int(os.getenv('MYSQL_CONNECT_TIMEOUT', '120')),
+            'read_timeout': int(os.getenv('MYSQL_READ_TIMEOUT', '120')),
+            'write_timeout': int(os.getenv('MYSQL_WRITE_TIMEOUT', '120')),
         },
     }
 }
