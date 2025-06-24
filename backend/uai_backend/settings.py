@@ -91,11 +91,11 @@ WSGI_APPLICATION = 'uai_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQL_NAME', 'mydb'),
-        'USER': os.getenv('MYSQL_USER', 'root'),
-        'PASSWORD': os.getenv('MYSQL_PASSWORD', '4mhpzmwn'),
-        'HOST': os.getenv('MYSQL_HOST', 'dbconn.sealosbja.site'),
-        'PORT': os.getenv('MYSQL_PORT', '48214'),
+        'NAME': os.getenv('MYSQL_NAME'),
+        'USER': os.getenv('MYSQL_USER'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'HOST': os.getenv('MYSQL_HOST'),
+        'PORT': os.getenv('MYSQL_PORT'),
         'OPTIONS': {
             'charset': os.getenv('MYSQL_CHARSET', 'utf8mb4'),
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
@@ -105,6 +105,12 @@ DATABASES = {
         },
     }
 }
+
+# 验证必需的环境变量
+required_env_vars = ['MYSQL_NAME', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_HOST', 'MYSQL_PORT']
+missing_vars = [var for var in required_env_vars if not os.getenv(var)]
+if missing_vars:
+    raise ValueError(f'Missing required environment variables: {", ".join(missing_vars)}. Please check your .env file.')
 
 
 # Password validation

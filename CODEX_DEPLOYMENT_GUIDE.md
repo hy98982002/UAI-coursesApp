@@ -299,10 +299,10 @@ import MySQLdb
 start = time.time()
 try:
     conn = MySQLdb.connect(
-        host='dbconn.sealosbia.site',
+        host=os.environ['MYSQL_HOST'],
         port=30758,
         user='root',
-        password='4mhgzmwn',
+        password=os.environ['MYSQL_PASSWORD'],
         database='test-db-mysql-0'
     )
     print(f'连接成功，耗时: {time.time() - start:.2f}s')

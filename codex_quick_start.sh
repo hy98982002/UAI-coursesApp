@@ -1,71 +1,52 @@
 #!/bin/bash
-# 🚀 UAI教育平台 - Codex环境快速启动脚本
+# UAI项目 Codex 快速启动脚本
+# 符合安全规范，不包含硬编码敏感信息
 
-echo "🚀 启动UAI教育平台 - Codex环境"
-echo "="*50
+echo "🚀 UAI教育平台 - Codex快速启动"
+echo "==============================="
 
-# 检查当前目录
-if [ ! -f "README.md" ]; then
-    echo "❌ 请在项目根目录运行此脚本"
+# 进入backend目录
+cd backend || {
+    echo "❌ backend目录不存在"
     exit 1
-fi
-
-# 后端配置
-echo "📦 配置后端环境..."
-cd backend
-
-# 创建虚拟环境
-if [ ! -d "venv" ]; then
-    python3 -m venv venv
-    echo "✅ 虚拟环境已创建"
-fi
-
-# 激活虚拟环境
-source venv/bin/activate
-
-# 安装依赖
-pip install -q -r requirements.txt
+}
 
 # 检查.env文件
 if [ ! -f ".env" ]; then
-    echo "📝 创建.env配置文件..."
-    cat > .env << 'EOF'
-# Sealos MySQL 数据库配置（2025年1月最新）
-MYSQL_HOST=dbconn.sealosbja.site
-MYSQL_PORT=48214
-MYSQL_USER=root
-MYSQL_PASSWORD=4mhpzmwn
-MYSQL_NAME=mydb
-MYSQL_CHARSET=utf8mb4
-MYSQL_CONNECT_TIMEOUT=120
-MYSQL_READ_TIMEOUT=120
-MYSQL_WRITE_TIMEOUT=120
-
-# Django 配置
-SECRET_KEY=django-insecure-uai-education-platform-2025
-DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0,*.codex.io,*.gitpod.io,*.github.dev
-TIME_ZONE=Asia/Shanghai
-LANGUAGE_CODE=zh-hans
-
-# CORS 配置（开发环境）
-CORS_ALLOW_ALL_ORIGINS=True
-CORS_ALLOW_CREDENTIALS=True
-EOF
-    echo "✅ .env文件已创建"
+    echo "❌ .env配置文件不存在！"
+    echo "📝 请手动创建 backend/.env 文件，参考 .env.example"
+    echo "💡 包含数据库连接信息：MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD"
+    exit 1
 fi
+
+# 激活虚拟环境
+if [ -d "venv" ]; then
+    echo "🐍 激活Python虚拟环境..."
+    source venv/bin/activate || source venv/Scripts/activate
+else
+    echo "⚠️  虚拟环境不存在，使用系统Python"
+fi
+
+# 安装依赖
+echo "📦 检查Python依赖..."
+pip install -q mysql-connector-python python-dotenv 2>/dev/null || echo "⚠️  依赖安装可能需要手动处理"
+
+# 加载环境变量
+echo "🔧 加载环境变量..."
+export $(cat .env | grep -v '^#' | xargs) 2>/dev/null
 
 # 测试数据库连接
 echo "🔍 测试Sealos数据库连接..."
 python -c "
 import mysql.connector
+import os
 try:
     conn = mysql.connector.connect(
-        host='dbconn.sealosbja.site',
-        port=48214,
-        user='root',
-        password='4mhpzmwn',
-        database='mydb',
+        host=os.environ['MYSQL_HOST'],
+        port=int(os.environ['MYSQL_PORT']),
+        user=os.environ['MYSQL_USER'],
+        password=os.environ['MYSQL_PASSWORD'],
+        database=os.environ['MYSQL_NAME'],
         connect_timeout=10
     )
     print('✅ 数据库连接成功!')
@@ -81,26 +62,24 @@ except Exception as e:
 "
 
 # Django迁移
-echo "🔄 执行数据库迁移..."
-python manage.py migrate --verbosity=0
+echo "🔧 执行Django数据库迁移..."
+python manage.py makemigrations 2>/dev/null || echo "⚠️  makemigrations可能有问题"
+python manage.py migrate || {
+    echo "❌ 数据库迁移失败"
+    exit 1
+}
 
-# 检查是否已有管理员用户
-echo "👤 检查管理员用户..."
-python -c "
-from django.contrib.auth import get_user_model
-User = get_user_model()
-if not User.objects.filter(is_superuser=True).exists():
-    print('💡 建议创建超级用户: python manage.py createsuperuser')
-else:
-    print('✅ 管理员用户已存在')
-"
+# 创建超级用户（可选）
+echo "👤 创建Django超级用户（可选，按Ctrl+C跳过）..."
+python manage.py createsuperuser --noinput --username admin --email admin@uai.edu 2>/dev/null || echo "ℹ️  超级用户已存在或需要交互创建"
 
+# 启动开发服务器
 echo "🌐 启动Django开发服务器..."
-echo "📍 后端API: http://localhost:8000/"
-echo "📍 Django管理: http://localhost:8000/admin/"
-echo "📍 API文档: http://localhost:8000/api/"
+echo "📡 访问地址: http://localhost:8000"
+echo "🔧 管理后台: http://localhost:8000/admin"
+echo "📋 API文档: http://localhost:8000/api/"
 echo ""
-echo "🚀 服务器启动中..."
 echo "按 Ctrl+C 停止服务器"
+echo "==============================="
 
 python manage.py runserver 0.0.0.0:8000 

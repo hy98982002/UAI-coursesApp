@@ -6,20 +6,20 @@
 根据您提供的Sealos管理面板截图，以下信息已确认：
 
 ```
-✅ 用户名：root
-✅ 密码：4mhpzmwn
-✅ 外网主机：dbconn.sealosbja.site
-✅ 外网端口：48214
-✅ 连接字符串：mysql://root:4mhpzmwn@dbconn.sealosbja.site:48214
+✅ 用户名：配置在.env文件中
+✅ 密码：配置在.env文件中  
+✅ 外网主机：配置在.env文件中
+✅ 外网端口：配置在.env文件中
+✅ 连接字符串：通过环境变量动态生成
 ```
 
-### 🔄 与您提供数据的对比验证
-您在对话框提供的信息：
-```
-dbconn.sealosbja.site##48214##4mhpzmwn##root##mysql://root:4mhpzmwn@dbconn.sealosbja.site:48214
-```
+### 🔒 安全提醒
+**重要：**所有敏感信息已移至`.env`文件中管理，遵循安全最佳实践。
 
-✅ **信息完全匹配！** 配置正确无误。
+🛡️ **安全原则：**
+- 数据库连接信息不在代码中硬编码
+- 使用环境变量管理敏感配置
+- .env文件已加入.gitignore保护
 
 ---
 
@@ -48,19 +48,21 @@ pip install -r requirements.txt
 
 创建 `backend/.env` 文件：
 ```env
-# Sealos MySQL 数据库配置（2025年1月最新）
-MYSQL_HOST=dbconn.sealosbja.site
-MYSQL_PORT=48214
-MYSQL_USER=root
-MYSQL_PASSWORD=4mhpzmwn
-MYSQL_NAME=mydb
+# 重要：请使用您的实际Sealos数据库连接信息
+# 参考 .env.example 文件格式
+
+MYSQL_HOST=your-sealos-mysql-host
+MYSQL_PORT=your-mysql-port
+MYSQL_USER=your-mysql-user
+MYSQL_PASSWORD=your-mysql-password
+MYSQL_NAME=your-database-name
 MYSQL_CHARSET=utf8mb4
 MYSQL_CONNECT_TIMEOUT=120
 MYSQL_READ_TIMEOUT=120
 MYSQL_WRITE_TIMEOUT=120
 
 # Django 配置
-SECRET_KEY=django-insecure-uai-education-platform-2025
+SECRET_KEY=your-django-secret-key
 DEBUG=True
 ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0,*.codex.io,*.gitpod.io,*.github.dev
 TIME_ZONE=Asia/Shanghai
@@ -77,13 +79,16 @@ CORS_ALLOW_CREDENTIALS=True
 # 测试连接
 python -c "
 import mysql.connector
+import os
+from dotenv import load_dotenv
+load_dotenv()
 try:
     conn = mysql.connector.connect(
-        host='dbconn.sealosbja.site',
-        port=48214,
-        user='root',
-        password='4mhpzmwn',
-        database='mydb'
+        host=os.environ['MYSQL_HOST'],
+        port=int(os.environ['MYSQL_PORT']),
+        user=os.environ['MYSQL_USER'],
+        password=os.environ['MYSQL_PASSWORD'],
+        database=os.environ['MYSQL_NAME']
     )
     print('✅ 数据库连接成功!')
     conn.close()
@@ -126,8 +131,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('MYSQL_NAME', 'mydb'),
         'USER': os.getenv('MYSQL_USER', 'root'),
-        'PASSWORD': os.getenv('MYSQL_PASSWORD', '4mhpzmwn'),
-        'HOST': os.getenv('MYSQL_HOST', 'dbconn.sealosbja.site'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'HOST': os.getenv('MYSQL_HOST'),
         'PORT': os.getenv('MYSQL_PORT', '48214'),
         'OPTIONS': {
             'charset': 'utf8mb4',
